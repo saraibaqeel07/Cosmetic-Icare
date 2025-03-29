@@ -180,12 +180,14 @@ const CreateAfterDocument = () => {
                         /></Grid>
 
                         <Grid item xs={12} sm={5}>
-                            <InputLabel sx={{    textTransform: "capitalize",mt:2,
-              textAlign: "left",
-              fontWeight: 600,
-              fontSize: "14px",
-              color: "#333",
-              marginBottom: "4px", }}>
+                            <InputLabel sx={{
+                                textTransform: "capitalize", mt: 2,
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontSize: "14px",
+                                color: "#333",
+                                marginBottom: "4px",
+                            }}>
 
                                 Upload  Documents :*
                             </InputLabel>
@@ -205,7 +207,7 @@ const CreateAfterDocument = () => {
                                             }
                                             const allowedTypes = [
                                                 "image/",
-                                                
+
                                                 "application/pdf",
                                                 "application/msword",
                                                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -281,12 +283,12 @@ const CreateAfterDocument = () => {
 
 
                             {uploadedImages?.length > 0 &&
-                            <Grid item xs={12}>
-                            <InputLabel sx={{ textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block', mb: 3, mt: 3 }}>
+                                <Grid item xs={12}>
+                                    <InputLabel sx={{ textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block', mb: 3, mt: 3 }}>
 
-                               Uploaded Documents :
-                            </InputLabel>
-                            </Grid>}
+                                        Uploaded Documents :
+                                    </InputLabel>
+                                </Grid>}
                             <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                                 {uploadedImages?.length > 0 &&
                                     uploadedImages.map((file, index) => (

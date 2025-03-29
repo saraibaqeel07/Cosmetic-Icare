@@ -10,6 +10,10 @@ const ApiServices = {
         const data = await post(routes.CreateStaff, obj);
         return data;
     },
+    CreateForm: async (obj) => {
+        const data = await post(routes.CreateForm, obj);
+        return data;
+    },
     CreateAfterDocument: async (obj) => {
         const data = await post(routes.CreateAfterDocument, obj);
         return data;
@@ -236,6 +240,10 @@ const ApiServices = {
     },
     getBlockSlots: async (obj) => {
         const data = await get(routes.getBlockSlots, obj);
+        return data;
+    },
+    getConsentForms: async (obj) => {
+        const data = await get(routes.getConsentForms, obj);
         return data;
     },
     getStats: async (obj) => {

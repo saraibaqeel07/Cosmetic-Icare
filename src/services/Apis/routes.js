@@ -68,7 +68,9 @@ const routes = {
     getAfterCareDocuments:'/system/documents',
     DeleteAfterCareDoc:'/system/documents/delete',
     getAfterCareDocumentDetail:'/system/documents/details',
-    UpdateAfterCareDocument:'/system/documents/update'
+    UpdateAfterCareDocument:'/system/documents/update',
+    CreateForm:'/patients/forms/add',
+    getConsentForms:'/patients/forms'
     
 };
 

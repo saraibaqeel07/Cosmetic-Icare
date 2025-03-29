@@ -45,6 +45,8 @@ const DeletedPatients = lazy(() => import("../Pages/DeletedPatients"))
 const CreateAfterDocument = lazy(() => import("../Pages/CreateAfterCareDocument"))
 const AfterCareDocuments = lazy(() => import("../Pages/AfterCareDocuments"))
 const UpdateAfterCareDocument = lazy(() => import("../Pages/UpdateAfterCareDocument"))
+const CreateForm = lazy(() => import("../Pages/CreateConsentForm"))
+const ConsentForms = lazy(() => import("../Pages/ConsentForms"))
 const adminRoutes = [
   {
     name: "Dashboard",
@@ -92,6 +94,18 @@ const adminRoutes = [
     name: "Places",
     path: "/places",
     component: Places,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: "Create Consent Form",
+    path: "/create-consent-form",
+    component: CreateForm,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: "Consent Forms",
+    path: "/consent-forms",
+    component: ConsentForms,
     icon:<ReceiptIcon sx={{fontSize:'22px'}} />
   },
   {
