@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import DashboardLayout from "./layouts/Dashboard";
@@ -7,6 +7,7 @@ import { ToasterComponent } from "./components/Toaster";
 import Login from "./layouts/Dashboard/Pages/Login";
 import { AuthContext } from "./Context/AuthContext";
 import { Box, CircularProgress } from "@mui/material";
+const UserForm = lazy(() => import("../src/layouts/Dashboard/Pages/UserForm"))
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,9 +43,10 @@ function App() {
       <AuthContext.Provider value={{ user, setUser, login, logout }}>
         <ToasterComponent />
         <Routes>
+          
           {/* Prevents unwanted redirect before user state is restored */}
           <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
-
+          <Route path='/patient/form/:id' element={<UserForm/>}/>
           {/* DashboardLayout should wrap all child routes */}
           {user && (
             <Route path="/" element={<DashboardLayout />}>

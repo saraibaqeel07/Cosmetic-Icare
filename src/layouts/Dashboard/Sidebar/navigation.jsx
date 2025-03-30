@@ -39,6 +39,7 @@ const DeletedPatients = lazy(() => import("../Pages/DeletedPatients"))
 const AfterCareDocuments = lazy(() => import("../Pages/AfterCareDocuments"))
 const CreateForm = lazy(() => import("../Pages/CreateConsentForm"))
 const ConsentForms = lazy(() => import("../Pages/ConsentForms"))
+const CompletedForms = lazy(() => import("../Pages/CompletedForms"))
 const Navigation = [
   {
     name: "Dashboard",
@@ -85,6 +86,12 @@ const Navigation = [
           component: ConsentForms,
           icon:<ReceiptIcon sx={{fontSize:'22px'}} />
         },
+          {
+            name: "Completed Forms",
+            path: "/completed-forms",
+            component: CompletedForms,
+            icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+          },
     ],
   },
   {

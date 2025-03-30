@@ -4,7 +4,7 @@ import { PrimaryButton } from "../../../components/buttons";
 import { Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import InputField from "../../../components/input";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { showErrorToast, showPromiseToast, showSuccessToast } from "../../../components/Toaster";
 import UploadIcon from "@mui/icons-material/Upload";
@@ -21,9 +21,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from "dayjs";
+import { id } from "date-fns/locale";
+import { Images } from "../../../assets/images";
 
 
-const CreateConsentForm = () => {
+const UserForm = () => {
+    const { id } = useParams()
     const navigate = useNavigate()
     const [userData, setUserData] = useState(null)
     const { register, control, handleSubmit, setValue, getValues, formState: { errors }, reset, watch } = useForm({
@@ -86,7 +89,7 @@ const CreateConsentForm = () => {
         }
     };
     const [title, setTitle] = useState(null)
-
+    const [formData, setFormData] = useState(null)
     const [step, setStep] = useState(1); // 1: OTP, 2: Reset Password
     const [otp, setOtp] = useState("");
     const [otpError, setOtpError] = useState(false);
@@ -106,6 +109,7 @@ const CreateConsentForm = () => {
     const [documents, setDocuments] = useState([])
     const [selectedDocument, setSelectedDocument] = useState(null)
     const sigCanvas = useRef(null);
+    const sigCanvasNew = useRef(null);
     const [signature, setSignature] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([])
     const [imageLoader, setImageLoader] = useState(false)
@@ -113,12 +117,13 @@ const CreateConsentForm = () => {
     const [imageLoaderBefore, setImageLoaderBefore] = useState(false)
     const [afterImages, setAfterImages] = useState([])
     const [imageLoaderAfter, setImageLoaderAfter] = useState(false)
+    const [consentSign, setConsentSign] = useState(false)
 
     // Handle Save Signature
     const handleSave = async () => {
         if (sigCanvas.current) {
             const dataURL = await sigCanvas.current.toDataURL();
-            setSignature(dataURL);
+          
             try {
                 const file = dataURL;
                 if (file) {
@@ -146,12 +151,48 @@ const CreateConsentForm = () => {
             }
         }
     };
+    const handleSave2 = async () => {
+        if (sigCanvasNew.current) {
+            const dataURL = await sigCanvasNew.current.toDataURL();
+         
+            try {
+                const file = dataURL;
+                if (file) {
+                    setValue("image", file, { shouldValidate: true }); // Set value and trigger validation
+                }
 
+                let obj = {
+                    document: dataURL,
+                    filename: moment().unix() + "_Sign.png"
+                }
+
+                const response = await axios.post(
+                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                    obj
+                );
+
+                console.log(response?.data?.data?.path);
+
+                setConsentSign('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+
+
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+    };
     // Handle Clear Signature
     const handleClear = () => {
         if (sigCanvas.current) {
             sigCanvas.current.clear();
             setSignature(null);
+        }
+    };
+    const handleClear2 = () => {
+        if (sigCanvasNew.current) {
+            sigCanvasNew.current.clear();
+
         }
     };
     const [permissions, setPermissions] = useState({
@@ -246,11 +287,17 @@ const CreateConsentForm = () => {
 
         }
     };
-    const CreateConsentForm = async () => {
-        setLoader(true);
+    const UpdateConsentForm = async (formData) => {
+        console.log(formData);
+        console.log(consentSign?.includes("cosmetic") && signature?.includes("cosmetic") );
+        if (consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && formData?.furtherFields?.every(item => item?.sign?.includes("cosmetic"))) {
+          
+      
         try {
+            setLoader(true);
             let obj = {
-                patient_id: patientType == 'existing' ?  selectedPatient?.id : null,
+                _id: id,
+                patient_id: patientType == 'existing' ? selectedPatient?.id : null,
                 form_id: null,
                 aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
                 treatment_date: getValues('treatmentDate'),
@@ -287,16 +334,25 @@ const CreateConsentForm = () => {
                 batch_images: uploadedImages,
                 before_images: beforeImages,
                 after_images: afterImages,
-                further_treatment: furtherFields,
-                treatment_record: fields,
+                further_treatment: formData?.furtherFields,
+                treatment_record: formData?.records,
                 extra_notes: getValues('extranotes'),
                 permission_marketing: permissions?.marketing,
                 offers: permissions?.offers,
+                side_effect: {
+                    details: getValues('effectdetails')
+                },
+
+                patient_consent: {
+                    details: getValues('details'),
+                    sign: consentSign
+                },
 
 
             };
+            console.log(obj);
 
-            const promise = ApiServices.CreateForm(obj);
+            const promise = ApiServices.CompleteForm(obj);
 
             // Handle the API response properly
             const response = await promise;
@@ -309,11 +365,11 @@ const CreateConsentForm = () => {
                 "Something Went Wrong"
             );
 
-            // Navigate if response is successful
+
             if (response?.responseCode === 200) {
                 console.log(response);
                 setImageURL(null)
-                navigate('/consent-forms')
+                
 
 
             }
@@ -325,7 +381,12 @@ const CreateConsentForm = () => {
 
             setLoader(false);
         }
+        }
+        else{
+            showErrorToast('Please Sign All Fields')
+        }
     };
+    console.log(watch());
 
     const SendOtp = async (val) => {
         if (val != 'resend') {
@@ -629,30 +690,122 @@ const CreateConsentForm = () => {
         getPatients()
         getDocuments()
     }, [])
+    // useEffect(() => {
+    //     // Disable drawing on the single canvas
+    //     if (sigCanvas.current) {
+    //         sigCanvas.current.off();
+    //     }
+
+    //     // Disable drawing on all multiple canvases
+    //     signCanvasRefs.current.forEach((canvas) => {
+    //         if (canvas) {
+    //             canvas.off();
+    //         }
+    //     });
+    // }, []);
+    const getData = async () => {
+        try {
+            let params = {
+                id: id,
+
+            };
+
+            const data = await ApiServices.getFormDetail(params);
+            let form = data?.data?.form
+            setValue('treatmentDate', dayjs(form?.treatment_date))
+            setValue('consultationDate', dayjs(form?.consultation_date))
+            setPermissions({
+                marketing: form?.permission_marketing ? 'yes' : 'no',
+                offers: form?.offers ? 'yes' : 'no',
+            })
+            setFormData(form)
+            setValue("media", { shouldValidate: true });
+            setValue("media2", { shouldValidate: true });
+            setValue("media3", { shouldValidate: true });
+            setSignature(form?.treatment_plan?.patient_sign)
+            setValue('patientDate', dayjs(form?.treatment_plan?.date))
+            setValue('patientConcerns', form?.treatment_plan?.patient_concerns)
+            setValue('patientGoal', form?.treatment_plan?.patient_goals)
+            setValue('advisedPlan', form?.treatment_plan?.advised_plan)
+            setValue('expectedResult', form?.treatment_plan?.expected_result)
+            setConsentSign(form?.patient_consent?.sign)
+            let recordData = form?.treatment_record?.map((doc) => ({
+                ...doc,
+
+                date: dayjs(doc?.date)
+            }))
+            let furtherData = form?.further_treatment?.map((doc) => ({
+                ...doc,
+
+                date: dayjs(doc?.date)
+            }))
+            setValue("records", recordData);
+            setValue("furtherFields", furtherData);
+            setValue("extranotes", form?.extra_notes);
+            setUploadedImages(form?.batch_images)
+            setBeforeImages(form?.before_images)
+            setAfterImages(form?.after_images)
+
+        } catch (error) {
+            console.error("Error fetching location:", error);
+        }
+    };
+    console.log(permissions);
+
     useEffect(() => {
-        // Disable drawing on the single canvas
-        if (sigCanvas.current) {
-            sigCanvas.current.off();
+        getData()
+    }, [])
+    useEffect(() => {
+        let value = patients?.find(item => item?._id == formData?.patient_id)
+        setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))
+        setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))
+
+        setValue('fname', value?.first_name || "");
+        setValue('lname', value?.last_name || "");
+        setValue('email', value?.email || "");
+        setValue('post', value?.post_code || "");
+        setValue('phone', value?.phone || "");
+        setValue('address', value?.address || "");
+        setValue('notes', value?.notes || "");
+        setValue('name', value?.kin_details?.name || "");
+        setValue('kinemail', value?.kin_details?.email || "");
+        setValue('kinphone', value?.kin_details?.phone || "");
+        setValue('kinaddress', value?.kin_details?.address || "");
+        setValue('genname', value?.general_practitioner?.name || "");
+        setValue('genemail', value?.general_practitioner?.email || "");
+        setValue('genphone', value?.general_practitioner?.phone || "");
+        setValue('genaddress', value?.general_practitioner?.address || "");
+        console.log("Raw DOB:", value?.dob);
+
+        if (value?.dob) {
+            // Convert to Dayjs format
+            const parsedDate = dayjs(value.dob);
+
+            // Check if the conversion is valid
+            if (!parsedDate.isValid()) {
+                console.error("Invalid DOB Format:", value.dob);
+                return;
+            }
+
+            console.log("Parsed Date:", parsedDate);
+            setValue("selectedDate", parsedDate);
         }
 
-        // Disable drawing on all multiple canvases
-        signCanvasRefs.current.forEach((canvas) => {
-            if (canvas) {
-                canvas.off();
-            }
-        });
-    }, []);
+    }, [patients, documents])
+
 
     return (
         <div>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box component={'img'} src={Images.logo} width={'200px'} sx={{ textAlign: 'center' }}></Box>
+            </Box>
+            <Paper sx={{ width: "90%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px', margin: '40px auto' }}>
 
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
 
 
-
-                <Box component={'form'} p={3} sx={{ borderRadius: '12px' }} onSubmit={handleSubmit(CreateConsentForm)} >
+                <Box component={'form'} p={3} sx={{ borderRadius: '12px' }} onSubmit={handleSubmit(UpdateConsentForm)} >
                     <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                    Medical History Form
+                        Medical History Form
                     </Typography>
 
                     <Grid container mt={4} spacing={2}>
@@ -670,6 +823,7 @@ const CreateConsentForm = () => {
                                 Select Form :
                             </InputLabel>
                             <SelectField
+                                disabled={true}
                                 size={'small'}
                                 newLabel={'Select Form'}
                                 fullWidth={true}
@@ -705,6 +859,7 @@ const CreateConsentForm = () => {
                                             <Controller
                                                 name="treatmentDate"
                                                 control={control}
+                                                disabled={true}
                                                 rules={{ required: "Please select a date" }}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -760,6 +915,7 @@ const CreateConsentForm = () => {
                                             <Controller
                                                 name="consultationDate"
                                                 control={control}
+                                                disabled={true}
                                                 rules={{ required: "Please select a date" }}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -812,7 +968,7 @@ const CreateConsentForm = () => {
                                 </InputLabel>
                                 <FormControl component="fieldset">
 
-                                    <RadioGroup row value={patientType} onChange={handleChange}>
+                                    <RadioGroup row value={patientType} >
                                         <FormControlLabel value="existing" control={<Radio />} label="Existing" />
                                         <FormControlLabel value="new" control={<Radio />} label="New" />
                                     </RadioGroup>
@@ -833,12 +989,13 @@ const CreateConsentForm = () => {
                                         size={'small'}
                                         newLabel={'Select Patient'}
                                         fullWidth={true}
+                                        disabled={true}
                                         options={patients}
                                         selected={selectedPatient}
                                         onSelect={(value) => {
                                             setSelectedPatient(value);
                                             console.log("Selected Patient:", value);
-                                    
+
                                             setValue('fname', value?.first_name || "");
                                             setValue('lname', value?.last_name || "");
                                             setValue('email', value?.email || "");
@@ -855,17 +1012,17 @@ const CreateConsentForm = () => {
                                             setValue('genphone', value?.general_practitioner?.phone || "");
                                             setValue('genaddress', value?.general_practitioner?.address || "");
                                             console.log("Raw DOB:", value?.dob);
-                                    
+
                                             if (value?.dob) {
                                                 // Convert to Dayjs format
                                                 const parsedDate = dayjs(value.dob);
-                                    
+
                                                 // Check if the conversion is valid
                                                 if (!parsedDate.isValid()) {
                                                     console.error("Invalid DOB Format:", value.dob);
                                                     return;
                                                 }
-                                    
+
                                                 console.log("Parsed Date:", parsedDate);
                                                 setValue("selectedDate", parsedDate);
                                             }
@@ -890,6 +1047,7 @@ const CreateConsentForm = () => {
                                 </InputLabel>
                                     <SelectField
                                         size={'small'}
+                                        disabled={true}
                                         newLabel={'Select Document'}
                                         fullWidth={true}
                                         options={documents}
@@ -909,6 +1067,7 @@ const CreateConsentForm = () => {
                         <Grid item xs={3} mt={2}><InputField
                             label={"Patient First Name :*"}
                             size={'small'}
+                            disabled={true}
                             placeholder={"Patient First Name"}
                             error={errors?.fname?.message}
                             register={register("fname", {
@@ -920,6 +1079,7 @@ const CreateConsentForm = () => {
                         <Grid item xs={3} mt={2}><InputField
                             label={"Patient Last Name :*"}
                             size={'small'}
+                            disabled={true}
                             placeholder={" Patient Last Name"}
                             error={errors?.lname?.message}
                             register={register("lname", {
@@ -931,6 +1091,7 @@ const CreateConsentForm = () => {
                         <Grid item xs={3} mt={2}><InputField
                             label={"Patient Email :*"}
                             size={'small'}
+                            disabled={true}
                             placeholder={"Patient Email"}
                             error={errors?.email?.message}
                             register={register("email", {
@@ -958,6 +1119,7 @@ const CreateConsentForm = () => {
                                             <Controller
                                                 name="selectedDate"
                                                 control={control}
+                                                disabled={true}
                                                 rules={{ required: "Please select a date" }}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -997,6 +1159,7 @@ const CreateConsentForm = () => {
                         </Grid>
                         <Grid item xs={3} mt={2}><InputField
                             label={"Phone Number :*"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Phone Number"}
                             error={errors?.phone?.message}
@@ -1008,6 +1171,7 @@ const CreateConsentForm = () => {
                         /></Grid>
                         <Grid item xs={3} mt={2}><InputField
                             label={"Post Code :*"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Post Code"}
                             error={errors?.post?.message}
@@ -1019,6 +1183,7 @@ const CreateConsentForm = () => {
                         /></Grid>
                         <Grid item xs={3} mt={2}><InputField
                             label={"Address :*"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Address"}
                             error={errors?.address?.message}
@@ -1030,6 +1195,7 @@ const CreateConsentForm = () => {
                         /></Grid>
                         <Grid item xs={3} mt={2}><InputField
                             label={"Notes :"}
+                            disabled={true}
                             multiline
                             rows={3}
                             size={'small'}
@@ -1053,6 +1219,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Name :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Name"}
                             error={errors?.name?.message}
@@ -1065,6 +1232,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Email :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Email"}
                             error={errors?.kinemail?.message}
@@ -1077,6 +1245,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Phone Number :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Phone Number"}
                             error={errors?.kinphone?.message}
@@ -1089,6 +1258,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Address :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Address"}
                             error={errors?.kinaddress?.message}
@@ -1111,6 +1281,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Name :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Name"}
                             error={errors?.genname?.message}
@@ -1123,6 +1294,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Email :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Email"}
                             error={errors?.genemail?.message}
@@ -1135,6 +1307,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Phone Number :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Phone Number"}
                             error={errors?.genphone?.message}
@@ -1147,6 +1320,7 @@ const CreateConsentForm = () => {
 
                         <Grid item xs={3} mt={2}><InputField
                             label={"Address :"}
+                            disabled={true}
                             size={'small'}
                             placeholder={"Address"}
                             error={errors?.genaddress?.message}
@@ -1195,6 +1369,7 @@ const CreateConsentForm = () => {
                             {/* Patient Concerns */}
                             <Grid item xs={6} mt={2}>
                                 <InputField
+                                    disabled={true}
                                     label="Patient concerns"
                                     size="small"
                                     placeholder="Patient concerns"
@@ -1208,6 +1383,7 @@ const CreateConsentForm = () => {
                             {/* Patient Goal */}
                             <Grid item xs={6} mt={2}>
                                 <InputField
+                                    disabled={true}
                                     label="Patient goal"
                                     size="small"
                                     placeholder="Patient goal"
@@ -1221,6 +1397,7 @@ const CreateConsentForm = () => {
                             {/* Advised Plan/Product */}
                             <Grid item xs={6} mt={2}>
                                 <InputField
+                                    disabled={true}
                                     label="Advised Plan/product"
                                     size="small"
                                     placeholder="Advised Plan/product"
@@ -1234,6 +1411,7 @@ const CreateConsentForm = () => {
                             {/* Expected Result */}
                             <Grid item xs={6} mt={2}>
                                 <InputField
+                                    disabled={true}
                                     label="Expected Result"
                                     size="small"
                                     placeholder="Expected Result"
@@ -1265,6 +1443,7 @@ const CreateConsentForm = () => {
                                                     Patient Date :*
                                                 </InputLabel>
                                                 <Controller
+                                                    disabled={true}
                                                     name="patientDate"
                                                     control={control}
                                                     rules={{ required: "Please select a date" }}
@@ -1308,7 +1487,7 @@ const CreateConsentForm = () => {
                             {/* Signature Canvas */}
                             <Grid item xs={6} mt={2}>
                                 <Typography>Patient Signature:</Typography>
-                                <SignatureCanvas
+                                {!signature ? <SignatureCanvas
                                     ref={sigCanvas}
                                     penColor="black"
                                     canvasProps={{
@@ -1317,8 +1496,10 @@ const CreateConsentForm = () => {
                                         className: "sigCanvas",
                                         style: { border: "1px dashed black" },
                                     }}
-                                />
-                                <Grid container spacing={1} mt={1}>
+                                /> : <Box component={'img'} src={signature} sx={{width: 300,
+                                    height: 150, border: "1px dashed black"}}>
+                                    </Box>}
+                                {!signature  && <Grid container spacing={1} mt={1}>
                                     <Grid item>
                                         <Button variant="contained" color="secondary" onClick={handleClear}>
                                             Clear Signature
@@ -1330,7 +1511,7 @@ const CreateConsentForm = () => {
                                         </Button>
                                     </Grid>
 
-                                </Grid>
+                                </Grid>}
 
 
                             </Grid>
@@ -1338,8 +1519,88 @@ const CreateConsentForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        {console.log(watch('records'))
-                        }
+                        <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                            Side Effects
+                        </Typography>
+
+
+
+                        <Grid container spacing={5} p={2} alignItems="center">
+
+                            <Grid item xs={6} mt={2}>
+                                <InputField
+
+                                    label="Details"
+                                    size="small"
+
+                                    placeholder="Details"
+                                    error={errors?.effectdetails?.message}
+                                    register={register("effectdetails", { required: false })}
+                                    multiline
+                                    rows={4}
+                                />
+                            </Grid>
+
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                            Patient Consent
+                        </Typography>
+
+
+
+                        <Grid container spacing={5} p={2} alignItems="center">
+
+                            <Grid item xs={6} mt={2}>
+                                <InputField
+
+                                    label="Details"
+                                    size="small"
+
+                                    placeholder="Details"
+                                    error={errors?.details?.message}
+                                    register={register("details", { required: false })}
+                                    multiline
+                                    rows={4}
+                                />
+                            </Grid>
+                            {/* Signature Canvas */}
+                            <Grid item xs={6} mt={2}>
+                                <Typography>Patient Signature:</Typography>
+                               {!consentSign ?  <SignatureCanvas
+                                    ref={sigCanvasNew}
+                                    penColor="black"
+                                    canvasProps={{
+                                        width: 300,
+                                        height: 150,
+                                        className: "sigCanvas",
+                                        style: { border: "1px dashed black" },
+                                    }}
+                                /> : <Box component={'img'} src={consentSign} sx={{width: 300,
+                                    height: 150, border: "1px dashed black"}}>
+                                    </Box>}
+                                {!consentSign && <Grid container spacing={1} mt={1}>
+                                    <Grid item>
+                                        <Button variant="contained" color="secondary" onClick={handleClear2}>
+                                            Clear Signature
+                                        </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button variant="contained" color="primary" onClick={handleSave2}>
+                                            Save Signature
+                                        </Button>
+                                    </Grid>
+
+                                </Grid>}
+
+
+                            </Grid>
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
                         <Typography variant="h5" p={2} fontWeight={'bold'}>Treatment Record Section</Typography>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -1365,6 +1626,7 @@ const CreateConsentForm = () => {
                                             <Controller
                                                 name={`records.${index}.date`}
                                                 control={control}
+                                                disabled={true}
                                                 rules={{ required: "Please select a date" }}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -1399,6 +1661,7 @@ const CreateConsentForm = () => {
                                     {/* Amount Field */}
                                     <Grid item xs={3} mt={2}>
                                         <InputField
+                                            disabled={true}
                                             label="Amount"
                                             placeholder="Order Amount"
                                             size="small"
@@ -1411,6 +1674,7 @@ const CreateConsentForm = () => {
                                     {/* Description Field */}
                                     <Grid item xs={4}>
                                         <InputField
+                                            disabled={true}
                                             label="Description"
                                             multiline
                                             rows={3}
@@ -1419,20 +1683,20 @@ const CreateConsentForm = () => {
                                         />
                                     </Grid>
                                     {/* Remove Button (only for additional fields) */}
-                                    <Grid item xs={1}>
+                                    {/* <Grid item xs={1}>
                                         {index > 0 && (
                                             <IconButton color="error" onClick={() => remove(index)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         )}
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             ))}
                         </LocalizationProvider>
 
 
 
-                        <Grid container p={2}>
+                        {/* <Grid container p={2}>
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -1441,11 +1705,11 @@ const CreateConsentForm = () => {
                             >
                                 Add More
                             </Button>
-                        </Grid>
+                        </Grid> */}
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+                        {/* <Grid item xs={12} sm={5}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -1526,7 +1790,7 @@ const CreateConsentForm = () => {
                                     </>
                                 )}
                             />
-                        </Grid>
+                        </Grid> */}
 
                         <Grid container p={2}>
                             {uploadedImages?.length > 0 && (
@@ -1558,7 +1822,7 @@ const CreateConsentForm = () => {
                                             >
                                                 {file.split("/").pop()}
                                             </Typography>
-                                            <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+                                            {/* <Box sx={{ position: "absolute", top: 0, right: 0 }}>
                                                 <IconButton
                                                     onClick={() => handleRemoveImage(index)}
                                                     sx={{
@@ -1573,7 +1837,7 @@ const CreateConsentForm = () => {
                                                 >
                                                     <CloseIcon fontSize="small" />
                                                 </IconButton>
-                                            </Box>
+                                            </Box> */}
                                         </Box>
                                     ))}
                             </Box>
@@ -1581,7 +1845,7 @@ const CreateConsentForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+                        {/* <Grid item xs={12} sm={5}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -1662,7 +1926,7 @@ const CreateConsentForm = () => {
                                     </>
                                 )}
                             />
-                        </Grid>
+                        </Grid> */}
 
                         <Grid container p={2}>
                             {beforeImages?.length > 0 && (
@@ -1694,7 +1958,7 @@ const CreateConsentForm = () => {
                                             >
                                                 {file.split("/").pop()}
                                             </Typography>
-                                            <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+                                            {/* <Box sx={{ position: "absolute", top: 0, right: 0 }}>
                                                 <IconButton
                                                     onClick={() => handleRemoveImage2(index)}
                                                     sx={{
@@ -1709,7 +1973,7 @@ const CreateConsentForm = () => {
                                                 >
                                                     <CloseIcon fontSize="small" />
                                                 </IconButton>
-                                            </Box>
+                                            </Box> */}
                                         </Box>
                                     ))}
                             </Box>
@@ -1717,7 +1981,7 @@ const CreateConsentForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+                        {/* <Grid item xs={12} sm={5}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -1798,7 +2062,7 @@ const CreateConsentForm = () => {
                                     </>
                                 )}
                             />
-                        </Grid>
+                        </Grid> */}
 
                         <Grid container p={2}>
                             {afterImages?.length > 0 && (
@@ -1830,7 +2094,7 @@ const CreateConsentForm = () => {
                                             >
                                                 {file.split("/").pop()}
                                             </Typography>
-                                            <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+                                            {/* <Box sx={{ position: "absolute", top: 0, right: 0 }}>
                                                 <IconButton
                                                     onClick={() => handleRemoveImage3(index)}
                                                     sx={{
@@ -1845,7 +2109,7 @@ const CreateConsentForm = () => {
                                                 >
                                                     <CloseIcon fontSize="small" />
                                                 </IconButton>
-                                            </Box>
+                                            </Box> */}
                                         </Box>
                                     ))}
                             </Box>
@@ -1867,6 +2131,7 @@ const CreateConsentForm = () => {
                                             <Controller
                                                 name={`furtherFields.${index}.date`}
                                                 control={control}
+                                                disabled={true}
                                                 rules={{ required: "Please select a date" }}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -1907,14 +2172,16 @@ const CreateConsentForm = () => {
                                             <InputLabel sx={{ fontWeight: 700, fontSize: "14px", marginBottom: 1 }}>
                                                 Signature :*
                                             </InputLabel>
-                                            <SignatureCanvas
+                                            {!item?.sign ? <SignatureCanvas
                                                 ref={(el) => (signCanvasRefs.current[index] = el)}
                                                 penColor="black"
                                                 canvasProps={{ width: 300, height: 150, style: { border: "1px dashed black" } }}
-                                            />
+                                            /> : <Box component={'img'} src={item?.sign} sx={{width: 300,
+                                                height: 150, border: "1px dashed black"}}>
+                                                </Box>}
 
                                         </Box>
-                                        <Grid container spacing={1} mt={1}>
+                                        {!item?.sign  && <Grid container spacing={1} mt={1}>
                                             <Grid item>
                                                 <Button variant="contained" color="secondary" onClick={() => clearSignature(index)}>
                                                     Clear Signature
@@ -1926,30 +2193,31 @@ const CreateConsentForm = () => {
                                                 </Button>
                                             </Grid>
 
-                                        </Grid>
+                                        </Grid>}
                                     </Grid>
 
                                     {/* Remove Button */}
-                                    <Grid item xs={1} display="flex" justifyContent="flex-end">
+                                    {/* <Grid item xs={1} display="flex" justifyContent="flex-end">
                                         {furtherFields.length > 1 && (
                                             <IconButton color="error" onClick={() => removeFurther(index)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         )}
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             ))}
                         </LocalizationProvider>
-
+                        {/* 
                         <Grid p={2}>
                             <Button variant="contained" color="secondary" onClick={() => appendFurther({ date: null, sign: "" })} sx={{ mt: 2 }}>
                                 Add More Further Records
                             </Button>
-                        </Grid>
+                        </Grid> */}
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
                         <Grid item xs={6} mt={2}><InputField
+                            disabled={true}
                             label={"Notes :"}
                             multiline
                             rows={3}
@@ -1964,7 +2232,7 @@ const CreateConsentForm = () => {
                         /></Grid>
                     </Grid>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', mt: 2 }}>
-                        <PrimaryButton loader={loader} disabled={loader} type={'submit'} title={"Create"} />
+                        <PrimaryButton loader={loader} disabled={loader || formData?.is_completed} type={'submit'} title={formData?.is_completed ? 'Submitted' : "Submit Form"} />
                     </Box>
                 </Box>
             </Paper>
@@ -1972,4 +2240,4 @@ const CreateConsentForm = () => {
     )
 }
 
-export default CreateConsentForm
+export default UserForm

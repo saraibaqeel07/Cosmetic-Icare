@@ -19,7 +19,7 @@ import SelectField from "../../../components/select";
 import SendIcon from '@mui/icons-material/Send';
 
 
-const ConsentForms = () => {
+const CompletedForms = () => {
     const [active, setActive] = useState(false)
     const navigate = useNavigate()
     const [status, setStatus] = useState(null)
@@ -41,7 +41,8 @@ const ConsentForms = () => {
         try {
             let params = {
                 page: 1,
-                limit: 999
+                limit: 999,
+                is_completed:true
             };
 
             const data = await ApiServices.getConsentForms(params);
@@ -109,16 +110,12 @@ const ConsentForms = () => {
             cell: ({ row }) => (
 
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                    <IconButton onClick={() => { navigate(`/send-form/${row?.original?._id}`) }}>
-                        <SendIcon sx={{ fontSize: '16px' }} />
-                    </IconButton>
+                  
                     <IconButton onClick={() => navigate(`/update-consent-form/${row?.original?._id}`)}>
                         <DriveFileRenameOutlineIcon sx={{ fontSize: '16px' }} />
                     </IconButton>
 
-                    <IconButton onClick={() => { setSelectedRow(row?.original); setConfirmationDialog(true) }}>
-                        <DeleteOutlineIcon sx={{ fontSize: '16px' }} />
-                    </IconButton>
+                  
                 </Box>
             ),
         },
@@ -265,4 +262,4 @@ const ConsentForms = () => {
     )
 }
 
-export default ConsentForms
+export default CompletedForms

@@ -70,7 +70,12 @@ const routes = {
     getAfterCareDocumentDetail:'/system/documents/details',
     UpdateAfterCareDocument:'/system/documents/update',
     CreateForm:'/patients/forms/add',
-    getConsentForms:'/patients/forms'
+    getConsentForms:'/patients/forms',
+    DeleteForm:'patients/forms/delete',
+    getFormDetail:'/patients/forms/details',
+    UpdateForm:'/patients/forms/update',
+    SendForm:'/patients/forms/send',
+    CompleteForm:'/patients/forms/complete'
     
 };
 

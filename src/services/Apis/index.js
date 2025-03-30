@@ -6,6 +6,10 @@ const ApiServices = {
         const data = await post(routes.CreatePlace, obj);
         return data;
     },
+    CompleteForm: async (obj) => {
+        const data = await post(routes.CompleteForm, obj);
+        return data;
+    },
     CreateStaff: async (obj) => {
         const data = await post(routes.CreateStaff, obj);
         return data;
@@ -24,6 +28,10 @@ const ApiServices = {
     },
     CreateDoctor: async (obj) => {
         const data = await post(routes.CreateDoctor, obj);
+        return data;
+    },
+    SendForm: async (obj) => {
+        const data = await post(routes.SendForm, obj);
         return data;
     },
     CreateBlog: async (obj) => {
@@ -110,6 +118,10 @@ const ApiServices = {
         const data = await deleted(routes.DeletePost, obj);
         return data;
     },
+    DeleteForm: async (obj) => {
+        const data = await deleted(routes.DeleteForm, obj);
+        return data;
+    },
     DeleteAfterCareDoc: async (obj) => {
         const data = await deleted(routes.DeleteAfterCareDoc, obj);
         return data;
@@ -120,6 +132,10 @@ const ApiServices = {
     },
     UpdateEvent: async (obj) => {
         const data = await patch(routes.UpdateEvent, obj);
+        return data;
+    },
+    UpdateForm: async (obj) => {
+        const data = await patch(routes.UpdateForm, obj);
         return data;
     },
     UpdateProfile: async (obj) => {
@@ -196,6 +212,10 @@ const ApiServices = {
     },
     getAppointmentDetail: async (obj) => {
         const data = await get(routes.getAppointmentDetail, obj);
+        return data;
+    },
+    getFormDetail: async (obj) => {
+        const data = await get(routes.getFormDetail, obj);
         return data;
     },
     getAfterCareDocumentDetail: async (obj) => {

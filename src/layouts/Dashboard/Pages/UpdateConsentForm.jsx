@@ -4,7 +4,7 @@ import { PrimaryButton } from "../../../components/buttons";
 import { Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import InputField from "../../../components/input";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { showErrorToast, showPromiseToast, showSuccessToast } from "../../../components/Toaster";
 import UploadIcon from "@mui/icons-material/Upload";
@@ -21,9 +21,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from "dayjs";
+import { id } from "date-fns/locale";
 
 
-const CreateConsentForm = () => {
+const UpdateConsentForm = () => {
+    const { id } = useParams()
     const navigate = useNavigate()
     const [userData, setUserData] = useState(null)
     const { register, control, handleSubmit, setValue, getValues, formState: { errors }, reset, watch } = useForm({
@@ -86,7 +88,7 @@ const CreateConsentForm = () => {
         }
     };
     const [title, setTitle] = useState(null)
-
+    const [formData, setFormData] = useState(null)
     const [step, setStep] = useState(1); // 1: OTP, 2: Reset Password
     const [otp, setOtp] = useState("");
     const [otpError, setOtpError] = useState(false);
@@ -246,11 +248,14 @@ const CreateConsentForm = () => {
 
         }
     };
-    const CreateConsentForm = async () => {
+    const UpdateConsentForm = async (formData) => {
+        console.log(formData);
+
         setLoader(true);
         try {
             let obj = {
-                patient_id: patientType == 'existing' ?  selectedPatient?.id : null,
+                _id: id,
+                patient_id: patientType == 'existing' ? selectedPatient?.id : null,
                 form_id: null,
                 aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
                 treatment_date: getValues('treatmentDate'),
@@ -287,16 +292,17 @@ const CreateConsentForm = () => {
                 batch_images: uploadedImages,
                 before_images: beforeImages,
                 after_images: afterImages,
-                further_treatment: furtherFields,
-                treatment_record: fields,
+                further_treatment: formData?.furtherFields,
+                treatment_record: formData?.records,
                 extra_notes: getValues('extranotes'),
                 permission_marketing: permissions?.marketing,
                 offers: permissions?.offers,
 
 
             };
+            console.log(obj);
 
-            const promise = ApiServices.CreateForm(obj);
+            const promise = ApiServices.UpdateForm(obj);
 
             // Handle the API response properly
             const response = await promise;
@@ -309,7 +315,7 @@ const CreateConsentForm = () => {
                 "Something Went Wrong"
             );
 
-            // Navigate if response is successful
+           
             if (response?.responseCode === 200) {
                 console.log(response);
                 setImageURL(null)
@@ -326,6 +332,7 @@ const CreateConsentForm = () => {
             setLoader(false);
         }
     };
+    console.log(watch());
 
     const SendOtp = async (val) => {
         if (val != 'resend') {
@@ -642,6 +649,95 @@ const CreateConsentForm = () => {
             }
         });
     }, []);
+    const getData = async () => {
+        try {
+            let params = {
+                id: id,
+
+            };
+
+            const data = await ApiServices.getFormDetail(params);
+            let form = data?.data?.form
+            setValue('treatmentDate', dayjs(form?.treatment_date))
+            setValue('consultationDate', dayjs(form?.consultation_date))
+            setPermissions({
+                marketing: form?.permission_marketing ? 'yes' : 'no',
+                offers: form?.offers ? 'yes' : 'no',
+            })
+            setFormData(form)
+            setValue("media", { shouldValidate: true });
+            setValue("media2", { shouldValidate: true });
+            setValue("media3", { shouldValidate: true });
+            setSignature(form?.treatment_plan?.patient_sign)
+            setValue('patientDate', dayjs(form?.treatment_plan?.date))
+            setValue('patientConcerns', form?.treatment_plan?.patient_concerns)
+            setValue('patientGoal', form?.treatment_plan?.patient_goals)
+            setValue('advisedPlan', form?.treatment_plan?.advised_plan)
+            setValue('expectedResult', form?.treatment_plan?.expected_result)
+            let recordData = form?.treatment_record?.map((doc) => ({
+                ...doc,
+
+                date: dayjs(doc?.date)
+            }))
+            let furtherData = form?.further_treatment?.map((doc) => ({
+                ...doc,
+
+                date: dayjs(doc?.date)
+            }))
+            setValue("records", recordData);
+            setValue("furtherFields", furtherData);
+            setValue("extranotes", form?.extra_notes);
+            setUploadedImages(form?.batch_images)
+            setBeforeImages(form?.before_images)
+            setAfterImages(form?.after_images)
+
+        } catch (error) {
+            console.error("Error fetching location:", error);
+        }
+    };
+    console.log(permissions);
+
+    useEffect(() => {
+        getData()
+    }, [])
+    useEffect(() => {
+        let value = patients?.find(item => item?._id == formData?.patient_id)
+        setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))
+        setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))
+
+        setValue('fname', value?.first_name || "");
+        setValue('lname', value?.last_name || "");
+        setValue('email', value?.email || "");
+        setValue('post', value?.post_code || "");
+        setValue('phone', value?.phone || "");
+        setValue('address', value?.address || "");
+        setValue('notes', value?.notes || "");
+        setValue('name', value?.kin_details?.name || "");
+        setValue('kinemail', value?.kin_details?.email || "");
+        setValue('kinphone', value?.kin_details?.phone || "");
+        setValue('kinaddress', value?.kin_details?.address || "");
+        setValue('genname', value?.general_practitioner?.name || "");
+        setValue('genemail', value?.general_practitioner?.email || "");
+        setValue('genphone', value?.general_practitioner?.phone || "");
+        setValue('genaddress', value?.general_practitioner?.address || "");
+        console.log("Raw DOB:", value?.dob);
+
+        if (value?.dob) {
+            // Convert to Dayjs format
+            const parsedDate = dayjs(value.dob);
+
+            // Check if the conversion is valid
+            if (!parsedDate.isValid()) {
+                console.error("Invalid DOB Format:", value.dob);
+                return;
+            }
+
+            console.log("Parsed Date:", parsedDate);
+            setValue("selectedDate", parsedDate);
+        }
+
+    }, [patients, documents])
+
 
     return (
         <div>
@@ -650,9 +746,9 @@ const CreateConsentForm = () => {
 
 
 
-                <Box component={'form'} p={3} sx={{ borderRadius: '12px' }} onSubmit={handleSubmit(CreateConsentForm)} >
+                <Box component={'form'} p={3} sx={{ borderRadius: '12px' }} onSubmit={handleSubmit(UpdateConsentForm)} >
                     <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                    Medical History Form
+                        Medical History Form
                     </Typography>
 
                     <Grid container mt={4} spacing={2}>
@@ -833,12 +929,13 @@ const CreateConsentForm = () => {
                                         size={'small'}
                                         newLabel={'Select Patient'}
                                         fullWidth={true}
+                                        disabled={true}
                                         options={patients}
                                         selected={selectedPatient}
                                         onSelect={(value) => {
                                             setSelectedPatient(value);
                                             console.log("Selected Patient:", value);
-                                    
+
                                             setValue('fname', value?.first_name || "");
                                             setValue('lname', value?.last_name || "");
                                             setValue('email', value?.email || "");
@@ -855,17 +952,17 @@ const CreateConsentForm = () => {
                                             setValue('genphone', value?.general_practitioner?.phone || "");
                                             setValue('genaddress', value?.general_practitioner?.address || "");
                                             console.log("Raw DOB:", value?.dob);
-                                    
+
                                             if (value?.dob) {
                                                 // Convert to Dayjs format
                                                 const parsedDate = dayjs(value.dob);
-                                    
+
                                                 // Check if the conversion is valid
                                                 if (!parsedDate.isValid()) {
                                                     console.error("Invalid DOB Format:", value.dob);
                                                     return;
                                                 }
-                                    
+
                                                 console.log("Parsed Date:", parsedDate);
                                                 setValue("selectedDate", parsedDate);
                                             }
@@ -1338,8 +1435,6 @@ const CreateConsentForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        {console.log(watch('records'))
-                        }
                         <Typography variant="h5" p={2} fontWeight={'bold'}>Treatment Record Section</Typography>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -1964,7 +2059,7 @@ const CreateConsentForm = () => {
                         /></Grid>
                     </Grid>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', mt: 2 }}>
-                        <PrimaryButton loader={loader} disabled={loader} type={'submit'} title={"Create"} />
+                        <PrimaryButton loader={loader} disabled={loader} type={'submit'} title={"Update"} />
                     </Box>
                 </Box>
             </Paper>
@@ -1972,4 +2067,4 @@ const CreateConsentForm = () => {
     )
 }
 
-export default CreateConsentForm
+export default UpdateConsentForm

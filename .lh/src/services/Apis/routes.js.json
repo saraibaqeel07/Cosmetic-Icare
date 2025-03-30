@@ -1,0 +1,38 @@
+{
+    "sourceFile": "src/services/Apis/routes.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1743280369279,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1743280394657,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -70,9 +70,9 @@\n     getAfterCareDocumentDetail:'/system/documents/details',\r\n     UpdateAfterCareDocument:'/system/documents/update',\r\n     CreateForm:'/patients/forms/add',\r\n     getConsentForms:'/patients/forms',\r\n-    DeleteForm:'/patients/delete'\r\n+    DeleteForm:'patients/forms/delete'\r\n     \r\n };\r\n \r\n export default routes\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1743280787029,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -70,9 +70,10 @@\n     getAfterCareDocumentDetail:'/system/documents/details',\r\n     UpdateAfterCareDocument:'/system/documents/update',\r\n     CreateForm:'/patients/forms/add',\r\n     getConsentForms:'/patients/forms',\r\n-    DeleteForm:'patients/forms/delete'\r\n+    DeleteForm:'patients/forms/delete',\r\n+    getFormDetail:'/patients/forms/details'\r\n     \r\n };\r\n \r\n export default routes\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1743282698851,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -71,9 +71,10 @@\n     UpdateAfterCareDocument:'/system/documents/update',\r\n     CreateForm:'/patients/forms/add',\r\n     getConsentForms:'/patients/forms',\r\n     DeleteForm:'patients/forms/delete',\r\n-    getFormDetail:'/patients/forms/details'\r\n+    getFormDetail:'/patients/forms/details',\r\n+    UpdateForm:'/patients/forms/update'\r\n     \r\n };\r\n \r\n export default routes\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1743289454899,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,10 @@\n     CreateForm:'/patients/forms/add',\r\n     getConsentForms:'/patients/forms',\r\n     DeleteForm:'patients/forms/delete',\r\n     getFormDetail:'/patients/forms/details',\r\n-    UpdateForm:'/patients/forms/update'\r\n+    UpdateForm:'/patients/forms/update',\r\n+    SendForm:'/patients/forms/send'\r\n     \r\n };\r\n \r\n export default routes\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1743299072416,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -73,9 +73,10 @@\n     getConsentForms:'/patients/forms',\r\n     DeleteForm:'patients/forms/delete',\r\n     getFormDetail:'/patients/forms/details',\r\n     UpdateForm:'/patients/forms/update',\r\n-    SendForm:'/patients/forms/send'\r\n+    SendForm:'/patients/forms/send',\r\n+    CompleteForm:'/patients/forms/complete'\r\n     \r\n };\r\n \r\n export default routes\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1743280369279,
+            "name": "Commit-0",
+            "content": "const routes = {\r\n    geoLocation: 'system/google/autocomplete',\r\n    getLocationDetail: 'system/google/placeDetails',\r\n    CreatePlace: '/system/places/create',\r\n    SendOtp: 'users/changePassword',\r\n    Login:'/auth/login',\r\n    getPlaces:'/system/places',\r\n    UpdatePlace:'/system/places/update',\r\n    getProfile:'/auth/profile',\r\n    DeletePlace:'/system/places/delete',\r\n    getDoctors:\"/system/doctors\",\r\n    DeleteDoctor:'/system/doctors/delete',\r\n    GetSpecialty:'/system/doctors/specialties',\r\n    CreateDoctor:'/system/doctors/create',\r\n    UpdateDoctor:'/system/doctors/update',\r\n    getJobs:'/system/jobs',\r\n    DeleteJob:'/system/jobs/delete',\r\n    CreateJob:'/system/jobs/create',\r\n    getFaqs:'/system/faqs',\r\n    DeleteFaq:\"/system/faqs/delete\",\r\n    CreateFaq:'/system/faqs/create',\r\n    UpdateProfile:'/auth/updateProfile',\r\n    UpdateJob:'/system/jobs/update',\r\n    getEvents:'/system/events',\r\n    uploadDocuments:'/system/upload',\r\n    CreateEvent:'/system/events/create',\r\n    DeleteEvent:'/system/events/delete',\r\n    UpdateEvent:'/system/events/update',\r\n    UpdateSettings:'/system/settings/update',\r\n    getSettings:'/system/settings',\r\n    AddBlockSlots:'/appointments/block',\r\n    getBlockSlots:'/appointments/blockedSlots',\r\n    DeleteBlockSlot:'/appointments/blockedSlots/delete',\r\n    getUsers:'/users',\r\n    getUserDetail:'/users/profile',\r\n    getQuestions:'/appointments/questions',\r\n    DeleteQuestion:'/appointments/questions/delete',\r\n    CreateQuestion:\"/appointments/questions/add\",\r\n    getCalendar:'/appointments/calendar',\r\n    getAppointments:'/appointments/byDate',\r\n    getAppointmentsByUser:'/appointments/byUser',\r\n    SendNotifications:'/notifications/send',\r\n    getStats:'system/stats',\r\n    getAppointmentDetail:'appointments/details',\r\n    getTopics:'/community/topics',\r\n    DeleteTopic:\"/community/topics/delete\",\r\n    CreateTopic:'/community/topics/add',\r\n    UpdateTopic:'/community/topics/update',\r\n    getPosts:'/community/posts',\r\n    DeletePost:'/community/posts/delete',\r\n    CreatePost:'/community/posts/add',\r\n    UpdatePost:'/community/posts/update',\r\n    getPostData:'/community/posts/details',\r\n    getBlogs:'/system/blogs/',\r\n    DeleteBlog:\"/system/blogs/delete\",\r\n    CreateBlog:'/system/blogs/create',\r\n    getBlogData:\"/system/blogs/details\",\r\n    UpdateBlog:'/system/blogs/update',\r\n    getStaffs:'/users',\r\n    UpdateStaff:'/auth/updateProfile',\r\n    CreateStaff:'/auth/register',\r\n    getPatients:'/patients',\r\n    DeletePatient:'/patients/delete',\r\n    CreatePatient:'/patients/add',\r\n    GetPatientDetails:'/patients/details',\r\n    UpdatePatient:'/patients/update',\r\n    CreateAfterDocument:'/system/documents/add',\r\n    getAfterCareDocuments:'/system/documents',\r\n    DeleteAfterCareDoc:'/system/documents/delete',\r\n    getAfterCareDocumentDetail:'/system/documents/details',\r\n    UpdateAfterCareDocument:'/system/documents/update',\r\n    CreateForm:'/patients/forms/add',\r\n    getConsentForms:'/patients/forms',\r\n    DeleteForm:'/patients/delete'\r\n    \r\n};\r\n\r\nexport default routes"
+        }
+    ]
+}
