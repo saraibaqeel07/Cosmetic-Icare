@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 114,
+            "activePatchIndex": 115,
             "patches": [
                 {
                     "date": 1743296172921,
@@ -464,6 +464,10 @@
                 {
                     "date": 1743364787349,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1685,14 +1685,14 @@\n                                     height: 150, border: \"1px dashed black\"}}>\r\n                                     </Box>}\r\n                                 {!consentSign && <Grid container spacing={1} mt={1}>\r\n                                     <Grid item>\r\n-                                        <Button variant=\"contained\" color=\"secondary\" onClick={handleClear2}>\r\n+                                        <Button variant=\"contained\" color=\"secondary\" onClick={handleClear2} sx={{textTransform:'capitalize'}}>\r\n                                             Clear Signature\r\n                                         </Button>\r\n                                     </Grid>\r\n                                     <Grid item>\r\n-                                        <Button variant=\"contained\" color=\"primary\" onClick={handleSave2}>\r\n+                                        <Button variant=\"contained\" color=\"primary\" onClick={handleSave2} sx={{textTransform:'capitalize'}}>\r\n                                             Save Signature\r\n                                         </Button>\r\n                                     </Grid>\r\n \r\n"
+                },
+                {
+                    "date": 1743582380977,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1542,9 +1542,9 @@\n                                                     fontSize: \"14px\",\r\n                                                     color: \"#333\",\r\n                                                     marginBottom: 1.5,\r\n                                                 }}>\r\n-                                                    Patient Date :*\r\n+                                                    Patient Date :* \r\n                                                 </InputLabel>\r\n                                                 <Controller\r\n                                                     disabled={true}\r\n                                                     name=\"patientDate\"\r\n@@ -2285,14 +2285,14 @@\n \r\n                                         </Box>\r\n                                         {!item?.sign  && <Grid container spacing={1} mt={1}>\r\n                                             <Grid item>\r\n-                                                <Button variant=\"contained\" color=\"secondary\" onClick={() => clearSignature(index)}>\r\n+                                                <Button variant=\"contained\" color=\"secondary\" onClick={() => clearSignature(index)} sx={{textTransform:'capitalize'}}>\r\n                                                     Clear Signature\r\n                                                 </Button>\r\n                                             </Grid>\r\n                                             <Grid item>\r\n-                                                <Button variant=\"contained\" color=\"primary\" onClick={() => updateSignature(index)}>\r\n+                                                <Button variant=\"contained\" color=\"primary\" onClick={() => updateSignature(index)} sx={{textTransform:'capitalize'}}>\r\n                                                     Save Signature\r\n                                                 </Button>\r\n                                             </Grid>\r\n \r\n"
                 }
             ],
             "date": 1743296172921,
