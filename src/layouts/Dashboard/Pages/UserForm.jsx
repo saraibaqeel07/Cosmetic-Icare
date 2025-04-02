@@ -29,6 +29,7 @@ const UserForm = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [userData, setUserData] = useState(null)
+    const [markingLoader, setMarkingLoader] = useState(false)
     const { register, control, handleSubmit, setValue, getValues, formState: { errors }, reset, watch } = useForm({
         defaultValues: {
             records: [{ date: "", amount: "", description: "" }], // Initial field (cannot be removed)
@@ -45,6 +46,64 @@ const UserForm = () => {
         name: "records",
     });
 
+       const sigMarkingRef = useRef(null);
+        const [savedImage, setSavedImage] = useState(null);
+    
+        const backgroundImage = Images.girl; // Replace with actual image URL
+    
+        useEffect(() => {
+            const canvas = sigMarkingRef.current.getCanvas();
+            const ctx = canvas.getContext("2d");
+            const img = new Image();
+            img.src = backgroundImage;
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+        }, []);
+    
+        const handleClearMarking = () => {
+            const canvas = sigMarkingRef.current.getCanvas();
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const img = new Image();
+            img.src = backgroundImage;
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+        };
+    
+        const handleSaveMarking = async () => {
+            setMarkingLoader(true)
+            if (sigMarkingRef.current) {
+                const canvas = await sigMarkingRef.current.getCanvas();
+                const finalImage = await canvas.toDataURL("image/png");
+                try {
+    
+    
+                    let obj = {
+                        document: finalImage,
+                        filename: moment().unix() + "_Mapping.png"
+                    }
+    
+                    const response = await axios.post(
+                        'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                        obj
+                    );
+    
+                    console.log(response?.data?.data?.path);
+    
+    
+                    setSavedImage('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+    
+    
+                } catch (error) {
+                    console.log(error);
+    
+                }
+                setSavedImage(finalImage);
+                setMarkingLoader(false)
+            }
+        };
 
     const signCanvasRefs = useRef([]);
 
@@ -290,7 +349,7 @@ const UserForm = () => {
     const UpdateConsentForm = async (formData) => {
         console.log(formData);
         console.log(consentSign?.includes("cosmetic") && signature?.includes("cosmetic") );
-        if (consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && formData?.furtherFields?.every(item => item?.sign?.includes("cosmetic"))) {
+        if (savedImage?.includes("cosmetic") && consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && formData?.furtherFields?.every(item => item?.sign?.includes("cosmetic"))) {
           
       
         try {
@@ -1359,6 +1418,50 @@ const UserForm = () => {
                             </Grid>
                         </Grid>
                         <Grid container p={1}>
+                                                    <Divider sx={{ mt: 4, width: '100%' }} />
+                                                </Grid>
+                                                <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                                                    Facial Mapping
+                                                </Typography>
+                                                <Grid container spacing={2} p={2}>
+                                                    <Grid item xs={6}>
+                                                        <Typography>Facial Marking:</Typography>
+                                                        <div style={{ position: "relative", width: 300, height: 150 }}>
+                                                            <SignatureCanvas
+                                                                ref={sigMarkingRef}
+                                                                penColor="red"
+                                                                canvasProps={{
+                                                                    width: 300,
+                                                                    height: 150,
+                                                                    className: "sigCanvas",
+                                                                    style: { border: "1px dashed black", background: `url(${Images.girl}) center/cover no-repeat` },
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <Grid container spacing={1} mt={1}>
+                                                            <Grid item>
+                                                                <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{ textTransform: 'capitalize' }}>
+                                                                    Clear Marking
+                                                                </Button>
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <Button variant="contained" color="primary" onClick={handleSaveMarking} sx={{ textTransform: 'capitalize' }}>
+                                                                    Save Marking
+                                                                </Button>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                    {markingLoader ? <Grid item display={'flex'} justifyContent={'flex-start'} alignItems={'center'} xs={6}>
+                                                        <CircularProgress size={50} />
+                                                    </Grid> : (
+                                                        <Grid item xs={6}>
+                                                            <Typography>Saved Image:</Typography>
+                                                            <img src={savedImage ? savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                                        </Grid>
+                                                    )}
+                        
+                                                </Grid>
+                        <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
                         <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
@@ -1501,12 +1604,12 @@ const UserForm = () => {
                                     </Box>}
                                 {!signature  && <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClear}>
+                                        <Button variant="contained" color="secondary" onClick={handleClear}  sx={{textTransform:'capitalize'}}>
                                             Clear Signature
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSave}>
+                                        <Button variant="contained" color="primary" onClick={handleSave} sx={{textTransform:'capitalize'}}>
                                             Save Signature
                                         </Button>
                                     </Grid>
@@ -1583,12 +1686,12 @@ const UserForm = () => {
                                     </Box>}
                                 {!consentSign && <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClear2}>
+                                        <Button variant="contained" color="secondary" onClick={handleClear2} sx={{textTransform:'capitalize'}}>
                                             Clear Signature
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSave2}>
+                                        <Button variant="contained" color="primary" onClick={handleSave2} sx={{textTransform:'capitalize'}}>
                                             Save Signature
                                         </Button>
                                     </Grid>
@@ -2183,12 +2286,12 @@ const UserForm = () => {
                                         </Box>
                                         {!item?.sign  && <Grid container spacing={1} mt={1}>
                                             <Grid item>
-                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)}>
+                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)} sx={{textTransform:'capitalize'}}>
                                                     Clear Signature
                                                 </Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)}>
+                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)} sx={{textTransform:'capitalize'}}>
                                                     Save Signature
                                                 </Button>
                                             </Grid>

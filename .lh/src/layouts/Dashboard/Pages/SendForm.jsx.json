@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 26,
+            "activePatchIndex": 27,
             "patches": [
                 {
                     "date": 1743288558031,
@@ -112,6 +112,10 @@
                 {
                     "date": 1743289346600,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -265,9 +265,9 @@\n \r\n             };\r\n             console.log(obj);\r\n \r\n-            const promise = ApiServices.UpdateForm(obj);\r\n+            const promise = ApiServices.SendForm(obj);\r\n \r\n             // Handle the API response properly\r\n             const response = await promise;\r\n             console.log(response);\r\n"
+                },
+                {
+                    "date": 1743361666434,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -667,8 +667,9 @@\n     useEffect(() => {\r\n         let value = patients?.find(item => item?._id == formData?.patient_id)\r\n         setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))\r\n         setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))\r\n+        setValue('document',documents?.find(item => item?._id == formData?.aftercare_document))\r\n \r\n         setValue('fname', value?.first_name || \"\");\r\n         setValue('lname', value?.last_name || \"\");\r\n         setValue('email', value?.email || \"\");\r\n"
                 }
             ],
             "date": 1743288558031,

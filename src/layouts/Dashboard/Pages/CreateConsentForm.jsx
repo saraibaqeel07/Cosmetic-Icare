@@ -21,10 +21,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from "dayjs";
-
+import { Images } from "../../../assets/images";
 
 const CreateConsentForm = () => {
     const navigate = useNavigate()
+    const [markingLoader, setMarkingLoader] = useState(false)
     const [userData, setUserData] = useState(null)
     const { register, control, handleSubmit, setValue, getValues, formState: { errors }, reset, watch } = useForm({
         defaultValues: {
@@ -42,7 +43,64 @@ const CreateConsentForm = () => {
         name: "records",
     });
 
+    const sigMarkingRef = useRef(null);
+    const [savedImage, setSavedImage] = useState(null);
 
+    const backgroundImage = Images.girl; // Replace with actual image URL
+
+    useEffect(() => {
+        const canvas = sigMarkingRef.current.getCanvas();
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+    }, []);
+
+    const handleClearMarking = () => {
+        const canvas = sigMarkingRef.current.getCanvas();
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+    };
+
+    const handleSaveMarking = async () => {
+        setMarkingLoader(true)
+        if (sigMarkingRef.current) {
+            const canvas = await sigMarkingRef.current.getCanvas();
+            const finalImage = await canvas.toDataURL("image/png");
+            try {
+
+
+                let obj = {
+                    document: finalImage,
+                    filename: moment().unix() + "_Mapping.png"
+                }
+
+                const response = await axios.post(
+                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                    obj
+                );
+
+                console.log(response?.data?.data?.path);
+
+
+                setSavedImage('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+
+
+            } catch (error) {
+                console.log(error);
+
+            }
+            setSavedImage(finalImage);
+            setMarkingLoader(false)
+        }
+    };
     const signCanvasRefs = useRef([]);
 
     // Clear Signature Function
@@ -113,6 +171,8 @@ const CreateConsentForm = () => {
     const [imageLoaderBefore, setImageLoaderBefore] = useState(false)
     const [afterImages, setAfterImages] = useState([])
     const [imageLoaderAfter, setImageLoaderAfter] = useState(false)
+    const [selectedForm, setSelectedForm] = useState(null)
+    const [forms, setForms] = useState([])
 
     // Handle Save Signature
     const handleSave = async () => {
@@ -250,8 +310,8 @@ const CreateConsentForm = () => {
         setLoader(true);
         try {
             let obj = {
-                patient_id: patientType == 'existing' ?  selectedPatient?.id : null,
-                form_id: null,
+                patient_id: patientType == 'existing' ? selectedPatient?.id : null,
+                form_id: selectedForm?.id,
                 aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
                 treatment_date: getValues('treatmentDate'),
                 consultation_date: getValues('consultationDate'),
@@ -292,6 +352,7 @@ const CreateConsentForm = () => {
                 extra_notes: getValues('extranotes'),
                 permission_marketing: permissions?.marketing,
                 offers: permissions?.offers,
+                facial_mapping:savedImage
 
 
             };
@@ -625,7 +686,31 @@ const CreateConsentForm = () => {
             console.error("Error fetching location:", error);
         }
     };
+    const getForms = async () => {
+        try {
+            let params = {
+                page: 1,
+                limit: 999
+            };
+
+            const data = await ApiServices.getConsentForms(params);
+
+
+
+            setForms(
+                data?.data?.forms?.map((doc) => ({
+                    ...doc,
+                    id: doc?._id, // Example transformation
+                    name:  doc?.first_name + ' ' + doc?.last_name, // Another example
+                }))
+            );
+
+        } catch (error) {
+            console.error("Error fetching location:", error);
+        }
+    };
     useEffect(() => {
+        getForms()
         getPatients()
         getDocuments()
     }, [])
@@ -652,7 +737,7 @@ const CreateConsentForm = () => {
 
                 <Box component={'form'} p={3} sx={{ borderRadius: '12px' }} onSubmit={handleSubmit(CreateConsentForm)} >
                     <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                    Medical History Form
+                        Medical History Form
                     </Typography>
 
                     <Grid container mt={4} spacing={2}>
@@ -673,15 +758,15 @@ const CreateConsentForm = () => {
                                 size={'small'}
                                 newLabel={'Select Form'}
                                 fullWidth={true}
-                                options={[]}
-                                selected={title}
+                                options={forms}
+                                selected={selectedForm}
                                 onSelect={(value) => {
-                                    setTitle(value)
+                                    setSelectedForm(value)
 
 
                                 }}
-                                error={errors?.title?.message}
-                                register={register("title", {
+                                error={errors?.form?.message}
+                                register={register("form", {
                                     required: false,
                                 })}
                             />
@@ -838,7 +923,7 @@ const CreateConsentForm = () => {
                                         onSelect={(value) => {
                                             setSelectedPatient(value);
                                             console.log("Selected Patient:", value);
-                                    
+
                                             setValue('fname', value?.first_name || "");
                                             setValue('lname', value?.last_name || "");
                                             setValue('email', value?.email || "");
@@ -855,17 +940,17 @@ const CreateConsentForm = () => {
                                             setValue('genphone', value?.general_practitioner?.phone || "");
                                             setValue('genaddress', value?.general_practitioner?.address || "");
                                             console.log("Raw DOB:", value?.dob);
-                                    
+
                                             if (value?.dob) {
                                                 // Convert to Dayjs format
                                                 const parsedDate = dayjs(value.dob);
-                                    
+
                                                 // Check if the conversion is valid
                                                 if (!parsedDate.isValid()) {
                                                     console.error("Invalid DOB Format:", value.dob);
                                                     return;
                                                 }
-                                    
+
                                                 console.log("Parsed Date:", parsedDate);
                                                 setValue("selectedDate", parsedDate);
                                             }
@@ -1188,6 +1273,50 @@ const CreateConsentForm = () => {
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
                         <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                            Facial Mapping
+                        </Typography>
+                        <Grid container spacing={2} p={2}>
+                            <Grid item xs={6}>
+                                <Typography>Facial Marking:</Typography>
+                                <div style={{ position: "relative", width: 300, height: 150 }}>
+                                    <SignatureCanvas
+                                        ref={sigMarkingRef}
+                                        penColor="red"
+                                        canvasProps={{
+                                            width: 300,
+                                            height: 150,
+                                            className: "sigCanvas",
+                                            style: { border: "1px dashed black", background: `url(${Images.girl}) center/cover no-repeat` },
+                                        }}
+                                    />
+                                </div>
+                                <Grid container spacing={1} mt={1}>
+                                    <Grid item>
+                                        <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{textTransform:'capitalize'}}>
+                                            Clear Marking
+                                        </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button variant="contained" color="primary" onClick={handleSaveMarking}  sx={{textTransform:'capitalize'}}>
+                                            Save Marking
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            {markingLoader ? <Grid item display={'flex'} justifyContent={'flex-start'} alignItems={'center'} xs={6}>
+                                <CircularProgress size={50} />
+                            </Grid> : (
+                                <Grid item xs={6}>
+                                    <Typography>Saved Image:</Typography>
+                                    <img src={savedImage ? savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                </Grid>
+                            )}
+
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
                             Treatment plan section
                         </Typography>
 
@@ -1320,12 +1449,12 @@ const CreateConsentForm = () => {
                                 />
                                 <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClear}>
+                                        <Button variant="contained" color="secondary" onClick={handleClear}  sx={{textTransform:'capitalize'}}>
                                             Clear Signature
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSave}>
+                                        <Button variant="contained" color="primary" onClick={handleSave}  sx={{textTransform:'capitalize'}}>
                                             Save Signature
                                         </Button>
                                     </Grid>
@@ -1916,12 +2045,12 @@ const CreateConsentForm = () => {
                                         </Box>
                                         <Grid container spacing={1} mt={1}>
                                             <Grid item>
-                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)}>
+                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)}  sx={{textTransform:'capitalize'}}>
                                                     Clear Signature
                                                 </Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)}>
+                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)}  sx={{textTransform:'capitalize'}}>
                                                     Save Signature
                                                 </Button>
                                             </Grid>
@@ -1942,7 +2071,7 @@ const CreateConsentForm = () => {
                         </LocalizationProvider>
 
                         <Grid p={2}>
-                            <Button variant="contained" color="secondary" onClick={() => appendFurther({ date: null, sign: "" })} sx={{ mt: 2 }}>
+                            <Button variant="contained" color="secondary" onClick={() => appendFurther({ date: null, sign: "" })} sx={{ mt: 2 ,textTransform:'capitalize'}}>
                                 Add More Further Records
                             </Button>
                         </Grid>

@@ -22,9 +22,10 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from "dayjs";
 import { id } from "date-fns/locale";
-
+import { Images } from "../../../assets/images";
 
 const UpdateConsentForm = () => {
+    const [markingLoader, setMarkingLoader] = useState(false)
     const { id } = useParams()
     const navigate = useNavigate()
     const [userData, setUserData] = useState(null)
@@ -115,7 +116,66 @@ const UpdateConsentForm = () => {
     const [imageLoaderBefore, setImageLoaderBefore] = useState(false)
     const [afterImages, setAfterImages] = useState([])
     const [imageLoaderAfter, setImageLoaderAfter] = useState(false)
+    const sigMarkingRef = useRef(null);
+    const [savedImage, setSavedImage] = useState(null);
+    const [selectedForm, setSelectedForm] = useState(null)
+    const [forms, setForms] = useState([])
 
+    const backgroundImage = Images.girl; // Replace with actual image URL
+
+    useEffect(() => {
+        const canvas = sigMarkingRef.current.getCanvas();
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+    }, []);
+
+    const handleClearMarking = () => {
+        const canvas = sigMarkingRef.current.getCanvas();
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+    };
+
+    const handleSaveMarking = async () => {
+        setMarkingLoader(true)
+        if (sigMarkingRef.current) {
+            const canvas = await sigMarkingRef.current.getCanvas();
+            const finalImage = await canvas.toDataURL("image/png");
+            try {
+
+
+                let obj = {
+                    document: finalImage,
+                    filename: moment().unix() + "_Mapping.png"
+                }
+
+                const response = await axios.post(
+                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                    obj
+                );
+
+                console.log(response?.data?.data?.path);
+
+
+                setSavedImage('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+
+
+            } catch (error) {
+                console.log(error);
+
+            }
+            setSavedImage(finalImage);
+            setMarkingLoader(false)
+        }
+    };
     // Handle Save Signature
     const handleSave = async () => {
         if (sigCanvas.current) {
@@ -315,7 +375,7 @@ const UpdateConsentForm = () => {
                 "Something Went Wrong"
             );
 
-           
+
             if (response?.responseCode === 200) {
                 console.log(response);
                 setImageURL(null)
@@ -632,7 +692,31 @@ const UpdateConsentForm = () => {
             console.error("Error fetching location:", error);
         }
     };
+    const getForms = async () => {
+        try {
+            let params = {
+                page: 1,
+                limit: 999
+            };
+
+            const data = await ApiServices.getConsentForms(params);
+
+
+
+            setForms(
+                data?.data?.forms?.map((doc) => ({
+                    ...doc,
+                    id: doc?._id, // Example transformation
+                    name:  doc?.first_name + ' ' + doc?.last_name, // Another example
+                }))
+            );
+
+        } catch (error) {
+            console.error("Error fetching location:", error);
+        }
+    };
     useEffect(() => {
+        getForms()
         getPatients()
         getDocuments()
     }, [])
@@ -674,6 +758,7 @@ const UpdateConsentForm = () => {
             setValue('patientGoal', form?.treatment_plan?.patient_goals)
             setValue('advisedPlan', form?.treatment_plan?.advised_plan)
             setValue('expectedResult', form?.treatment_plan?.expected_result)
+            setSavedImage(form?.facial_mapping)
             let recordData = form?.treatment_record?.map((doc) => ({
                 ...doc,
 
@@ -703,6 +788,7 @@ const UpdateConsentForm = () => {
     useEffect(() => {
         let value = patients?.find(item => item?._id == formData?.patient_id)
         setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))
+        setSelectedForm(forms?.find(item => item?._id == formData?.form_id))
         setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))
 
         setValue('fname', value?.first_name || "");
@@ -736,7 +822,7 @@ const UpdateConsentForm = () => {
             setValue("selectedDate", parsedDate);
         }
 
-    }, [patients, documents])
+    }, [patients, documents,forms])
 
 
     return (
@@ -769,15 +855,15 @@ const UpdateConsentForm = () => {
                                 size={'small'}
                                 newLabel={'Select Form'}
                                 fullWidth={true}
-                                options={[]}
-                                selected={title}
+                                options={forms}
+                                selected={selectedForm}
                                 onSelect={(value) => {
-                                    setTitle(value)
+                                    setSelectedForm(value)
 
 
                                 }}
-                                error={errors?.title?.message}
-                                register={register("title", {
+                                error={errors?.form?.message}
+                                register={register("form", {
                                     required: false,
                                 })}
                             />
@@ -1253,6 +1339,50 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                            Facial Mapping
+                        </Typography>
+                        <Grid container spacing={2} p={2}>
+                            <Grid item xs={6}>
+                                <Typography>Facial Marking:</Typography>
+                                <div style={{ position: "relative", width: 300, height: 150 }}>
+                                    <SignatureCanvas
+                                        ref={sigMarkingRef}
+                                        penColor="red"
+                                        canvasProps={{
+                                            width: 300,
+                                            height: 150,
+                                            className: "sigCanvas",
+                                            style: { border: "1px dashed black", background: `url(${Images.girl}) center/cover no-repeat` },
+                                        }}
+                                    />
+                                </div>
+                                <Grid container spacing={1} mt={1}>
+                                    <Grid item>
+                                        <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{ textTransform: 'capitalize' }}>
+                                            Clear Marking
+                                        </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button variant="contained" color="primary" onClick={handleSaveMarking} sx={{ textTransform: 'capitalize' }}>
+                                            Save Marking
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            {markingLoader ? <Grid item display={'flex'} justifyContent={'flex-start'} alignItems={'center'} xs={6}>
+                                <CircularProgress size={50} />
+                            </Grid> : (
+                                <Grid item xs={6}>
+                                    <Typography>Saved Image:</Typography>
+                                    <img src={savedImage ? savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                </Grid>
+                            )}
+
+                        </Grid>
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>

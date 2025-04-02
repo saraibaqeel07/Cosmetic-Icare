@@ -668,6 +668,7 @@ const SendForm = () => {
         let value = patients?.find(item => item?._id == formData?.patient_id)
         setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))
         setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))
+        setValue('document',documents?.find(item => item?._id == formData?.aftercare_document))
 
         setValue('fname', value?.first_name || "");
         setValue('lname', value?.last_name || "");
