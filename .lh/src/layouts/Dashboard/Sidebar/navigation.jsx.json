@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1743295751151,
@@ -20,6 +20,10 @@
                 {
                     "date": 1743759811443,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,9 +43,8 @@\n     path: \"/staff\",\r\n     component: Staffs,\r\n     icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n-\r\n   {\r\n     name: \"Patients\",\r\n     path: \"/patients\",\r\n     component: \"\",\r\n@@ -62,37 +61,36 @@\n   {\r\n     name: \"Forms\",\r\n     path: \"\",\r\n     component: \"\",\r\n-    icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n+    icon: <DescriptionIcon sx={{ fontSize: \"22px\" }} />, // Generic form-related icon\r\n     child: [\r\n       {\r\n         name: \"Create Consent Form\",\r\n         path: \"/create-consent-form\",\r\n         component: CreateForm,\r\n-        icon:<ReceiptIcon sx={{fontSize:'22px'}} />\r\n+        icon: <AssignmentIcon sx={{ fontSize: \"22px\" }} />, // Form creation icon\r\n       },\r\n-        {\r\n-          name: \"Consent Forms\",\r\n-          path: \"/consent-forms\",\r\n-          component: ConsentForms,\r\n-          icon:<ReceiptIcon sx={{fontSize:'22px'}} />\r\n-        },\r\n-          {\r\n-            name: \"Completed Forms\",\r\n-            path: \"/completed-forms\",\r\n-            component: CompletedForms,\r\n-            icon:<ReceiptIcon sx={{fontSize:'22px'}} />\r\n-          },\r\n+      {\r\n+        name: \"Consent Forms\",\r\n+        path: \"/consent-forms\",\r\n+        component: ConsentForms,\r\n+        icon: <FormatListBulletedIcon sx={{ fontSize: \"22px\" }} />, // List icon for forms\r\n+      },\r\n+      {\r\n+        name: \"Completed Forms\",\r\n+        path: \"/completed-forms\",\r\n+        component: CompletedForms,\r\n+        icon: <AssignmentTurnedInIcon sx={{ fontSize: \"22px\" }} />, // Completed forms icon\r\n+      },\r\n     ],\r\n   },\r\n   {\r\n     name: \"Aftercare Documents\",\r\n     path: \"/aftercare-documents\",\r\n     component: AfterCareDocuments,\r\n-    icon: <ArticleIcon sx={{ fontSize: \"22px\" }} />,\r\n+    icon: <ArticleIcon sx={{ fontSize: \"22px\" }} />, // Document-related icon\r\n   },\r\n-]\r\n+];\r\n \r\n+export default Navigation;\r\n \r\n-export default Navigation\r\n-\r\n"
+                },
+                {
+                    "date": 1743760213390,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -91,6 +91,6 @@\n     icon: <ArticleIcon sx={{ fontSize: \"22px\" }} />, // Document-related icon\r\n   },\r\n ];\r\n \r\n-export default Navigation;\r\n+export default Navigation; \r\n \r\n"
                 }
             ],
             "date": 1743295751151,
