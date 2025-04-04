@@ -306,8 +306,10 @@ const CreateConsentForm = () => {
 
         }
     };
-    const CreateConsentForm = async () => {
+    const CreateConsentForm = async (fromData) => {
         setLoader(true);
+        console.log(fromData);
+        
         try {
             let obj = {
                 patient_id: patientType == 'existing' ? selectedPatient?.id : null,
@@ -347,15 +349,16 @@ const CreateConsentForm = () => {
                 batch_images: uploadedImages,
                 before_images: beforeImages,
                 after_images: afterImages,
-                further_treatment: furtherFields,
-                treatment_record: fields,
+                further_treatment: fromData?.furtherFields,
+                treatment_record: fromData?.records,
                 extra_notes: getValues('extranotes'),
                 permission_marketing: permissions?.marketing,
                 offers: permissions?.offers,
-                facial_mapping:savedImage
+                facial_mapping: savedImage
 
 
             };
+            console.log(obj);
 
             const promise = ApiServices.CreateForm(obj);
 
@@ -701,7 +704,7 @@ const CreateConsentForm = () => {
                 data?.data?.forms?.map((doc) => ({
                     ...doc,
                     id: doc?._id, // Example transformation
-                    name:  doc?.first_name + ' ' + doc?.last_name, // Another example
+                    name: doc?.first_name + ' ' + doc?.last_name, // Another example
                 }))
             );
 
@@ -1292,12 +1295,12 @@ const CreateConsentForm = () => {
                                 </div>
                                 <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{ textTransform: 'capitalize' }}>
                                             Clear Marking
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSaveMarking}  sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="primary" onClick={handleSaveMarking} sx={{ textTransform: 'capitalize' }}>
                                             Save Marking
                                         </Button>
                                     </Grid>
@@ -1449,12 +1452,12 @@ const CreateConsentForm = () => {
                                 />
                                 <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClear}  sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="secondary" onClick={handleClear} sx={{ textTransform: 'capitalize' }}>
                                             Clear Signature
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSave}  sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="primary" onClick={handleSave} sx={{ textTransform: 'capitalize' }}>
                                             Save Signature
                                         </Button>
                                     </Grid>
@@ -2045,12 +2048,12 @@ const CreateConsentForm = () => {
                                         </Box>
                                         <Grid container spacing={1} mt={1}>
                                             <Grid item>
-                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)}  sx={{textTransform:'capitalize'}}>
+                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)} sx={{ textTransform: 'capitalize' }}>
                                                     Clear Signature
                                                 </Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)}  sx={{textTransform:'capitalize'}}>
+                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)} sx={{ textTransform: 'capitalize' }}>
                                                     Save Signature
                                                 </Button>
                                             </Grid>
@@ -2071,7 +2074,7 @@ const CreateConsentForm = () => {
                         </LocalizationProvider>
 
                         <Grid p={2}>
-                            <Button variant="contained" color="secondary" onClick={() => appendFurther({ date: null, sign: "" })} sx={{ mt: 2 ,textTransform:'capitalize'}}>
+                            <Button variant="contained" color="secondary" onClick={() => appendFurther({ date: null, sign: "" })} sx={{ mt: 2, textTransform: 'capitalize' }}>
                                 Add More Further Records
                             </Button>
                         </Grid>

@@ -1,6 +1,6 @@
 import { Box, Chip, IconButton, Paper, Typography } from "@mui/material"
 import DataTable from "../../../components/DataTable"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import NorthEastIcon from '@mui/icons-material/NorthEast';
 import { PrimaryButton } from "../../../components/buttons";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +17,14 @@ import InputField from "../../../components/input";
 import { useForm } from "react-hook-form";
 import SelectField from "../../../components/select";
 import SendIcon from '@mui/icons-material/Send';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import PatientPDF from "../../../components/pdf";
+import { handleExportWithComponent } from "../../../../.lh/src/utils";
 
 
 const CompletedForms = () => {
     const [active, setActive] = useState(false)
+    const pdfExportComponent = useRef(null)
     const navigate = useNavigate()
     const [status, setStatus] = useState(null)
     const [data, setData] = useState([])
@@ -42,7 +46,7 @@ const CompletedForms = () => {
             let params = {
                 page: 1,
                 limit: 999,
-                is_completed:true
+                is_completed: true
             };
 
             const data = await ApiServices.getConsentForms(params);
@@ -77,7 +81,7 @@ const CompletedForms = () => {
             cell: ({ row }) => (
 
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                   {row?.original?.first_name + " " + row?.original?.last_name}
+                    {row?.original?.first_name + " " + row?.original?.last_name}
                 </Box>
             ),
 
@@ -88,7 +92,7 @@ const CompletedForms = () => {
             cell: ({ row }) => (
 
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                   {moment(row?.original?.consultation_date).format('MM-DD-YYYY')}
+                    {moment(row?.original?.consultation_date).format('MM-DD-YYYY')}
                 </Box>
             ),
 
@@ -99,23 +103,25 @@ const CompletedForms = () => {
             cell: ({ row }) => (
 
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                   {moment(row?.original?.treatment_date).format('MM-DD-YYYY')}
+                    {moment(row?.original?.treatment_date).format('MM-DD-YYYY')}
                 </Box>
             ),
 
         },
-      
+
         {
             header: "Actions",
             cell: ({ row }) => (
 
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                  
+                    <IconButton onClick={() => getFormData(row?.original?._id)}>
+                        <PictureAsPdfIcon sx={{ fontSize: '16px' }} />
+                    </IconButton>
                     <IconButton onClick={() => navigate(`/update-consent-form/${row?.original?._id}`)}>
                         <DriveFileRenameOutlineIcon sx={{ fontSize: '16px' }} />
                     </IconButton>
 
-                  
+
                 </Box>
             ),
         },
@@ -184,6 +190,23 @@ const CompletedForms = () => {
         }
 
     };
+    const [pdfData, setPdfData] = useState(null)
+    const getFormData = async (id) => {
+        try {
+            let params = {
+                id: id,
+
+            };
+
+            const data = await ApiServices.getFormDetail(params);
+            let form = await data?.data?.form
+            setPdfData(form)
+
+        } catch (error) {
+            console.error("Error fetching location:", error);
+        }
+        
+    };
     useEffect(() => {
         getData()
 
@@ -191,6 +214,7 @@ const CompletedForms = () => {
 
     return (
         <div>
+            < PatientPDF ref={pdfExportComponent} form={pdfData} />
             <SimpleDialog
                 open={open}
                 onClose={() => setOpen(false)}
@@ -250,9 +274,9 @@ const CompletedForms = () => {
             <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff !important', borderRadius: '12px' }}>
                 <Box sx={{ p: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="h4" sx={{ mt: 4,mb:4, fontWeight: 600 }}>
-                    Consent Forms
-                </Typography>
+                        <Typography variant="h4" sx={{ mt: 4, mb: 4, fontWeight: 600 }}>
+                            Completed Forms
+                        </Typography>
                         <PrimaryButton onClick={() => navigate('/create-consent-form')} title={"Create"} />
                     </Box>
                     {<DataTable data={data} columns={columns} />}

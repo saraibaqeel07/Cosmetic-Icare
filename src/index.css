@@ -1,5 +1,4 @@
-
-#root{
+#root {
   font-family: "Outfit", serif !important;
   padding: 0 !important;
   width: 100% !important;
@@ -27,14 +26,19 @@
   -ms-border-radius: 20px;
   -o-border-radius: 20px;
 }
-body{
-  
-    font-family: "Outfit", serif !important;
-    
 
-  
+body {
+
+  font-family: "Outfit", serif !important;
+
+
+
 }
-body, html, #root, * {
+
+body,
+html,
+#root,
+* {
   font-family: "Outfit", sans-serif !important;
 
 }
@@ -46,6 +50,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -75,9 +80,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -88,13 +95,16 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
 }
+
 /* src/styles/Layout.css */
 .dashboard-container {
   display: flex;
@@ -135,7 +145,7 @@ button:focus-visible {
   font-size: 0.9em;
   min-width: 400px !important;
   height: 200px;
-  color:#191d31 !important;
+  color: #191d31 !important;
   /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
   border-radius: 5px 5px 0 0;
   overflow: hidden;
@@ -147,15 +157,18 @@ button:focus-visible {
   color: #ffffff;
   text-align: left;
 }
+
 th {
   border: 1px solid #eee !important;
   font-weight: bold !important;
   padding: 8px !important;
 }
+
 td {
   border: 1px solid #eee !important;
   padding: 8px !important;
 }
+
 /* .styled-table th,
 .styled-table td {
   padding: 5px 12px !important;
@@ -178,8 +191,8 @@ td {
   transition: background-color 0.3s ease;
 }
 
-.MuiTableSortLabel-icon{
-  color : #191d31 !important
+.MuiTableSortLabel-icon {
+  color: #191d31 !important
 }
 
 .otp-container {
@@ -214,7 +227,7 @@ td {
 
 }
 
-.MuiButton-root:focus{
+.MuiButton-root:focus {
   outline: none !important;
 }
 
@@ -230,63 +243,105 @@ td {
   0% {
     transform: rotate(0deg);
   }
+
   15% {
     transform: rotate(14deg);
   }
+
   30% {
     transform: rotate(-8deg);
   }
+
   40% {
     transform: rotate(14deg);
   }
+
   50% {
     transform: rotate(-4deg);
   }
+
   60% {
     transform: rotate(10deg);
   }
+
   70% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(0deg);
   }
 }
-.LightBox-Div{
+
+.LightBox-Div {
   display: flex !important;
   justify-content: space-between !important;
   width: 85%;
 }
+
 .MuiButtonBase-root.MuiIconButton-root:focus {
   outline: none;
 }
+
 .str-chat__channel-list {
   width: 30%;
 }
+
 .str-chat__channel {
   width: 100%;
 }
+
 .str-chat__thread {
   width: 45%;
 }
-.str-chat__message-list-scroll{
+
+.str-chat__message-list-scroll {
   height: calc(100vh - 250px) !important;
 }
-.test{
+
+.test {
   height: 100px;
 }
-.rs-calendar-table-cell-content{
+
+.rs-calendar-table-cell-content {
   width: 70px !important;
   height: 50px !important;
 }
-h1, h2, h3, h4, h5, h6 {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Plus Jakarta Sans", sans-serif !important;
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
 }
-th{
+
+th {
   background-color: #0052a8 !important;
-  border-radius: 10px !important;
+
   color: white !important;
+}
+
+kendo-pdf-document p {
+  font-size: 10px !important;
+}
+
+kendo-pdf-document h6 {
+  font-size: 15px !important;
+}
+
+kendo-pdf-document .kendoPaper {
+  margin-top: 100px !important;
+}
+
+kendo-pdf-document .kendoPaper2 {
+  padding-bottom: 120px !important;
+}
+
+kendo-pdf-document .pdfShow {
+  display: block !important;
 }

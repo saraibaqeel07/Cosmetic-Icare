@@ -1,22 +1,13 @@
 import { lazy } from "react"
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import GroupIcon from '@mui/icons-material/Group';
-import MapIcon from '@mui/icons-material/Map';
-import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
-import WorkIcon from '@mui/icons-material/Work';
-import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
-import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-import RateReviewIcon from '@mui/icons-material/RateReview';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import PeopleIcon from "@mui/icons-material/People"
-import PersonIcon from "@mui/icons-material/Person"
-import PersonOffIcon from "@mui/icons-material/PersonOff"
-import ArticleIcon from "@mui/icons-material/Article"
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import PersonIcon from "@mui/icons-material/Person";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+import DescriptionIcon from "@mui/icons-material/Description";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import ArticleIcon from "@mui/icons-material/Article";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 
 const Appointments = lazy(() => import("../Pages/Appoinments"))
@@ -53,7 +44,6 @@ const Navigation = [
     component: Staffs,
     icon: <PeopleIcon sx={{ fontSize: "22px" }} />,
   },
-
   {
     name: "Patients",
     path: "/patients",
@@ -72,36 +62,35 @@ const Navigation = [
     name: "Forms",
     path: "",
     component: "",
-    icon: <PersonIcon sx={{ fontSize: "22px" }} />,
+    icon: <DescriptionIcon sx={{ fontSize: "22px" }} />, // Generic form-related icon
     child: [
       {
         name: "Create Consent Form",
         path: "/create-consent-form",
         component: CreateForm,
-        icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+        icon: <AssignmentIcon sx={{ fontSize: "22px" }} />, // Form creation icon
       },
-        {
-          name: "Consent Forms",
-          path: "/consent-forms",
-          component: ConsentForms,
-          icon:<ReceiptIcon sx={{fontSize:'22px'}} />
-        },
-          {
-            name: "Completed Forms",
-            path: "/completed-forms",
-            component: CompletedForms,
-            icon:<ReceiptIcon sx={{fontSize:'22px'}} />
-          },
+      {
+        name: "Consent Forms",
+        path: "/consent-forms",
+        component: ConsentForms,
+        icon: <FormatListBulletedIcon sx={{ fontSize: "22px" }} />, // List icon for forms
+      },
+      {
+        name: "Completed Forms",
+        path: "/completed-forms",
+        component: CompletedForms,
+        icon: <AssignmentTurnedInIcon sx={{ fontSize: "22px" }} />, // Completed forms icon
+      },
     ],
   },
   {
     name: "Aftercare Documents",
     path: "/aftercare-documents",
     component: AfterCareDocuments,
-    icon: <ArticleIcon sx={{ fontSize: "22px" }} />,
+    icon: <ArticleIcon sx={{ fontSize: "22px" }} />, // Document-related icon
   },
-]
+];
 
-
-export default Navigation
+export default Navigation;
 

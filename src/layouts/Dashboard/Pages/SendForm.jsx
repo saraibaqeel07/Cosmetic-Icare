@@ -255,12 +255,12 @@ const SendForm = () => {
         try {
             let obj = {
                 _id: id,
-               
+
                 aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
-                first_name:getValues('fname'),
-                last_name:getValues('lname'),
-                email:getValues('email')
-               
+                first_name: getValues('fname'),
+                last_name: getValues('lname'),
+                email: getValues('email')
+
 
 
             };
@@ -279,7 +279,7 @@ const SendForm = () => {
                 "Something Went Wrong"
             );
 
-           
+
             if (response?.responseCode === 200) {
                 console.log(response);
                 setImageURL(null)
@@ -296,7 +296,7 @@ const SendForm = () => {
             setLoader(false);
         }
     };
-    console.log(watch());
+
 
     const SendOtp = async (val) => {
         if (val != 'resend') {
@@ -622,69 +622,29 @@ const SendForm = () => {
 
             const data = await ApiServices.getFormDetail(params);
             let form = data?.data?.form
-            setValue('treatmentDate', dayjs(form?.treatment_date))
-            setValue('consultationDate', dayjs(form?.consultation_date))
-            setPermissions({
-                marketing: form?.permission_marketing ? 'yes' : 'no',
-                offers: form?.offers ? 'yes' : 'no',
-            })
-            setFormData(form)
-            setValue("media", { shouldValidate: true });
-            setValue("media2", { shouldValidate: true });
-            setValue("media3", { shouldValidate: true });
-            setSignature(form?.treatment_plan?.patient_sign)
-            setValue('patientDate', dayjs(form?.treatment_plan?.date))
-            setValue('patientConcerns', form?.treatment_plan?.patient_concerns)
-            setValue('patientGoal', form?.treatment_plan?.patient_goals)
-            setValue('advisedPlan', form?.treatment_plan?.advised_plan)
-            setValue('expectedResult', form?.treatment_plan?.expected_result)
-            let recordData = form?.treatment_record?.map((doc) => ({
-                ...doc,
 
-                date: dayjs(doc?.date)
-            }))
-            let furtherData = form?.further_treatment?.map((doc) => ({
-                ...doc,
-
-                date: dayjs(doc?.date)
-            }))
-            setValue("records", recordData);
-            setValue("furtherFields", furtherData);
-            setValue("extranotes", form?.extra_notes);
-            setUploadedImages(form?.batch_images)
-            setBeforeImages(form?.before_images)
-            setAfterImages(form?.after_images)
+            setValue('fname', form?.first_name || "");
+            setValue('lname', form?.last_name || "");
+            setValue('email', form?.email || "");
 
         } catch (error) {
             console.error("Error fetching location:", error);
         }
     };
-    console.log(permissions);
+
 
     useEffect(() => {
         getData()
     }, [])
     useEffect(() => {
         let value = patients?.find(item => item?._id == formData?.patient_id)
-        setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))
-        setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))
-        setValue('document',documents?.find(item => item?._id == formData?.aftercare_document))
+        console.log(value);
 
-        setValue('fname', value?.first_name || "");
-        setValue('lname', value?.last_name || "");
-        setValue('email', value?.email || "");
-        setValue('post', value?.post_code || "");
-        setValue('phone', value?.phone || "");
-        setValue('address', value?.address || "");
-        setValue('notes', value?.notes || "");
-        setValue('name', value?.kin_details?.name || "");
-        setValue('kinemail', value?.kin_details?.email || "");
-        setValue('kinphone', value?.kin_details?.phone || "");
-        setValue('kinaddress', value?.kin_details?.address || "");
-        setValue('genname', value?.general_practitioner?.name || "");
-        setValue('genemail', value?.general_practitioner?.email || "");
-        setValue('genphone', value?.general_practitioner?.phone || "");
-        setValue('genaddress', value?.general_practitioner?.address || "");
+
+
+      
+
+
         console.log("Raw DOB:", value?.dob);
 
         if (value?.dob) {
@@ -713,16 +673,16 @@ const SendForm = () => {
 
                 <Box component={'form'} p={3} sx={{ borderRadius: '12px' }} onSubmit={handleSubmit(SendForm)} >
                     <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                        Medical History Form
+                        Send Form
                     </Typography>
 
                     <Grid container mt={4} spacing={2}>
 
 
-                       
-                       
+
+
                         <Grid container p={2} spacing={2} >
-                        <Grid item xs={3} mt={2}>
+                            {/* <Grid item xs={3} mt={2}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -830,7 +790,7 @@ const SendForm = () => {
                                         })}
                                     />
                                 </>}
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={3} mt={2}>
                                 {patientType == 'existing' && <><InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
@@ -844,7 +804,7 @@ const SendForm = () => {
                                 </InputLabel>
                                     <SelectField
                                         size={'small'}
-                                     
+
                                         newLabel={'Select Document'}
                                         fullWidth={true}
                                         options={documents}
@@ -862,7 +822,7 @@ const SendForm = () => {
                             </Grid>
                         </Grid>
                         <Grid item xs={3} mt={2}><InputField
-                        disabled={true}
+                            disabled={true}
                             label={"Patient First Name :*"}
                             size={'small'}
                             placeholder={"Patient First Name"}
@@ -874,7 +834,7 @@ const SendForm = () => {
                             })}
                         /></Grid>
                         <Grid item xs={3} mt={2}><InputField
-                          disabled={true}
+                            disabled={true}
                             label={"Patient Last Name :*"}
                             size={'small'}
                             placeholder={" Patient Last Name"}
@@ -886,7 +846,7 @@ const SendForm = () => {
                             })}
                         /></Grid>
                         <Grid item xs={3} mt={2}><InputField
-                          disabled={true}
+                            disabled={true}
                             label={"Patient Email :*"}
                             size={'small'}
                             placeholder={"Patient Email"}
@@ -898,11 +858,11 @@ const SendForm = () => {
                             })}
                         /></Grid>
 
-                        
+
 
                     </Grid>
-                    
-                    
+
+
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', mt: 2 }}>
                         <PrimaryButton loader={loader} disabled={loader} type={'submit'} title={"Send"} />
                     </Box>

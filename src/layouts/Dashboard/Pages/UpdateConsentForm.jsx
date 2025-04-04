@@ -822,7 +822,7 @@ const UpdateConsentForm = () => {
             setValue("selectedDate", parsedDate);
         }
 
-    }, [patients, documents,forms])
+    }, [patients, documents,forms,formData])
 
 
     return (

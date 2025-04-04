@@ -128,35 +128,39 @@ const DataTable = ({ data, columns, enableCheckbox = false, onSelectionChange })
         />
         <TableContainer sx={{ maxHeight: 440, height: "auto", overflowX: "auto" }}>
           <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell
-                      key={header.id}
-                      align="left"
-                      sortDirection={header.column.getIsSorted()}
-                      sx={{
-                        minWidth: header.column.columnDef.id === "select" ? "60px" : "150px",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {header.isPlaceholder ? null : header.column.columnDef.id === "select" ? (
-                        flexRender(header.column.columnDef.header, header.getContext())
-                      ) : (
-                        <TableSortLabel
-                          active={header.column.getIsSorted() !== false}
-                          direction={header.column.getIsSorted() || undefined}
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                        </TableSortLabel>
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
+          <TableHead>
+  {table.getHeaderGroups().map((headerGroup) => (
+    <TableRow key={headerGroup.id}>
+      {headerGroup.headers.map((header, index) => (
+        <TableCell
+          key={header.id}
+          align="left"
+          sortDirection={header.column.getIsSorted()}
+          sx={{
+            minWidth: header.column.columnDef.id === "select" ? "60px" : "150px",
+            whiteSpace: "nowrap",
+            borderTopLeftRadius: index === 0 ? "8px" : 0, // First cell
+            borderTopRightRadius: index === headerGroup.headers.length - 1 ? "8px" : 0, // Last cell
+            overflow: "hidden", // Ensures border-radius applies correctly
+          }}
+        >
+          {header.isPlaceholder ? null : header.column.columnDef.id === "select" ? (
+            flexRender(header.column.columnDef.header, header.getContext())
+          ) : (
+            <TableSortLabel
+              active={header.column.getIsSorted() !== false}
+              direction={header.column.getIsSorted() || undefined}
+              onClick={header.column.getToggleSortingHandler()}
+            >
+              {flexRender(header.column.columnDef.header, header.getContext())}
+            </TableSortLabel>
+          )}
+        </TableCell>
+      ))}
+    </TableRow>
+  ))}
+</TableHead>
+
             <TableBody>
   {table.getRowModel().rows.length > 0 ? (
     table.getRowModel().rows.map((row) => (

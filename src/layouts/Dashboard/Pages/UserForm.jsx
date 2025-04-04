@@ -100,7 +100,7 @@ const UserForm = () => {
                     console.log(error);
     
                 }
-                setSavedImage(finalImage);
+             
                 setMarkingLoader(false)
             }
         };
@@ -137,7 +137,7 @@ const UserForm = () => {
 
                 console.log(response?.data?.data?.path);
 
-
+                showSuccessToast('Successfully Saved ')
                 setValue(`furtherFields.${index}.sign`, 'https://cosmetic.theappkit.com' + response?.data?.data?.path);
 
 
@@ -202,6 +202,7 @@ const UserForm = () => {
                 console.log(response?.data?.data?.path);
 
                 setSignature('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+                showSuccessToast('Successfully Saved ')
 
 
             } catch (error) {
@@ -234,7 +235,7 @@ const UserForm = () => {
 
                 setConsentSign('https://cosmetic.theappkit.com' + response?.data?.data?.path);
 
-
+                showSuccessToast('Successfully Saved ')
             } catch (error) {
                 console.log(error);
 
@@ -347,8 +348,8 @@ const UserForm = () => {
         }
     };
     const UpdateConsentForm = async (formData) => {
-        console.log(formData);
-        console.log(consentSign?.includes("cosmetic") && signature?.includes("cosmetic") );
+        console.log(savedImage);
+        console.log(consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && savedImage?.includes("cosmetic") );
         if (savedImage?.includes("cosmetic") && consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && formData?.furtherFields?.every(item => item?.sign?.includes("cosmetic"))) {
           
       
@@ -850,7 +851,7 @@ const UserForm = () => {
             setValue("selectedDate", parsedDate);
         }
 
-    }, [patients, documents])
+    }, [patients, documents,formData])
 
 
     return (
@@ -1590,7 +1591,7 @@ const UserForm = () => {
                             {/* Signature Canvas */}
                             <Grid item xs={6} mt={2}>
                                 <Typography>Patient Signature:</Typography>
-                                {!signature ? <SignatureCanvas
+                                {(!signature || !formData?.is_completed) ? <SignatureCanvas
                                     ref={sigCanvas}
                                     penColor="black"
                                     canvasProps={{
@@ -1602,7 +1603,7 @@ const UserForm = () => {
                                 /> : <Box component={'img'} src={signature} sx={{width: 300,
                                     height: 150, border: "1px dashed black"}}>
                                     </Box>}
-                                {!signature  && <Grid container spacing={1} mt={1}>
+                                {(!signature || !formData?.is_completed)   && <Grid container spacing={1} mt={1}>
                                     <Grid item>
                                         <Button variant="contained" color="secondary" onClick={handleClear}  sx={{textTransform:'capitalize'}}>
                                             Clear Signature
@@ -1672,7 +1673,7 @@ const UserForm = () => {
                             {/* Signature Canvas */}
                             <Grid item xs={6} mt={2}>
                                 <Typography>Patient Signature:</Typography>
-                               {!consentSign ?  <SignatureCanvas
+                               {(!consentSign || !formData?.is_completed)  ?  <SignatureCanvas
                                     ref={sigCanvasNew}
                                     penColor="black"
                                     canvasProps={{
@@ -1684,7 +1685,7 @@ const UserForm = () => {
                                 /> : <Box component={'img'} src={consentSign} sx={{width: 300,
                                     height: 150, border: "1px dashed black"}}>
                                     </Box>}
-                                {!consentSign && <Grid container spacing={1} mt={1}>
+                                {(!consentSign || !formData?.is_completed)  && <Grid container spacing={1} mt={1}>
                                     <Grid item>
                                         <Button variant="contained" color="secondary" onClick={handleClear2} sx={{textTransform:'capitalize'}}>
                                             Clear Signature
@@ -2275,7 +2276,7 @@ const UserForm = () => {
                                             <InputLabel sx={{ fontWeight: 700, fontSize: "14px", marginBottom: 1 }}>
                                                 Signature :*
                                             </InputLabel>
-                                            {!item?.sign ? <SignatureCanvas
+                                            {(!item?.sign || !formData?.is_completed)  ? <SignatureCanvas
                                                 ref={(el) => (signCanvasRefs.current[index] = el)}
                                                 penColor="black"
                                                 canvasProps={{ width: 300, height: 150, style: { border: "1px dashed black" } }}
@@ -2284,7 +2285,7 @@ const UserForm = () => {
                                                 </Box>}
 
                                         </Box>
-                                        {!item?.sign  && <Grid container spacing={1} mt={1}>
+                                        {(!item?.sign || !formData?.is_completed)   && <Grid container spacing={1} mt={1}>
                                             <Grid item>
                                                 <Button variant="contained" color="secondary" onClick={() => clearSignature(index)} sx={{textTransform:'capitalize'}}>
                                                     Clear Signature
