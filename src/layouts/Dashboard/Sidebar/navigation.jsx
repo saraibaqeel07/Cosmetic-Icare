@@ -60,7 +60,7 @@ const Navigation = [
   },
   {
     name: "Forms",
-    path: "",
+    path: "/consent-forms",
     component: "",
     icon: <DescriptionIcon sx={{ fontSize: "22px" }} />, // Generic form-related icon
     child: [

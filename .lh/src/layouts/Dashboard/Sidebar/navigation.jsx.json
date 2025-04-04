@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1743295751151,
@@ -24,6 +24,10 @@
                 {
                     "date": 1743760213390,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -91,6 +91,6 @@\n     icon: <ArticleIcon sx={{ fontSize: \"22px\" }} />, // Document-related icon\r\n   },\r\n ];\r\n \r\n-export default Navigation;\r\n+export default Navigation; \r\n \r\n"
+                },
+                {
+                    "date": 1743760531747,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -59,9 +59,9 @@\n     ],\r\n   },\r\n   {\r\n     name: \"Forms\",\r\n-    path: \"\",\r\n+    path: \"/consent-forms\",\r\n     component: \"\",\r\n     icon: <DescriptionIcon sx={{ fontSize: \"22px\" }} />, // Generic form-related icon\r\n     child: [\r\n       {\r\n"
                 }
             ],
             "date": 1743295751151,
