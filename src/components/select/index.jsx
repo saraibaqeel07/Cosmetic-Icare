@@ -89,7 +89,7 @@ function SelectField(props) {
             sx={{
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                  border: '1px solid #e0e0e0 !important',
+                  border: '2px solid #818181 !important',
                   borderRadius: '12px',
 
                 }

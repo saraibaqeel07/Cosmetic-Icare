@@ -8,6 +8,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Navigation from "./navigation";
 import ConfirmationDialog from "../../../components/confirmDialog";
 import { AuthContext } from "../../../Context/AuthContext";
+import { Images } from "../../../assets/images";
 
 const Sidebar = ({ open, setOpen }) => {
   const navigate = useNavigate();
@@ -22,8 +23,8 @@ const Sidebar = ({ open, setOpen }) => {
       [name]: !prev[name],
     }));
   };
-   // Filter navigation based on user role
-   const filteredNavigation = Navigation.filter(
+  // Filter navigation based on user role
+  const filteredNavigation = Navigation.filter(
     (item) => !(user?.role === "staff" && item.name.toLowerCase() === "staff")
   );
   useEffect(() => {
@@ -36,10 +37,10 @@ const Sidebar = ({ open, setOpen }) => {
   return (
     <Box
       sx={{
-        width: open ? '210px' : '50px',
+        width: open ? '220px' : '50px',
         transition: 'width 0.3s ease',
         height: "100vh",
-        bgcolor: "#0052a8",
+        bgcolor: "#46aef5",
         color: "white",
         padding: 2,
         position: "fixed",
@@ -75,12 +76,16 @@ const Sidebar = ({ open, setOpen }) => {
         }}
       >
         {/* Sidebar Toggle Button */}
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: open ? "flex-end" : "center", mb: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: open ? "flex-end" : "center" }}>
           <IconButton onClick={() => setOpen(!open)}>
             <MenuIcon sx={{ color: "white" }} />
           </IconButton>
         </Box>
+        {open && <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Box component={'img'} src={Images.sidebarLogo} width={'150px'}>
 
+          </Box>
+        </Box>}
         <List>
           {filteredNavigation.map((item) => {
             // Check if the parent is active (either its own path or any child's path)
@@ -95,12 +100,24 @@ const Sidebar = ({ open, setOpen }) => {
                     gap: open ? 1 : 0,
                     display: "flex",
                     alignItems: "center",
+                    width:!open ? '40px' : '100%',
+                    height:!open ? '40px' : '100%',
                     justifyContent: open ? "flex-start" : "center",
                     paddingX: open ? 2 : 0,
                     paddingY: !open ? 3 : 1,
-                    backgroundColor: isActive ? (open ? "#02dca2" : "transparent") : "transparent",
+                    backgroundColor: isActive ? (open ? "#0b0962" : "transparent") : "transparent",
                     borderRadius: open ? "4px" : "50%",
                     transition: "all 0.3s ease-in-out",
+                    '&:hover': {
+                      ...(!open && {
+                        borderRadius: '50%',
+                        width:!open ? '40px' : '100%',
+                        height:!open ? '40px' : '100%',
+                        backgroundColor: '#0b0962',
+                      })
+                    },
+                    mt:!open ? 3.5 : 2
+
                   }}
                   onClick={() => {
                     if (item.child) {
@@ -118,7 +135,7 @@ const Sidebar = ({ open, setOpen }) => {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      backgroundColor: isActive && !open ? "#02dca2" : "transparent",
+                      backgroundColor: isActive && !open ? "#0b0962" : "transparent",
                       borderRadius: "50%",
                       width: !open ? "36px" : "auto",
                       height: !open ? "36px" : "auto",
@@ -195,7 +212,7 @@ const Sidebar = ({ open, setOpen }) => {
           mt: 2,
           ":hover": { color: 'white' },
           position: "absolute",
-          bottom: "100px",
+          bottom: "50px",
           left: !open ? "7px" : '50px',
         }}
       >

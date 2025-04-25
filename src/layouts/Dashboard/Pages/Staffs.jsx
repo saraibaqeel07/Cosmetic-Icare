@@ -20,9 +20,10 @@ import SelectField from "../../../components/select";
 
 const Staffs = () => {
     const [active, setActive] = useState(false)
+    const [tableLoader, setTableLoader] = useState(true)
     const navigate = useNavigate()
     const [status, setStatus] = useState(null)
-    const [data, setData] = useState()
+    const [data, setData] = useState([])
     const [confirmationDialog, setConfirmationDialog] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
     const [open, setOpen] = useState(false)
@@ -52,6 +53,9 @@ const Staffs = () => {
         } catch (error) {
             console.error("Error fetching location:", error);
         }
+        finally{
+            setTableLoader(false)
+        }
     };
     // // Dummy data
     // const data = [
@@ -73,6 +77,7 @@ const Staffs = () => {
         {
             header: "Name",
             accessorKey: "name",
+            accessorFn: (row) => `${row.first_name} ${row.last_name}`,
             cell: ({ row }) => (
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex' }} >
 
@@ -255,15 +260,15 @@ const Staffs = () => {
 
                 }}
             />
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none',backgroundColor:'#eff6ff !important',borderRadius:'12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none',backgroundColor:'#ffff !important',borderRadius:'12px' }}>
                 <Box sx={{p:2}}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h4" sx={{ mt: 4,mb:4, fontWeight: 600 }}>
+                <Typography variant="h5" sx={{ mt: 4,mb:4, fontWeight: 600 }}>
                     Staffs
                 </Typography>
                     <PrimaryButton onClick={() => navigate('/create-staff')} title={"Create"} />
                 </Box>
-                {data?.length > 0 && <DataTable data={data} columns={columns} />}
+                { <DataTable loading={tableLoader} data={data} columns={columns} />}
                 </Box>
             </Paper>
         </div>

@@ -68,7 +68,7 @@ const Header = () => {
             >
              
                 <Box display={'flex'} alignItems={'center'} gap={2} >
-                    {location?.pathname != '/' ? <> <Typography variant="h6" sx={{ color: '#0052a8',fontWeight:'bold' }}>ICare</Typography>
+                    {location?.pathname != '/' ? <> <Typography variant="h6" sx={{ color: '#0052a8',fontWeight:'bold' }}>IClinic</Typography>
                         <Box sx={{ border: '0.5px solid #434343', height: "30px" }}></Box>
                         <Typography variant="h6" sx={{ color: 'black', fontSize: '22px', fontWeight: 700 }}>
                             {location?.pathname

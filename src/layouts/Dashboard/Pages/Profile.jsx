@@ -106,7 +106,7 @@ const Profile = () => {
       formData.append("document", e.target.files[0]);
 
       const response = await axios.post(
-        ' https://server.naesminc.org/api/system/upload',
+          `${import.meta.env.VITE_BASE_URL}/api/system/upload`,
         formData,
         {
           headers: {
@@ -117,7 +117,7 @@ const Profile = () => {
 
       console.log(response?.data?.data?.path);
 
-      setImageURL('https://server.naesminc.org' + response?.data?.data?.path);
+      setImageURL( response?.data?.data?.path);
 
 
     } catch (error) {
@@ -274,7 +274,7 @@ const Profile = () => {
   }, [])
 
   return (
-    <div>
+    <div style={{margin:5}}>
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
 
         <DialogContent>
@@ -549,8 +549,8 @@ const Profile = () => {
           )}
         </DialogContent>
       </Dialog>
-      <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none' }}>
-        <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
+      <Box sx={{ width: "92%", overflow: "hidden", boxShadow: 'none',p:3,backgroundColor:'#ffff' }}>
+        <Typography variant="h5" sx={{ mb: 4, fontWeight: 500 }}>
           Update Profile
         </Typography>
 
@@ -583,7 +583,7 @@ const Profile = () => {
                     }}
                   >
                     <Avatar
-                      src={imageURL}
+                      src={import.meta.env.VITE_BASE_URL+imageURL}
                       alt="Profile"
                       sx={{
                         position: "relative",
@@ -686,7 +686,7 @@ const Profile = () => {
             <PrimaryButton loader={loader} disabled={loader}type={'submit'} title={"Update"} />
           </Box>
         </Box>
-      </Paper>
+      </Box>
     </div>
   )
 }

@@ -10,21 +10,9 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 
 
-const Appointments = lazy(() => import("../Pages/Appoinments"))
-const AppointmentsQuestions = lazy(() => import("../Pages/AppointmentQuestions"))
-const Users = lazy(() => import("../Pages/Users"))
-const Jobs = lazy(() => import("../Pages/Jobs"))
-const Faqs = lazy(() => import("../Pages/Faqs"))
-const Places = lazy(() => import("../Pages/Places"))
-const Events = lazy(() => import("../Pages/Events"))
-const Doctors = lazy(() => import("../Pages/Doctors"))
+
 const Dashboard = lazy(() => import("../Pages/Dashboard"))
-const Settings = lazy(() => import("../Pages/Settings"))
-const BlockSlots = lazy(() => import("../Pages/BlockSlots"))
-const ChatPage = lazy(() => import("../Pages/Chat"))
-const Topics = lazy(() => import("../Pages/Topics"))
-const Posts = lazy(() => import("../Pages/Posts"))
-const Blogs = lazy(() => import("../Pages/Blogs"))
+
 const Staffs = lazy(() => import("../Pages/Staffs"))
 const DeletedPatients = lazy(() => import("../Pages/DeletedPatients"))
 const AfterCareDocuments = lazy(() => import("../Pages/AfterCareDocuments"))
@@ -38,18 +26,19 @@ const Navigation = [
     component: Dashboard,
     icon: <DashboardIcon sx={{ fontSize: "22px" }} />,
   },
+ 
   {
-    name: "Staff",
-    path: "/staff",
-    component: Staffs,
-    icon: <PeopleIcon sx={{ fontSize: "22px" }} />,
-  },
-  {
-    name: "Patients",
+    name: "Patient Directory",
     path: "/patients",
     component: "",
     icon: <PersonIcon sx={{ fontSize: "22px" }} />,
     child: [
+      {
+        name: "Directory",
+        path: "/patients",
+
+        icon: <PersonIcon sx={{ fontSize: "22px" }} />,
+      },
       {
         name: "Deleted Patients",
         path: "/deleted-patients",
@@ -57,6 +46,7 @@ const Navigation = [
         icon: <PersonOffIcon sx={{ fontSize: "22px" }} />,
       },
     ],
+    
   },
   {
     name: "Forms",
@@ -89,6 +79,18 @@ const Navigation = [
     path: "/aftercare-documents",
     component: AfterCareDocuments,
     icon: <ArticleIcon sx={{ fontSize: "22px" }} />, // Document-related icon
+  },
+  {
+    name: "Staffs",
+    path: "/staff",
+    component: Staffs,
+    icon: <PeopleIcon sx={{ fontSize: "22px" }} />,
+  },
+  {
+    name: "Our Profile",
+    path: "/profile",
+
+    icon: <PersonIcon sx={{ fontSize: "22px" }} />,
   },
 ];
 

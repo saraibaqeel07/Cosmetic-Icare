@@ -86,16 +86,16 @@ function InputField(props) {
           sx={{
             borderRadius: "12px",
             ".MuiOutlinedInput-root": {
-              border: "1px solid #e0e0e0",
+            border: "2px solid #818181",
               borderRadius: "12px",
               outline: "none",
               transition: "all 0.2s ease-in-out",
               "& fieldset": { border: "none" },
               "&:hover": {
-                border: "1px solid #0076bf",
+              border: "2px solid #0076bf",
               },
               "&.Mui-focused": {
-                border: "1px solid #0076bf",
+              border: "2px solid #0076bf",
                 "& fieldset": { border: "none" },
                 svg: {
                   path: {

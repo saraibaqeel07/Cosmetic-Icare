@@ -140,7 +140,7 @@ const PatientPDF = ({ form, ref }) => {
                             }}
                         >
                             <Typography
-                                variant="h4"
+                                variant="h5"
                                 sx={{
                                     fontWeight: "700",
                                     color: "#2c3e50",

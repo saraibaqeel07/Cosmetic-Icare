@@ -74,7 +74,7 @@ const Dashboard = () => {
     <div>
     
       <Grid container xs={12} spacing={2}>
-        <Grid item xs={7}>
+        <Grid item lg={7}>
         <Paper
         elevation={0}
         sx={{
@@ -103,7 +103,7 @@ const Dashboard = () => {
         </Box>
       </Paper>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item lg={5}>
         <Paper
         elevation={0}
         sx={{

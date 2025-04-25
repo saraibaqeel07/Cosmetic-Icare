@@ -158,21 +158,21 @@ const UpdateConsentForm = () => {
                 }
 
                 const response = await axios.post(
-                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                    `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
                 console.log(response?.data?.data?.path);
 
 
-                setSavedImage('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+                setSavedImage( response?.data?.data?.path);
 
 
             } catch (error) {
                 console.log(error);
 
             }
-            setSavedImage(finalImage);
+           
             setMarkingLoader(false)
         }
     };
@@ -506,7 +506,7 @@ const UpdateConsentForm = () => {
                 console.log("Uploading file:", files[i].name); // Debugging log
 
                 const response = await axios.post(
-                    "https://cosmetic.theappkit.com/api/system/upload",
+                    `${import.meta.env.VITE_BASE_URL}/api/system/upload`,
                     formData,
                     {
                         headers: {
@@ -517,13 +517,13 @@ const UpdateConsentForm = () => {
 
                 const imagePath = response?.data?.data?.path;
                 if (imagePath) {
-                    const fullImageUrl = "https://cosmetic.theappkit.com" + imagePath;
+                    const fullImageUrl = imagePath;
                     uploadedNewBatchImages.push(fullImageUrl);
                     console.log("Uploaded Image URL:", fullImageUrl);
                 }
             }
 
-            setUploadedImages(uploadedNewBatchImages); // Update state with uploaded image URLs
+            setUploadedImages([...uploadedImages, ...uploadedNewBatchImages]); // Update state with uploaded image URLs
             console.log("All Uploaded Images:", uploadedNewBatchImages);
         } catch (error) {
             console.error("Error uploading files:", error);
@@ -555,7 +555,7 @@ const UpdateConsentForm = () => {
                 console.log("Uploading file:", files[i].name); // Debugging log
 
                 const response = await axios.post(
-                    "https://cosmetic.theappkit.com/api/system/upload",
+                    `${import.meta.env.VITE_BASE_URL}/api/system/upload`,
                     formData,
                     {
                         headers: {
@@ -566,13 +566,13 @@ const UpdateConsentForm = () => {
 
                 const imagePath = response?.data?.data?.path;
                 if (imagePath) {
-                    const fullImageUrl = "https://cosmetic.theappkit.com" + imagePath;
+                    const fullImageUrl = imagePath;
                     uploadedNewBeforeImages.push(fullImageUrl);
                     console.log("Uploaded Image URL:", fullImageUrl);
                 }
             }
 
-            setBeforeImages(uploadedNewBeforeImages); // Update state with uploaded image URLs
+            setBeforeImages([...beforeImages, ...uploadedNewBeforeImages]); // Update state with uploaded image URLs
             console.log("All Uploaded Images:", uploadedNewBeforeImages);
         } catch (error) {
             console.error("Error uploading files:", error);
@@ -603,7 +603,7 @@ const UpdateConsentForm = () => {
                 console.log("Uploading file:", files[i].name); // Debugging log
 
                 const response = await axios.post(
-                    "https://cosmetic.theappkit.com/api/system/upload",
+                    `${import.meta.env.VITE_BASE_URL}/api/system/upload`,
                     formData,
                     {
                         headers: {
@@ -614,13 +614,13 @@ const UpdateConsentForm = () => {
 
                 const imagePath = response?.data?.data?.path;
                 if (imagePath) {
-                    const fullImageUrl = "https://cosmetic.theappkit.com" + imagePath;
+                    const fullImageUrl = imagePath;
                     uploadedNewAfterImages.push(fullImageUrl);
                     console.log("Uploaded Image URL:", fullImageUrl);
                 }
             }
 
-            setAfterImages(uploadedNewAfterImages); // Update state with uploaded image URLs
+            setAfterImages([...afterImages, ...uploadedNewAfterImages]); // Update state with uploaded image URLs
             console.log("All Uploaded Images:", uploadedNewAfterImages);
         } catch (error) {
             console.error("Error uploading files:", error);
@@ -828,7 +828,7 @@ const UpdateConsentForm = () => {
     return (
         <div>
 
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff', borderRadius: '12px' }}>
 
 
 
@@ -840,7 +840,7 @@ const UpdateConsentForm = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item xs={3} mt={2}>
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -869,7 +869,7 @@ const UpdateConsentForm = () => {
                             />
 
                         </Grid>
-                        <Grid item xs={3} mt={2}>
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <Grid container spacing={2}>
                                     {/* Single Date Selection */}
@@ -924,7 +924,7 @@ const UpdateConsentForm = () => {
 
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item xs={3} mt={2}>
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <Grid container spacing={2}>
                                     {/* Single Date Selection */}
@@ -981,7 +981,7 @@ const UpdateConsentForm = () => {
                         </Grid>
                         <Grid container p={2} spacing={2} >
 
-                            <Grid item xs={3} mt={2}>
+                            <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                                 <InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -1000,7 +1000,7 @@ const UpdateConsentForm = () => {
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={3} mt={2}>
+                            <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                                 {patientType == 'existing' && <> <InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -1060,7 +1060,7 @@ const UpdateConsentForm = () => {
                                     />
                                 </>}
                             </Grid>
-                            <Grid item xs={3} mt={2}>
+                            <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                                 {patientType == 'existing' && <><InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -1089,7 +1089,7 @@ const UpdateConsentForm = () => {
                                     /> </>}
                             </Grid>
                         </Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Patient First Name :*"}
                             size={'small'}
                             placeholder={"Patient First Name"}
@@ -1100,7 +1100,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Patient Last Name :*"}
                             size={'small'}
                             placeholder={" Patient Last Name"}
@@ -1111,7 +1111,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Patient Email :*"}
                             size={'small'}
                             placeholder={"Patient Email"}
@@ -1123,7 +1123,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}>
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <Grid container spacing={2}>
                                     {/* Single Date Selection */}
@@ -1178,7 +1178,7 @@ const UpdateConsentForm = () => {
 
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Phone Number :*"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -1189,7 +1189,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Post Code :*"}
                             size={'small'}
                             placeholder={"Post Code"}
@@ -1200,7 +1200,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Address :*"}
                             size={'small'}
                             placeholder={"Address"}
@@ -1211,7 +1211,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Notes :"}
                             multiline
                             rows={3}
@@ -1234,7 +1234,7 @@ const UpdateConsentForm = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Name :"}
                             size={'small'}
                             placeholder={"Name"}
@@ -1246,7 +1246,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Email :"}
                             size={'small'}
                             placeholder={"Email"}
@@ -1258,7 +1258,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Phone Number :"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -1270,7 +1270,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Address :"}
                             size={'small'}
                             placeholder={"Address"}
@@ -1292,7 +1292,7 @@ const UpdateConsentForm = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Name :"}
                             size={'small'}
                             placeholder={"Name"}
@@ -1304,7 +1304,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Email :"}
                             size={'small'}
                             placeholder={"Email"}
@@ -1316,7 +1316,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Phone Number :"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -1328,7 +1328,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Address :"}
                             size={'small'}
                             placeholder={"Address"}
@@ -1346,7 +1346,7 @@ const UpdateConsentForm = () => {
                             Facial Mapping
                         </Typography>
                         <Grid container spacing={2} p={2}>
-                            <Grid item xs={6}>
+                            <Grid item lg={6}>
                                 <Typography>Facial Marking:</Typography>
                                 <div style={{ position: "relative", width: 300, height: 150 }}>
                                     <SignatureCanvas
@@ -1378,7 +1378,7 @@ const UpdateConsentForm = () => {
                             </Grid> : (
                                 <Grid item xs={6}>
                                     <Typography>Saved Image:</Typography>
-                                    <img src={savedImage ? savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                    <img src={savedImage ? import.meta.env.VITE_BASE_URL+savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
                                 </Grid>
                             )}
 
@@ -1388,7 +1388,7 @@ const UpdateConsentForm = () => {
                         </Grid>
                         <Grid container spacing={2} p={2}>
                             {/* Marketing Permission */}
-                            <Grid item xs={6} mt={2}>
+                            <Grid item lg={6} md={12} sm={12} mt={2}>
                                 <FormLabel component="legend" sx={{ color: 'black' }}>Can we have permission to use your images for marketing?</FormLabel>
                                 <FormControl component="fieldset">
 
@@ -1400,7 +1400,7 @@ const UpdateConsentForm = () => {
                             </Grid>
 
                             {/* Offers & Reminders Permission */}
-                            <Grid item xs={6} mt={2}>
+                            <Grid item lg={6} md={12} sm={12} mt={2}>
                                 <FormLabel component="legend" sx={{ color: 'black' }}>Can we send you offers & reminders by text email & WhatsApp?</FormLabel>
                                 <FormControl component="fieldset">
 
@@ -1476,11 +1476,11 @@ const UpdateConsentForm = () => {
                         </Typography>
                         <Grid container spacing={5} p={2} alignItems="center">
                             {/* Date Field */}
-                            <Grid item xs={6} mt={2}>
+                            <Grid item lg={6} md={12} sm={12} mt={2}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <Grid container spacing={2}>
                                         {/* Single Date Selection */}
-                                        <Grid item xs={12}>
+                                        <Grid item lg={12} md={12} sm={12}>
                                             <Box>
                                                 <InputLabel sx={{
                                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
@@ -1572,7 +1572,7 @@ const UpdateConsentForm = () => {
                                 <Grid container spacing={2} p={2} alignItems="center" key={item.id} mt={2}>
 
                                     {/* Patient Date Selection */}
-                                    <Grid item xs={3}>
+                                    <Grid item lg={3}  md={4} sm={6} xs={6}>
                                         <Box>
                                             <InputLabel
                                                 sx={{
@@ -1622,7 +1622,7 @@ const UpdateConsentForm = () => {
                                     </Grid>
 
                                     {/* Amount Field */}
-                                    <Grid item xs={3} mt={2}>
+                                    <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
                                         <InputField
                                             label="Amount"
                                             placeholder="Order Amount"
@@ -1634,7 +1634,7 @@ const UpdateConsentForm = () => {
 
 
                                     {/* Description Field */}
-                                    <Grid item xs={4}>
+                                    <Grid item lg={4} md={12} sm={11}>
                                         <InputField
                                             label="Description"
                                             multiline
@@ -1670,7 +1670,7 @@ const UpdateConsentForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+                        <Grid item lg={5} sm={12}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -1692,7 +1692,7 @@ const UpdateConsentForm = () => {
                                             return "At least one image file is required";
                                         }
                                         for (let i = 0; i < value.length; i++) {
-                                            if (value[i].size > 10 * 1024 * 1024) { // 10MB limit
+                                            if (value[i].size > 10 * 1024 * 1024) {
                                                 return "Each file must be smaller than 10MB";
                                             }
                                             if (!value[i].type.startsWith("image/")) {
@@ -1704,37 +1704,56 @@ const UpdateConsentForm = () => {
                                 }}
                                 render={({ field: { onChange } }) => (
                                     <>
-                                        <Box
-                                            sx={{
-                                                borderRadius: "8px",
-                                                padding: "20px",
-                                                textAlign: "center",
-                                                cursor: "pointer",
-                                                backgroundColor: "#f9f9f9",
-                                                height: '135px',
-                                                "&:hover": { backgroundColor: "#eef7ff" },
+                                        {/* Hidden Inputs */}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            style={{ display: "none" }}
+                                            id="upload-media-camera"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                onChange(files);
+                                                handleFileChange2(e);
                                             }}
-                                            onClick={() => document.getElementById("upload-media").click()}
-                                        >
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: "none" }}
+                                            id="upload-media-gallery"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                onChange(files);
+                                                handleFileChange2(e);
+                                            }}
+                                        />
+
+                                        {/* UI */}
+                                        <Box sx={{
+                                            borderRadius: "8px",
+                                            padding: "20px",
+                                            textAlign: "center",
+                                            backgroundColor: "#f9f9f9",
+                                            height: '135px',
+                                        }}>
                                             {!imageLoader ? (
                                                 <>
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        multiple
-                                                        style={{ display: "none" }}
-                                                        id="upload-media"
-                                                        onChange={(e) => {
-                                                            const files = Array.from(e.target.files);
-                                                            onChange(files); // Update react-hook-form
-                                                            handleFileChange2(e); // Handle upload logic
-                                                        }}
-                                                    />
-                                                    <UploadFileIcon sx={{ fontSize: 40, color: "#0EA5EA" }} />
-                                                    <Typography variant="body1" sx={{ color: "#333", mt: 1 }}>
-                                                        Drag & drop or click to upload images
-                                                    </Typography>
-                                                    <Typography variant="caption" sx={{ color: "#666" }}>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{ m: 1 }}
+                                                        onClick={() => document.getElementById("upload-media-camera").click()}
+                                                    >
+                                                        📸 Take Photo
+                                                    </Button>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{ m: 1 }}
+                                                        onClick={() => document.getElementById("upload-media-gallery").click()}
+                                                    >
+                                                        🖼️ Choose from Gallery
+                                                    </Button>
+                                                    <Typography variant="caption" sx={{ color: "#666", mt: 1, display: 'block' }}>
                                                         Allowed: Images (Max 10MB per file)
                                                     </Typography>
                                                 </>
@@ -1766,7 +1785,7 @@ const UpdateConsentForm = () => {
                                     uploadedImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             <img
-                                                src={file}
+                                                src={import.meta.env.VITE_BASE_URL + file}
                                                 alt="Uploaded Preview"
                                                 style={{ width: "100px", height: "100px", borderRadius: "8px", objectFit: "cover" }}
                                             />
@@ -1803,10 +1822,12 @@ const UpdateConsentForm = () => {
                                     ))}
                             </Box>
                         </Grid>
+
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+
+                        <Grid item lg={5} sm={12}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -1828,7 +1849,7 @@ const UpdateConsentForm = () => {
                                             return "At least one image file is required";
                                         }
                                         for (let i = 0; i < value.length; i++) {
-                                            if (value[i].size > 10 * 1024 * 1024) { // 10MB limit
+                                            if (value[i].size > 10 * 1024 * 1024) {
                                                 return "Each file must be smaller than 10MB";
                                             }
                                             if (!value[i].type.startsWith("image/")) {
@@ -1840,37 +1861,56 @@ const UpdateConsentForm = () => {
                                 }}
                                 render={({ field: { onChange } }) => (
                                     <>
-                                        <Box
-                                            sx={{
-                                                borderRadius: "8px",
-                                                padding: "20px",
-                                                textAlign: "center",
-                                                cursor: "pointer",
-                                                backgroundColor: "#f9f9f9",
-                                                height: '135px',
-                                                "&:hover": { backgroundColor: "#eef7ff" },
+                                        {/* Hidden Inputs */}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            style={{ display: "none" }}
+                                            id="upload-media2-camera"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                onChange(files);
+                                                handleFileChange3(e);
                                             }}
-                                            onClick={() => document.getElementById("upload-media2").click()}
-                                        >
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: "none" }}
+                                            id="upload-media2-gallery"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                onChange(files);
+                                                handleFileChange3(e);
+                                            }}
+                                        />
+
+                                        {/* UI */}
+                                        <Box sx={{
+                                            borderRadius: "8px",
+                                            padding: "20px",
+                                            textAlign: "center",
+                                            backgroundColor: "#f9f9f9",
+                                            height: '135px',
+                                        }}>
                                             {!imageLoaderBefore ? (
                                                 <>
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        multiple
-                                                        style={{ display: "none" }}
-                                                        id="upload-media2"
-                                                        onChange={(e) => {
-                                                            const files = Array.from(e.target.files);
-                                                            onChange(files); // Update react-hook-form
-                                                            handleFileChange3(e); // Handle upload logic
-                                                        }}
-                                                    />
-                                                    <UploadFileIcon sx={{ fontSize: 40, color: "#0EA5EA" }} />
-                                                    <Typography variant="body1" sx={{ color: "#333", mt: 1 }}>
-                                                        Drag & drop or click to upload images
-                                                    </Typography>
-                                                    <Typography variant="caption" sx={{ color: "#666" }}>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{ m: 1 }}
+                                                        onClick={() => document.getElementById("upload-media2-camera").click()}
+                                                    >
+                                                        📸 Take Photo
+                                                    </Button>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{ m: 1 }}
+                                                        onClick={() => document.getElementById("upload-media2-gallery").click()}
+                                                    >
+                                                        🖼️ Choose from Gallery
+                                                    </Button>
+                                                    <Typography variant="caption" sx={{ color: "#666", mt: 1, display: 'block' }}>
                                                         Allowed: Images (Max 10MB per file)
                                                     </Typography>
                                                 </>
@@ -1902,7 +1942,7 @@ const UpdateConsentForm = () => {
                                     beforeImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             <img
-                                                src={file}
+                                                src={import.meta.env.VITE_BASE_URL + file}
                                                 alt="Uploaded Preview"
                                                 style={{ width: "100px", height: "100px", borderRadius: "8px", objectFit: "cover" }}
                                             />
@@ -1939,10 +1979,15 @@ const UpdateConsentForm = () => {
                                     ))}
                             </Box>
                         </Grid>
+
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Grid item lg={5} sm={12}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -1964,7 +2009,7 @@ const UpdateConsentForm = () => {
                                             return "At least one image file is required";
                                         }
                                         for (let i = 0; i < value.length; i++) {
-                                            if (value[i].size > 10 * 1024 * 1024) { // 10MB limit
+                                            if (value[i].size > 10 * 1024 * 1024) {
                                                 return "Each file must be smaller than 10MB";
                                             }
                                             if (!value[i].type.startsWith("image/")) {
@@ -1976,37 +2021,58 @@ const UpdateConsentForm = () => {
                                 }}
                                 render={({ field: { onChange } }) => (
                                     <>
-                                        <Box
-                                            sx={{
-                                                borderRadius: "8px",
-                                                padding: "20px",
-                                                textAlign: "center",
-                                                cursor: "pointer",
-                                                backgroundColor: "#f9f9f9",
-                                                height: '135px',
-                                                "&:hover": { backgroundColor: "#eef7ff" },
+                                        {/* Hidden Inputs */}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            multiple
+                                            style={{ display: "none" }}
+                                            id="upload-media3-camera"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                onChange(files);
+                                                handleFileChange4(e);
                                             }}
-                                            onClick={() => document.getElementById("upload-media3").click()}
-                                        >
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            style={{ display: "none" }}
+                                            id="upload-media3-gallery"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                onChange(files);
+                                                handleFileChange4(e);
+                                            }}
+                                        />
+
+                                        {/* UI */}
+                                        <Box sx={{
+                                            borderRadius: "8px",
+                                            padding: "20px",
+                                            textAlign: "center",
+                                            backgroundColor: "#f9f9f9",
+                                            height: '135px',
+                                        }}>
                                             {!imageLoaderAfter ? (
                                                 <>
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        multiple
-                                                        style={{ display: "none" }}
-                                                        id="upload-media3"
-                                                        onChange={(e) => {
-                                                            const files = Array.from(e.target.files);
-                                                            onChange(files); // Update react-hook-form
-                                                            handleFileChange4(e); // Handle upload logic
-                                                        }}
-                                                    />
-                                                    <UploadFileIcon sx={{ fontSize: 40, color: "#0EA5EA" }} />
-                                                    <Typography variant="body1" sx={{ color: "#333", mt: 1 }}>
-                                                        Drag & drop or click to upload images
-                                                    </Typography>
-                                                    <Typography variant="caption" sx={{ color: "#666" }}>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{ m: 1 }}
+                                                        onClick={() => document.getElementById("upload-media3-camera").click()}
+                                                    >
+                                                        📸 Take Photo
+                                                    </Button>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{ m: 1 }}
+                                                        onClick={() => document.getElementById("upload-media3-gallery").click()}
+                                                    >
+                                                        🖼️ Choose from Gallery
+                                                    </Button>
+                                                    <Typography variant="caption" sx={{ color: "#666", mt: 1, display: 'block' }}>
                                                         Allowed: Images (Max 10MB per file)
                                                     </Typography>
                                                 </>
@@ -2038,7 +2104,7 @@ const UpdateConsentForm = () => {
                                     afterImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             <img
-                                                src={file}
+                                                src={import.meta.env.VITE_BASE_URL + file}
                                                 alt="Uploaded Preview"
                                                 style={{ width: "100px", height: "100px", borderRadius: "8px", objectFit: "cover" }}
                                             />
@@ -2084,7 +2150,7 @@ const UpdateConsentForm = () => {
                             {furtherFields.map((item, index) => (
                                 <Grid container spacing={2} p={2} alignItems="center" key={item.id} mt={2}>
                                     {/* Date Selection */}
-                                    <Grid item xs={5}>
+                                    <Grid item lg={5} md={12}>
                                         <Box>
                                             <InputLabel sx={{ fontWeight: 700, fontSize: "14px", marginBottom: 1.5 }}>
                                                 Further Date :*
@@ -2174,7 +2240,7 @@ const UpdateConsentForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Grid item xs={6} mt={2}><InputField
+                        <Grid item lg={6} md={12} sm={12} mt={2}><InputField
                             label={"Notes :"}
                             multiline
                             rows={3}

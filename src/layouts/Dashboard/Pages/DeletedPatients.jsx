@@ -78,6 +78,7 @@ const DeletedPatients = () => {
         {
             header: "Name",
             accessorKey: "name",
+            accessorFn: (row) => `${row.first_name} ${row.last_name}`,
             cell: ({ row }) => (
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex' }} >
 
@@ -252,7 +253,7 @@ const DeletedPatients = () => {
 
                 }}
             />
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff !important', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff !important', borderRadius: '12px' }}>
                 <Box sx={{ p: 2 }}>
                
                     {<DataTable data={data} columns={columns} />}

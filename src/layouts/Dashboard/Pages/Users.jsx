@@ -204,7 +204,7 @@ const Users = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
 
-          <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
+          <Typography variant="h5" sx={{ mb: 4, fontWeight: 500 }}>
             Users
           </Typography>
           <PrimaryButton onClick={() => setNotificationDialog(true)} loader={loader} disabled={loader}type={'submit'} title={selectedRows?.length == 0 ? "Send Notification To All" : "Send Notification To Selected Users"} />

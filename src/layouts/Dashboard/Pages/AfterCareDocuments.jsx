@@ -25,6 +25,7 @@ const AfterCareDocuments = () => {
     const [data, setData] = useState([])
     const [confirmationDialog, setConfirmationDialog] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
+    const [tableLoader, setTableLoader] = useState(true)
     const [open, setOpen] = useState(false)
     const {
         register: register2,
@@ -51,6 +52,9 @@ const AfterCareDocuments = () => {
 
         } catch (error) {
             console.error("Error fetching location:", error);
+        }
+        finally{
+            setTableLoader(false)
         }
     };
     // // Dummy data
@@ -227,15 +231,15 @@ const AfterCareDocuments = () => {
 
                 }}
             />
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff !important', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff !important', borderRadius: '12px' }}>
                 <Box sx={{ p: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="h4" sx={{ mt: 4,mb:4, fontWeight: 600 }}>
+                    <Typography variant="h5" sx={{ mt: 4,mb:4, fontWeight: 600 }}>
                     Aftercare Documents
                 </Typography>
                         <PrimaryButton onClick={() => navigate('/create-aftercare-document')} title={"Create"} />
                     </Box>
-                    {<DataTable data={data} columns={columns} />}
+                    {<DataTable loading={tableLoader} data={data} columns={columns} />}
                 </Box>
             </Paper>
         </div>

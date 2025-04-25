@@ -20,6 +20,7 @@ import SelectField from "../../../components/select";
 
 const Patients = () => {
     const [active, setActive] = useState(false)
+    const [tableLoader, setTableLoader] = useState(true)
     const navigate = useNavigate()
     const [status, setStatus] = useState(null)
     const [data, setData] = useState([])
@@ -47,10 +48,14 @@ const Patients = () => {
 
 
             setData(data?.data?.patients)
+           
 
 
         } catch (error) {
             console.error("Error fetching location:", error);
+        }
+        finally{
+            setTableLoader(false)
         }
     };
     // // Dummy data
@@ -77,6 +82,7 @@ const Patients = () => {
         {
             header: "Name",
             accessorKey: "name",
+            accessorFn: (row) => `${row.first_name} ${row.last_name}`,
             cell: ({ row }) => (
                 <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex' }} >
 
@@ -268,15 +274,15 @@ const Patients = () => {
 
                 }}
             />
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff !important', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff !important', borderRadius: '12px' }}>
                 <Box sx={{ p: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="h4" sx={{ mt: 4,mb:4, fontWeight: 600 }}>
-                    Patients
-                </Typography>
+                        <Typography variant="h5" sx={{ mt: 4, mb: 4, fontWeight: 600 }}>
+                            Patients
+                        </Typography>
                         <PrimaryButton onClick={() => navigate('/create-patient')} title={"Create"} />
                     </Box>
-                    {<DataTable data={data} columns={columns} />}
+                    {<DataTable alphabets={true} loading={tableLoader} data={data} columns={columns} />}
                 </Box>
             </Paper>
         </div>

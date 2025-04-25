@@ -5,7 +5,7 @@ import { Box, Paper } from "@mui/material";
 import { useState } from "react";
 
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Manage sidebar state
+  const [sidebarOpen, setSidebarOpen] = useState(true); // Manage sidebar state
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
@@ -22,7 +22,7 @@ const DashboardLayout = () => {
           width: sidebarOpen ? "calc(100% - 210px)" : "calc(100% - 50px)", // Dynamic width
           transition: "width 0.3s ease, margin-left 0.3s ease", // Added transition for margin-left
           overflowX: "hidden",
-          ml: sidebarOpen ? "241.5px" : "82px", // Ensure proper alignment
+          ml: sidebarOpen ? "252px" : "82px", // Ensure proper alignment
         }}
         
       >
@@ -40,7 +40,7 @@ const DashboardLayout = () => {
         </Box>
 
         {/* Page Content */}
-        <Box sx={{ flexGrow: 1, p: "24px" }}>
+        <Box sx={{ flexGrow: 1, p: "24px",backgroundColor:"#eff6ff" }}>
           <Outlet />
         </Box>
       </Box>

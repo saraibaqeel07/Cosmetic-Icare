@@ -106,7 +106,7 @@ const CreatePatient = () => {
 
             console.log(response?.data?.data?.path);
 
-            setImageURL('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+            setImageURL( response?.data?.data?.path);
 
 
         } catch (error) {
@@ -556,7 +556,7 @@ const CreatePatient = () => {
                     )}
                 </DialogContent>
             </Dialog>
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff', borderRadius: '12px' }}>
 
 
 
@@ -596,7 +596,7 @@ const CreatePatient = () => {
                                         }}
                                     >
                                         <Avatar
-                                            src={imageURL}
+                                            src={import.meta.env.VITE_BASE_URL+imageURL}
                                             alt="Profile"
                                             sx={{
                                                 position: "relative",

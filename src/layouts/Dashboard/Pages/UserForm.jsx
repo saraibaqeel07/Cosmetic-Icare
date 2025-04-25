@@ -86,14 +86,14 @@ const UserForm = () => {
                     }
     
                     const response = await axios.post(
-                        'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                        `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                         obj
                     );
     
                     console.log(response?.data?.data?.path);
     
     
-                    setSavedImage('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+                    setSavedImage( response?.data?.data?.path);
     
     
                 } catch (error) {
@@ -131,14 +131,14 @@ const UserForm = () => {
                 }
 
                 const response = await axios.post(
-                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                     `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
                 console.log(response?.data?.data?.path);
 
                 showSuccessToast('Successfully Saved ')
-                setValue(`furtherFields.${index}.sign`, 'https://cosmetic.theappkit.com' + response?.data?.data?.path);
+                setValue(`furtherFields.${index}.sign`, response?.data?.data?.path);
 
 
             } catch (error) {
@@ -195,13 +195,13 @@ const UserForm = () => {
                 }
 
                 const response = await axios.post(
-                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                     `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
                 console.log(response?.data?.data?.path);
 
-                setSignature('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+                setSignature(response?.data?.data?.path);
                 showSuccessToast('Successfully Saved ')
 
 
@@ -227,13 +227,13 @@ const UserForm = () => {
                 }
 
                 const response = await axios.post(
-                    'https://cosmetic.theappkit.com/api/system/uploadDoc',
+                     `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
                 console.log(response?.data?.data?.path);
 
-                setConsentSign('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+                setConsentSign(response?.data?.data?.path);
 
                 showSuccessToast('Successfully Saved ')
             } catch (error) {
@@ -339,7 +339,7 @@ const UserForm = () => {
 
             console.log(response?.data?.data?.path);
 
-            setImageURL('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+            setImageURL(response?.data?.data?.path);
 
 
         } catch (error) {
@@ -855,11 +855,11 @@ const UserForm = () => {
 
 
     return (
-        <div>
+        <div style={{backgroundColor:"#eff6ff"}}>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Box component={'img'} src={Images.logo} width={'200px'} sx={{ textAlign: 'center' }}></Box>
             </Box>
-            <Paper sx={{ width: "90%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px', margin: '40px auto' }}>
+            <Paper sx={{ width: "90%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff', borderRadius: '12px', margin: '40px auto' }}>
 
 
 
@@ -1457,7 +1457,7 @@ const UserForm = () => {
                                                     </Grid> : (
                                                         <Grid item xs={6}>
                                                             <Typography>Saved Image:</Typography>
-                                                            <img src={savedImage ? savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                                            <img src={savedImage ? import.meta.env.VITE_BASE_URL+savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
                                                         </Grid>
                                                     )}
                         
@@ -1600,7 +1600,7 @@ const UserForm = () => {
                                         className: "sigCanvas",
                                         style: { border: "1px dashed black" },
                                     }}
-                                /> : <Box component={'img'} src={signature} sx={{width: 300,
+                                /> : <Box component={'img'} src={import.meta.env.VITE_BASE_URL+signature} sx={{width: 300,
                                     height: 150, border: "1px dashed black"}}>
                                     </Box>}
                                 {(!signature || !formData?.is_completed)   && <Grid container spacing={1} mt={1}>
@@ -1682,7 +1682,7 @@ const UserForm = () => {
                                         className: "sigCanvas",
                                         style: { border: "1px dashed black" },
                                     }}
-                                /> : <Box component={'img'} src={consentSign} sx={{width: 300,
+                                /> : <Box component={'img'} src={import.meta.env.VITE_BASE_URL+consentSign} sx={{width: 300,
                                     height: 150, border: "1px dashed black"}}>
                                     </Box>}
                                 {(!consentSign || !formData?.is_completed)  && <Grid container spacing={1} mt={1}>

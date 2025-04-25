@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 26,
+            "activePatchIndex": 29,
             "patches": [
                 {
                     "date": 1743683641189,
@@ -112,6 +112,18 @@
                 {
                     "date": 1743758999294,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -321,9 +321,9 @@\n }\n \n th {\n   background-color: #0052a8 !important;\n-  border-radius: 10px !important;\n+\n   color: white !important;\n }\n \n kendo-pdf-document p {\n"
+                },
+                {
+                    "date": 1744117586613,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -320,9 +320,9 @@\n   font-style: normal;\n }\n \n th {\n-  background-color: #0052a8 !important;\n+  background-color: #0b0962 !important;\n \n   color: white !important;\n }\n \n"
+                },
+                {
+                    "date": 1744117703250,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -320,9 +320,9 @@\n   font-style: normal;\n }\n \n th {\n-  background-color: #0b0962 !important;\n+  background-color: #46aef5 !important;\n \n   color: white !important;\n }\n \n"
+                },
+                {
+                    "date": 1744117776435,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n #root {\n   font-family: \"Outfit\", serif !important;\n   padding: 0 !important;\n   width: 100% !important;\n-  --lightScrollbar: #03091A;\n+  --lightScrollbar: #46aef5;\n \n }\n \n \n"
                 }
             ],
             "date": 1743683641189,

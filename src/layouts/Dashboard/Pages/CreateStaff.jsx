@@ -103,7 +103,7 @@ const CreateStaff = () => {
 
             console.log(response?.data?.data?.path);
 
-            setImageURL('https://cosmetic.theappkit.com' + response?.data?.data?.path);
+            setImageURL(response?.data?.data?.path);
 
 
         } catch (error) {
@@ -538,7 +538,7 @@ const CreateStaff = () => {
                     )}
                 </DialogContent>
             </Dialog>
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none',backgroundColor:'#eff6ff',borderRadius:'12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none',backgroundColor:'#ffff',borderRadius:'12px' }}>
 
 
 
@@ -576,7 +576,7 @@ const CreateStaff = () => {
                                         }}
                                     >
                                         <Avatar
-                                            src={imageURL}
+                                            src={import.meta.env.VITE_BASE_URL+imageURL}
                                             alt="Profile"
                                             sx={{
                                                 position: "relative",
@@ -634,7 +634,7 @@ const CreateStaff = () => {
                         {/* <Grid item xs={5} display={'flex'} alignItems={'flex-end'}>
               <PrimaryButton onClick={() => SendOtp()} title={"Update Password"} />
             </Grid> */}
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}><InputField
                             label={"First Name :*"}
                             size={'small'}
                             placeholder={"First Name"}
@@ -645,7 +645,7 @@ const CreateStaff = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}><InputField
                             label={"Last Name :*"}
                             size={'small'}
                             placeholder={"Last Name"}
@@ -656,7 +656,7 @@ const CreateStaff = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}><InputField
                             label={"Email :*"}
                             size={'small'}
                             placeholder={"Email"}
@@ -667,7 +667,7 @@ const CreateStaff = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}><InputField
                             label={"Phone Number :*"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -680,7 +680,7 @@ const CreateStaff = () => {
                         /></Grid>
 
 
-                        <Grid item xs={3} mt={2}>
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}>
                             <InputField
                                 label={"Password :*"}
                                 size={'small'}
@@ -706,7 +706,7 @@ const CreateStaff = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={3} mt={2}>
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}>
                             <InputField
                                 label={"Confirm Password :*"}
                                 size={'small'}

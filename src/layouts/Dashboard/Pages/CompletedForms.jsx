@@ -31,6 +31,7 @@ const CompletedForms = () => {
     const [confirmationDialog, setConfirmationDialog] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
     const [open, setOpen] = useState(false)
+    const [tableLoader, setTableLoader] = useState(true)
     const {
         register: register2,
         handleSubmit: handleSubmit2,
@@ -57,6 +58,9 @@ const CompletedForms = () => {
 
         } catch (error) {
             console.error("Error fetching location:", error);
+        }
+        finally{
+            setTableLoader(false)
         }
     };
     // // Dummy data
@@ -87,28 +91,27 @@ const CompletedForms = () => {
 
         },
         {
+            id: "consultation_date",
             header: "Consultation Date",
-            accessorKey: "date",
+            // Remove accessorKey and fix accessorFn to use row directly
+            accessorFn: (row) => moment(row.consultation_date).format("MM-DD-YYYY"),
             cell: ({ row }) => (
-
-                <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                    {moment(row?.original?.consultation_date).format('MM-DD-YYYY')}
-                </Box>
+              <Box variant="contained" color="primary" sx={{ cursor: "pointer", display: "flex", gap: 2 }}>
+                {moment(row.original.consultation_date).format("MM-DD-YYYY")}
+              </Box>
             ),
-
-        },
-        {
+          },
+          {
+            id: "treatment_date",
             header: "Treatment Date",
-            accessorKey: "date",
+            // Remove accessorKey and fix accessorFn to use row directly
+            accessorFn: (row) => moment(row.treatment_date).format("MM-DD-YYYY"),
             cell: ({ row }) => (
-
-                <Box variant="contained" color="primary" sx={{ cursor: 'pointer', display: 'flex', gap: 2 }} >
-                    {moment(row?.original?.treatment_date).format('MM-DD-YYYY')}
-                </Box>
+              <Box variant="contained" color="primary" sx={{ cursor: "pointer", display: "flex", gap: 2 }}>
+                {moment(row.original.treatment_date).format("MM-DD-YYYY")}
+              </Box>
             ),
-
-        },
-
+          },
         {
             header: "Actions",
             cell: ({ row }) => (
@@ -271,15 +274,15 @@ const CompletedForms = () => {
 
                 }}
             />
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff !important', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff !important', borderRadius: '12px' }}>
                 <Box sx={{ p: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="h4" sx={{ mt: 4, mb: 4, fontWeight: 600 }}>
+                        <Typography variant="h5" sx={{ mt: 4, mb: 4, fontWeight: 600 }}>
                             Completed Forms
                         </Typography>
                         <PrimaryButton onClick={() => navigate('/create-consent-form')} title={"Create"} />
                     </Box>
-                    {<DataTable data={data} columns={columns} />}
+                    {<DataTable loading={tableLoader} data={data} columns={columns} />}
                 </Box>
             </Paper>
         </div>

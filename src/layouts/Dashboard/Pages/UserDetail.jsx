@@ -103,7 +103,7 @@ const UserDetail = () => {
 
     return (
         <div>
-            <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
+            <Typography variant="h5" sx={{ mb: 4, fontWeight: 500 }}>
                 User Detail
             </Typography>
 
@@ -181,7 +181,7 @@ const UserDetail = () => {
                 </Grid>
             </Grid>
             <Box mt={5}>
-           {showTable  && <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
+           {showTable  && <Typography variant="h5" sx={{ mb: 4, fontWeight: 500 }}>
                Appointments
             </Typography>}
             {showTable  && <DataTable data={appointments} columns={columns} />}

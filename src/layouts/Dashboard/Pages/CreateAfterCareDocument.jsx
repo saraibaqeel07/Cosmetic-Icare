@@ -115,7 +115,7 @@ const CreateAfterDocument = () => {
                 console.log("Uploading file:", files[i].name); // Debugging log
 
                 const response = await axios.post(
-                    "https://cosmetic.theappkit.com/api/system/upload",
+                    `${import.meta.env.VITE_BASE_URL}/api/system/upload`,
                     formData,
                     {
                         headers: {
@@ -126,7 +126,7 @@ const CreateAfterDocument = () => {
 
                 const imagePath = response?.data?.data?.path;
                 if (imagePath) {
-                    uploadedImages.push("https://cosmetic.theappkit.com" + imagePath);
+                    uploadedImages.push(imagePath);
                     console.log("Uploaded Image URL:", "https://cosmetic.theappkit.com" + imagePath);
                 }
             }
@@ -146,7 +146,7 @@ const CreateAfterDocument = () => {
     return (
         <div>
 
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff', borderRadius: '12px' }}>
 
 
 
@@ -156,7 +156,7 @@ const CreateAfterDocument = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}><InputField
                             label={"Title :*"}
                             size={'small'}
                             placeholder={"Title"}
@@ -167,7 +167,7 @@ const CreateAfterDocument = () => {
 
                             })}
                         /></Grid>
-                        <Grid item xs={3} mt={2}><InputField
+                        <Grid item lg={3}  md={4} sm={6} xs={6}mt={2}><InputField
                             label={"Content :*"}
                             size={'small'}
                             placeholder={"Content"}
@@ -179,7 +179,7 @@ const CreateAfterDocument = () => {
                             })}
                         /></Grid>
 
-                        <Grid item xs={12} sm={5}>
+                        <Grid item xs={12} sm={12}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", mt: 2,
                                 textAlign: "left",
@@ -294,7 +294,7 @@ const CreateAfterDocument = () => {
                                     uploadedImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             {/* Clickable Document Icon */}
-                                            <a href={file} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit" }}>
+                                            <a href={import.meta.env.VITE_BASE_URL+file} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit" }}>
                                                 <DescriptionIcon sx={{ fontSize: 50, color: "#1976d2", cursor: "pointer" }} />
                                             </a>
 

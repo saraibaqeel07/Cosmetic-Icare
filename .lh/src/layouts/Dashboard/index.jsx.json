@@ -1,0 +1,66 @@
+{
+    "sourceFile": "src/layouts/Dashboard/index.jsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 12,
+            "patches": [
+                {
+                    "date": 1744115449611,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1744115461918,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n         sx={{\r\n           flexGrow: 1,\r\n           display: \"flex\",\r\n           flexDirection: \"column\",\r\n-          width: sidebarOpen ? \"calc(100% - 230px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n+          width: sidebarOpen ? \"calc(100% - 220px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n           ml: sidebarOpen ? \"241.5px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n"
+                },
+                {
+                    "date": 1744115479878,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n         sx={{\r\n           flexGrow: 1,\r\n           display: \"flex\",\r\n           flexDirection: \"column\",\r\n-          width: sidebarOpen ? \"calc(100% - 220px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n+          width: sidebarOpen ? \"calc(100% - 230px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n           ml: sidebarOpen ? \"241.5px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n"
+                },
+                {
+                    "date": 1744115489096,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,12 +18,12 @@\n         sx={{\r\n           flexGrow: 1,\r\n           display: \"flex\",\r\n           flexDirection: \"column\",\r\n-          width: sidebarOpen ? \"calc(100% - 230px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n+          width: sidebarOpen ? \"calc(100% - 210px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n-          ml: sidebarOpen ? \"241.5px\" : \"82px\", // Ensure proper alignment\r\n+          ml: sidebarOpen ? \"242px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n         \r\n       >\r\n         {/* Header */}\r\n"
+                },
+                {
+                    "date": 1744115496720,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n           flexDirection: \"column\",\r\n           width: sidebarOpen ? \"calc(100% - 210px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n-          ml: sidebarOpen ? \"242px\" : \"82px\", // Ensure proper alignment\r\n+          ml: sidebarOpen ? \"250px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n         \r\n       >\r\n         {/* Header */}\r\n"
+                },
+                {
+                    "date": 1744115505206,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n           flexDirection: \"column\",\r\n           width: sidebarOpen ? \"calc(100% - 210px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n-          ml: sidebarOpen ? \"250px\" : \"82px\", // Ensure proper alignment\r\n+          ml: sidebarOpen ? \"255px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n         \r\n       >\r\n         {/* Header */}\r\n"
+                },
+                {
+                    "date": 1744115513353,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n           flexDirection: \"column\",\r\n           width: sidebarOpen ? \"calc(100% - 210px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n-          ml: sidebarOpen ? \"255px\" : \"82px\", // Ensure proper alignment\r\n+          ml: sidebarOpen ? \"252px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n         \r\n       >\r\n         {/* Header */}\r\n"
+                },
+                {
+                    "date": 1744115530893,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n           flexDirection: \"column\",\r\n           width: sidebarOpen ? \"calc(100% - 210px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n-          ml: sidebarOpen ? \"252px\" : \"82px\", // Ensure proper alignment\r\n+          ml: sidebarOpen ? \"251px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n         \r\n       >\r\n         {/* Header */}\r\n"
+                },
+                {
+                    "date": 1744115536217,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n           flexDirection: \"column\",\r\n           width: sidebarOpen ? \"calc(100% - 210px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n           transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n           overflowX: \"hidden\",\r\n-          ml: sidebarOpen ? \"251px\" : \"82px\", // Ensure proper alignment\r\n+          ml: sidebarOpen ? \"252px\" : \"82px\", // Ensure proper alignment\r\n         }}\r\n         \r\n       >\r\n         {/* Header */}\r\n"
+                },
+                {
+                    "date": 1744115558468,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n import { Box, Paper } from \"@mui/material\";\r\n import { useState } from \"react\";\r\n \r\n const DashboardLayout = () => {\r\n-  const [sidebarOpen, setSidebarOpen] = useState(false); // Manage sidebar state\r\n+  const [sidebarOpen, setSidebarOpen] = useState(true); // Manage sidebar state\r\n \r\n   return (\r\n     <Box sx={{ display: \"flex\", height: \"100vh\" }}>\r\n       {/* Sidebar */}\r\n"
+                },
+                {
+                    "date": 1744130429728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,9 +39,9 @@\n           <Header />\r\n         </Box>\r\n \r\n         {/* Page Content */}\r\n-        <Box sx={{ flexGrow: 1, p: \"24px\" }}>\r\n+        <Box sx={{ flexGrow: 1, p: \"24px\",backgroundColor:\"#ffff\" }}>\r\n           <Outlet />\r\n         </Box>\r\n       </Box>\r\n     </Box>\r\n"
+                },
+                {
+                    "date": 1744130442193,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,9 +39,9 @@\n           <Header />\r\n         </Box>\r\n \r\n         {/* Page Content */}\r\n-        <Box sx={{ flexGrow: 1, p: \"24px\",backgroundColor:\"#ffff\" }}>\r\n+        <Box sx={{ flexGrow: 1, p: \"24px\",backgroundColor:\"\" }}>\r\n           <Outlet />\r\n         </Box>\r\n       </Box>\r\n     </Box>\r\n"
+                },
+                {
+                    "date": 1744130474454,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,9 +39,9 @@\n           <Header />\r\n         </Box>\r\n \r\n         {/* Page Content */}\r\n-        <Box sx={{ flexGrow: 1, p: \"24px\",backgroundColor:\"\" }}>\r\n+        <Box sx={{ flexGrow: 1, p: \"24px\",backgroundColor:\"#eff6ff\" }}>\r\n           <Outlet />\r\n         </Box>\r\n       </Box>\r\n     </Box>\r\n"
+                }
+            ],
+            "date": 1744115449611,
+            "name": "Commit-0",
+            "content": "import { Outlet } from \"react-router-dom\";\r\nimport Header from \"./Header\";\r\nimport Sidebar from \"./Sidebar\";\r\nimport { Box, Paper } from \"@mui/material\";\r\nimport { useState } from \"react\";\r\n\r\nconst DashboardLayout = () => {\r\n  const [sidebarOpen, setSidebarOpen] = useState(false); // Manage sidebar state\r\n\r\n  return (\r\n    <Box sx={{ display: \"flex\", height: \"100vh\" }}>\r\n      {/* Sidebar */}\r\n      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />\r\n\r\n      {/* Main Content */}\r\n      <Box\r\n        component=\"main\"\r\n        sx={{\r\n          flexGrow: 1,\r\n          display: \"flex\",\r\n          flexDirection: \"column\",\r\n          width: sidebarOpen ? \"calc(100% - 230px)\" : \"calc(100% - 50px)\", // Dynamic width\r\n          transition: \"width 0.3s ease, margin-left 0.3s ease\", // Added transition for margin-left\r\n          overflowX: \"hidden\",\r\n          ml: sidebarOpen ? \"241.5px\" : \"82px\", // Ensure proper alignment\r\n        }}\r\n        \r\n      >\r\n        {/* Header */}\r\n        <Box\r\n          component=\"header\"\r\n          sx={{\r\n            position: \"sticky\",\r\n            top: 0,\r\n            zIndex: 1100,\r\n            width: \"100%\",\r\n          }}\r\n        >\r\n          <Header />\r\n        </Box>\r\n\r\n        {/* Page Content */}\r\n        <Box sx={{ flexGrow: 1, p: \"24px\" }}>\r\n          <Outlet />\r\n        </Box>\r\n      </Box>\r\n    </Box>\r\n  );\r\n};\r\n\r\nexport default DashboardLayout;\r\n"
+        }
+    ]
+}

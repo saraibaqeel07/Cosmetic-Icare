@@ -116,7 +116,7 @@ const UpdateAfterCareDocument = () => {
                 console.log("Uploading file:", files[i].name); // Debugging log
 
                 const response = await axios.post(
-                    "https://cosmetic.theappkit.com/api/system/upload",
+                    `${import.meta.env.VITE_BASE_URL}/api/system/upload`,
                     formData,
                     {
                         headers: {
@@ -127,7 +127,7 @@ const UpdateAfterCareDocument = () => {
 
                 const imagePath = response?.data?.data?.path;
                 if (imagePath) {
-                    uploadedImages.push("https://cosmetic.theappkit.com" + imagePath);
+                    uploadedImages.push( imagePath);
                     console.log("Uploaded Image URL:", "https://cosmetic.theappkit.com" + imagePath);
                 }
             }
@@ -172,7 +172,7 @@ const UpdateAfterCareDocument = () => {
     return (
         <div>
 
-            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", boxShadow: 'none', backgroundColor: '#ffff', borderRadius: '12px' }}>
 
 
 
@@ -318,7 +318,7 @@ const UpdateAfterCareDocument = () => {
                                     uploadedImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             {/* Clickable Document Icon */}
-                                            <a href={file} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit" }}>
+                                            <a href={import.meta.env.VITE_BASE_URL+file} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit" }}>
                                                 <DescriptionIcon sx={{ fontSize: 50, color: "#1976d2", cursor: "pointer" }} />
                                             </a>
 

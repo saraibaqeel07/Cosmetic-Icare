@@ -137,7 +137,7 @@ console.log(selectedChips);
 
     return (
         <div>
-            <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
+            <Typography variant="h5" sx={{ mb: 4, fontWeight: 500 }}>
                 Settings
             </Typography>
             <Box component="form" onSubmit={handleSubmit(onSubmit)}>

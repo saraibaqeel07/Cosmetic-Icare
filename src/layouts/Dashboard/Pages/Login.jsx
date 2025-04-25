@@ -55,9 +55,12 @@ function Login() {
     const {
         register,
         handleSubmit,
-
+        watch,
         formState: { errors },
     } = useForm();
+
+    const emailValue = watch("email");
+    const passwordValue = watch("password");
     const {
         register: register3,
         handleSubmit: handleSubmit3,
@@ -212,27 +215,27 @@ function Login() {
 
     return (
         <Box
-        sx={{
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundImage: `url(${Images?.loginBg})`, // Corrected syntax
-            backgroundSize: "cover", // Ensures the image covers the entire background
-            backgroundPosition: "center", // Centers the image
-            position: "relative", // Required for absolute positioning of pseudo-element
-            "&::before": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(239, 246, 255, 0.5)", // Semi-transparent overlay
-                zIndex: 1,
-            },
-        }}
-        
+            sx={{
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundImage: `url(${Images?.loginBg})`, // Corrected syntax
+                backgroundSize: "cover", // Ensures the image covers the entire background
+                backgroundPosition: "center", // Centers the image
+                position: "relative", // Required for absolute positioning of pseudo-element
+                "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(239, 246, 255, 0.5)", // Semi-transparent overlay
+                    zIndex: 1,
+                },
+            }}
+
 
         >
             <Paper
@@ -247,9 +250,9 @@ function Login() {
                     textAlign: "center",
                     backgroundColor: "white",
                     boxShadow: " rgba(0, 0, 0, 0.35) 0px 5px 15px", // Corrected shadow
-        
+
                 }}
-                
+
             >
                 <Box sx={{ display: 'flex', justifyContent: "center", mb: 4, }}>
                     <CardMedia
@@ -271,29 +274,30 @@ function Login() {
                         type="email"
                         variant="outlined"
                         fullWidth
+                        InputLabelProps={{ shrink: !!emailValue }}
                         sx={{
                             borderRadius: "12px",
                             ".MuiOutlinedInput-root": {
-                              border: "2px solid #e0e0e0",
                               borderRadius: "12px",
-                              outline: "none",
                               transition: "all 0.2s ease-in-out",
-                              "& fieldset": { border: "none" },
-                              "&:hover": {
+                          
+                              // Default state
+                              "& fieldset": {
+                                border: "2px solid #e0e0e0",
+                              },
+                          
+                              // Hover state
+                              "&:hover fieldset": {
                                 border: "2px solid #0076bf",
                               },
-                              "&.Mui-focused": {
+                          
+                              // Focused state
+                              "&.Mui-focused fieldset": {
                                 border: "2px solid #0076bf",
-                                "& fieldset": { border: "none" },
-                                svg: {
-                                  path: {
-                                    fill: "#0076bf",
-                                  },
-                                },
                               },
                             },
-                          
                           }}
+                          
                         {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -310,47 +314,51 @@ function Login() {
                         type={isVisible ? "text" : "password"}
                         variant="outlined"
                         fullWidth
+                        InputLabelProps={{ shrink: !!passwordValue }}
+                        
+                          
+                        sx={{
+                            borderRadius: "12px",
+                            mt: 4,
+                            mb: 4,
+                            ".MuiOutlinedInput-root": {
+                                borderRadius: "12px",
+                                transition: "all 0.2s ease-in-out",
+                            
+                                // Default state
+                                "& fieldset": {
+                                  border: "2px solid #e0e0e0",
+                                },
+                            
+                                // Hover state
+                                "&:hover fieldset": {
+                                  border: "2px solid #0076bf",
+                                },
+                            
+                                // Focused state
+                                "&.Mui-focused fieldset": {
+                                  border: "2px solid #0076bf",
+                                },
+                              },
+                        }}
                         {...register("password", { required: "Password is required" })}
                         error={!!errors.password}
                         helperText={errors.password ? errors.password.message : ""}
-                        sx={{
-                            borderRadius: "12px",
-                            mt:4,
-                            mb:4,
-                            ".MuiOutlinedInput-root": {
-                              border: "2px solid #e0e0e0",
-                              borderRadius: "12px",
-                              outline: "none",
-                              transition: "all 0.2s ease-in-out",
-                              "& fieldset": { border: "none" },
-                              "&:hover": {
-                                border: "2px solid #0076bf",
-                              },
-                              "&.Mui-focused": {
-                                border: "2px solid #0076bf",
-                                "& fieldset": { border: "none" },
-                                svg: {
-                                  path: {
-                                    fill: "#0076bf",
-                                  },
-                                },
-                              },
-                            },
-                           
-                          }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
                                         onClick={() => setIsVisible(!isVisible)}
                                         edge="end"
-                                        sx={{
-                                            ':focus': {
-                                                outline: 'none !important'
-                                            }
-                                        }}
+                                        sx={{ ":focus": { outline: "none !important" } }}
                                     >
-                                        {isVisible ? <VisibilityOff sx={{ color: "#0F172A", fontSize: "20px" }} /> : <Visibility sx={{ color: "#0F172A", fontSize: "20px" }} />}
+                                        {isVisible ? (
+                                            <VisibilityOff
+                                                sx={{ color: "#0F172A", fontSize: "20px" }}
+                                            />
+                                        ) : (
+                                            <Visibility sx={{ color: "#0F172A", fontSize: "20px" }} />
+                                        )}
                                     </IconButton>
                                 </InputAdornment>
                             ),
@@ -364,13 +372,13 @@ function Login() {
                         fullWidth
                         variant={"contained"}
                         sx={{
-                            background: " #0052a8",
+                            background: " #46aef5",
                             color: 'white',
                             borderRadius: "8px",
                             textTransform: 'capitalize',
                             p: "14px 40px",
                             "&.Mui-disabled": {
-                                background: "#337DBD",
+                                background: "#46aef5",
                             },
                         }}
                         disabled={isLoading}

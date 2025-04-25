@@ -7,6 +7,7 @@ import { ToasterComponent } from "./components/Toaster";
 import Login from "./layouts/Dashboard/Pages/Login";
 import { AuthContext } from "./Context/AuthContext";
 import { Box, CircularProgress } from "@mui/material";
+const UserDoc = lazy(() => import("../src/layouts/Dashboard/Pages/UserDoc"))
 const UserForm = lazy(() => import("../src/layouts/Dashboard/Pages/UserForm"))
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Prevents redirects until state is initialized
+    return <Box sx={{display:'flex',justifyContent:'center'}}><CircularProgress sx={{color:'#0052a8'}} size={80} /></Box>; // Prevents redirects until state is initialized
   }
 
   return (
@@ -47,6 +48,7 @@ function App() {
           {/* Prevents unwanted redirect before user state is restored */}
           <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
           <Route path='/patient/form/:id' element={<UserForm/>}/>
+          <Route path='/patient/doc/:id' element={<UserDoc/>}/>
           {/* DashboardLayout should wrap all child routes */}
           {user && (
             <Route path="/" element={<DashboardLayout />}>

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "package.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1744148851991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1744148851991,
+            "name": "Commit-0",
+            "content": "{\n  \"name\": \"naesm\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite --host\",\n    \"build\": \"vite build\",\n    \"lint\": \"eslint .\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"@emotion/react\": \"^11.14.0\",\n    \"@emotion/styled\": \"^11.14.0\",\n    \"@mui/icons-material\": \"^6.4.3\",\n    \"@mui/lab\": \"^6.0.0-beta.27\",\n    \"@mui/material\": \"^6.4.3\",\n    \"@mui/styled-engine\": \"^6.4.3\",\n    \"@mui/styles\": \"^6.4.4\",\n    \"@mui/x-date-pickers\": \"^7.28.0\",\n    \"@progress/kendo-file-saver\": \"^1.1.1\",\n    \"@progress/kendo-react-pdf\": \"^7.3.0\",\n    \"@tanstack/react-table\": \"^8.20.6\",\n    \"axios\": \"^1.7.9\",\n    \"crypto-js\": \"^4.2.0\",\n    \"date-fns\": \"^4.1.0\",\n    \"dayjs\": \"^1.11.13\",\n    \"jquery\": \"^3.7.1\",\n    \"lightbox.js-react\": \"^1.4.7\",\n    \"moment\": \"^2.30.1\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"^7.54.2\",\n    \"react-hot-toast\": \"^2.5.2\",\n    \"react-otp-input\": \"^3.1.1\",\n    \"react-router-dom\": \"^6.29.0\",\n    \"react-signature-canvas\": \"^1.1.0-alpha.1\",\n    \"rsuite\": \"^5.78.0\",\n    \"stream-chat\": \"^8.57.6\",\n    \"stream-chat-react\": \"^12.13.0\",\n    \"yet-another-react-lightbox\": \"^3.21.7\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"^9.19.0\",\n    \"@types/react\": \"^19.0.8\",\n    \"@types/react-dom\": \"^19.0.3\",\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"eslint\": \"^9.19.0\",\n    \"eslint-plugin-react\": \"^7.37.4\",\n    \"eslint-plugin-react-hooks\": \"^5.0.0\",\n    \"eslint-plugin-react-refresh\": \"^0.4.18\",\n    \"globals\": \"^15.14.0\",\n    \"vite\": \"^6.1.0\"\n  }\n}\n"
+        }
+    ]
+}

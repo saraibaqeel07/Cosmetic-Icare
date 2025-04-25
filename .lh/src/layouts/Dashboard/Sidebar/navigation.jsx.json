@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 18,
             "patches": [
                 {
                     "date": 1743295751151,
@@ -28,6 +28,58 @@
                 {
                     "date": 1743760531747,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -59,9 +59,9 @@\n     ],\r\n   },\r\n   {\r\n     name: \"Forms\",\r\n-    path: \"\",\r\n+    path: \"/consent-forms\",\r\n     component: \"\",\r\n     icon: <DescriptionIcon sx={{ fontSize: \"22px\" }} />, // Generic form-related icon\r\n     child: [\r\n       {\r\n"
+                },
+                {
+                    "date": 1743952433346,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,23 +9,11 @@\n import FormatListBulletedIcon from \"@mui/icons-material/FormatListBulleted\";\r\n import AssignmentIcon from \"@mui/icons-material/Assignment\";\r\n \r\n \r\n-const Appointments = lazy(() => import(\"../Pages/Appoinments\"))\r\n-const AppointmentsQuestions = lazy(() => import(\"../Pages/AppointmentQuestions\"))\r\n-const Users = lazy(() => import(\"../Pages/Users\"))\r\n-const Jobs = lazy(() => import(\"../Pages/Jobs\"))\r\n-const Faqs = lazy(() => import(\"../Pages/Faqs\"))\r\n-const Places = lazy(() => import(\"../Pages/Places\"))\r\n-const Events = lazy(() => import(\"../Pages/Events\"))\r\n-const Doctors = lazy(() => import(\"../Pages/Doctors\"))\r\n+\r\n const Dashboard = lazy(() => import(\"../Pages/Dashboard\"))\r\n-const Settings = lazy(() => import(\"../Pages/Settings\"))\r\n-const BlockSlots = lazy(() => import(\"../Pages/BlockSlots\"))\r\n-const ChatPage = lazy(() => import(\"../Pages/Chat\"))\r\n-const Topics = lazy(() => import(\"../Pages/Topics\"))\r\n-const Posts = lazy(() => import(\"../Pages/Posts\"))\r\n-const Blogs = lazy(() => import(\"../Pages/Blogs\"))\r\n+\r\n const Staffs = lazy(() => import(\"../Pages/Staffs\"))\r\n const DeletedPatients = lazy(() => import(\"../Pages/DeletedPatients\"))\r\n const AfterCareDocuments = lazy(() => import(\"../Pages/AfterCareDocuments\"))\r\n const CreateForm = lazy(() => import(\"../Pages/CreateConsentForm\"))\r\n"
+                },
+                {
+                    "date": 1744115161605,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,15 +25,10 @@\n     path: \"/dashboard\",\r\n     component: Dashboard,\r\n     icon: <DashboardIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n+ \r\n   {\r\n-    name: \"Staff\",\r\n-    path: \"/staff\",\r\n-    component: Staffs,\r\n-    icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n-  },\r\n-  {\r\n     name: \"Patients\",\r\n     path: \"/patients\",\r\n     component: \"\",\r\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n@@ -77,8 +72,14 @@\n     path: \"/aftercare-documents\",\r\n     component: AfterCareDocuments,\r\n     icon: <ArticleIcon sx={{ fontSize: \"22px\" }} />, // Document-related icon\r\n   },\r\n+  {\r\n+    name: \"Staff\",\r\n+    path: \"/staff\",\r\n+    component: Staffs,\r\n+    icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n+  },\r\n ];\r\n \r\n export default Navigation; \r\n \r\n"
+                },
+                {
+                    "date": 1744115176668,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -73,9 +73,9 @@\n     component: AfterCareDocuments,\r\n     icon: <ArticleIcon sx={{ fontSize: \"22px\" }} />, // Document-related icon\r\n   },\r\n   {\r\n-    name: \"Staff\",\r\n+    name: \"Staffs\",\r\n     path: \"/staff\",\r\n     component: Staffs,\r\n     icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n"
+                },
+                {
+                    "date": 1744115280852,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n     icon: <DashboardIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n  \r\n   {\r\n-    name: \"Patients\",\r\n+    name: \"Patients Directory\",\r\n     path: \"/patients\",\r\n     component: \"\",\r\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n     child: [\r\n"
+                },
+                {
+                    "date": 1744115288955,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n     icon: <DashboardIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n  \r\n   {\r\n-    name: \"Patients Directory\",\r\n+    name: \"Patient Directory\",\r\n     path: \"/patients\",\r\n     component: \"\",\r\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n     child: [\r\n"
+                },
+                {
+                    "date": 1744115304819,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,9 +38,16 @@\n         path: \"/deleted-patients\",\r\n         component: DeletedPatients,\r\n         icon: <PersonOffIcon sx={{ fontSize: \"22px\" }} />,\r\n       },\r\n+      {\r\n+        name: \"Deleted Patients\",\r\n+        path: \"/deleted-patients\",\r\n+        component: DeletedPatients,\r\n+        icon: <PersonOffIcon sx={{ fontSize: \"22px\" }} />,\r\n+      },\r\n     ],\r\n+    \r\n   },\r\n   {\r\n     name: \"Forms\",\r\n     path: \"/consent-forms\",\r\n"
+                },
+                {
+                    "date": 1744115330748,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,9 +33,9 @@\n     component: \"\",\r\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n     child: [\r\n       {\r\n-        name: \"Deleted Patients\",\r\n+        name: \"Directory\",\r\n         path: \"/deleted-patients\",\r\n         component: DeletedPatients,\r\n         icon: <PersonOffIcon sx={{ fontSize: \"22px\" }} />,\r\n       },\r\n"
+                },
+                {
+                    "date": 1744115336875,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,9 +34,9 @@\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n     child: [\r\n       {\r\n         name: \"Directory\",\r\n-        path: \"/deleted-patients\",\r\n+        path: \"/patients\",\r\n         component: DeletedPatients,\r\n         icon: <PersonOffIcon sx={{ fontSize: \"22px\" }} />,\r\n       },\r\n       {\r\n"
+                },
+                {
+                    "date": 1744115343703,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -35,9 +35,9 @@\n     child: [\r\n       {\r\n         name: \"Directory\",\r\n         path: \"/patients\",\r\n-        component: DeletedPatients,\r\n+\r\n         icon: <PersonOffIcon sx={{ fontSize: \"22px\" }} />,\r\n       },\r\n       {\r\n         name: \"Deleted Patients\",\r\n"
+                },
+                {
+                    "date": 1744115355926,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n       {\r\n         name: \"Directory\",\r\n         path: \"/patients\",\r\n \r\n-        icon: <PersonOffIcon sx={{ fontSize: \"22px\" }} />,\r\n+        icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n       },\r\n       {\r\n         name: \"Deleted Patients\",\r\n         path: \"/deleted-patients\",\r\n"
+                },
+                {
+                    "date": 1744116589453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -85,8 +85,14 @@\n     path: \"/staff\",\r\n     component: Staffs,\r\n     icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n+  {\r\n+    name: \"Profile\",\r\n+    path: \"/patients\",\r\n+\r\n+    icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n+  },\r\n ];\r\n \r\n export default Navigation; \r\n \r\n"
+                },
+                {
+                    "date": 1744116597076,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -86,9 +86,9 @@\n     component: Staffs,\r\n     icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n   {\r\n-    name: \"Profile\",\r\n+    name: \"Our Profile\",\r\n     path: \"/patients\",\r\n \r\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n"
+                },
+                {
+                    "date": 1744116603569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -87,9 +87,9 @@\n     icon: <PeopleIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n   {\r\n     name: \"Our Profile\",\r\n-    path: \"/patients\",\r\n+    path: \"/profile\",\r\n \r\n     icon: <PersonIcon sx={{ fontSize: \"22px\" }} />,\r\n   },\r\n ];\r\n"
                 }
             ],
             "date": 1743295751151,

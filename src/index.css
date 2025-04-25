@@ -2,7 +2,7 @@
   font-family: "Outfit", serif !important;
   padding: 0 !important;
   width: 100% !important;
-  --lightScrollbar: #03091A;
+  --lightScrollbar: #46aef5;
 
 }
 
@@ -321,7 +321,7 @@ h6 {
 }
 
 th {
-  background-color: #0052a8 !important;
+  background-color: #46aef5 !important;
 
   color: white !important;
 }
