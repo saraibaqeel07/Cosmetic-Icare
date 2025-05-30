@@ -1,0 +1,31 @@
+<div class="container-fluid">
+	<div class="row justify-content-center">
+<mat-card class="card col-4">
+	<mat-card-header class="">
+		<mat-card-title>Login</mat-card-title>
+	</mat-card-header>
+
+	<mat-card-content class="">
+		<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form flex-column">
+			<mat-form-field class="input">
+				<mat-label>Email</mat-label>
+				<input type="email" formControlName="email" matInput required autocomplete="off" />
+				<mat-error>
+					<span>Enter a valid Email</span>
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field class="input">
+				<mat-label>Password</mat-label>
+				<input type="password" formControlName="password" matInput required autocomplete="off" />
+			</mat-form-field>
+			<button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+		</form>
+	</mat-card-content>
+	<mat-divider [inset]="true"></mat-divider>
+	<mat-card-footer>
+		forgot password?
+	</mat-card-footer>
+</mat-card>
+ </div>
+</div>

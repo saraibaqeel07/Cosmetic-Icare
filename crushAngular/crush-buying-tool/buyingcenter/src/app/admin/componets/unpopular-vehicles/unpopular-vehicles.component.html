@@ -1,0 +1,126 @@
+<div class="items">
+	<!-- <div style="display: flex;justify-content: flex-start;align-items: center;margin-bottom: 1%;"><input type="text" placeholder="Search"  [(ngModel)]="searchValue" >
+	<button mat-raised-button  (click)="search()" color="primary">Search</button></div> -->
+
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th class="white"></th>
+				<th>Make</th>
+				<th>Model</th>
+				<th>Year Start</th>
+				<th>Year End</th>
+				<th>Adjust</th>
+				<th>Percent</th>
+				<th>Update At</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let vehicle of vehicles">
+				<tr *ngIf="!vehicle.delete">
+					<td>
+						<button mat-button (click)="confirmDelete(vehicle)">
+							<mat-icon>delete</mat-icon>
+						</button>
+					</td>
+					<td>
+						<select class="make-model-input" [(ngModel)]="vehicle.makeId">
+							<option>--</option>
+							<option
+								*ngFor="let m of allMakes"
+								[ngValue]="m.id"
+								[selected]="m.id == vehicle.makeId"
+								value="{{ m.id }}"
+							>
+								{{ m.name }}
+							</option>
+						</select>
+						<!-- <input class="name-input" [(ngModel)]="vehicle.name" type="text" /> -->
+					</td>
+					<td class="weight">
+						<select class="make-model-input" [(ngModel)]="vehicle.modelId">
+							<option>--</option>
+							<option
+								*ngFor="let m of modelByMake[vehicle.makeId]"
+								[ngValue]="m.id"
+								[selected]="vehicle.modelId == m.id"
+							>
+								{{ m.name }}
+							</option>
+						</select>
+					</td>
+
+					<td class="weight">
+						<input class="year-input" [(ngModel)]="vehicle.yearbegin" type="text" />
+					</td>
+					<td class="weight">
+						<input class="year-input" [(ngModel)]="vehicle.yearend" type="text" />
+					</td>
+					<td class="weight">
+						{{ vehicle.priceAdj.isPercent ? "% " : "$ "
+						}}<input
+							class="adjust-input"
+							[ngClass]="{ negative: vehicle.priceAdj.adj < 0 }"
+							[(ngModel)]="vehicle.priceAdj.adj"
+							type="text"
+						/>
+					</td>
+					<td class="weight">
+						<mat-slide-toggle
+							color="primary"
+							[(ngModel)]="vehicle.priceAdj.isPercent"
+						></mat-slide-toggle>
+					</td>
+					<td>
+						<span>{{ vehicle.updatedAt ? vehicle.updatedAt : "N/A" }}</span>
+					</td>
+				</tr>
+			</ng-container>
+			<tr>
+				<td>
+					<button mat-raised-button (click)="addItem()">
+						<mat-icon>add</mat-icon>
+					</button>
+				</td>
+				<td colspan="4">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1"
+								>Apply Only to vehicles $</span
+							>
+						</div>
+						<input
+							[(ngModel)]="applyToAboveDpt"
+							type="text"
+							class="name-input"
+							[disabled]="!isSinglePrice"
+							[readonly]="!isSinglePrice"
+							aria-label="Apply Only to vehicles"
+							aria-describedby="basic-addon1"
+							style="min-width: 30px; width: 60px"
+						/>
+						<div class="input-group-append">
+							<span class="input-group-text" id="basic-addon1"
+								>ABOVE DPT
+								<mat-icon
+									class="ml-2"
+									matTooltip="This can only be used when there is one price for steel. To enable this navigate to Admin > Quote Management > Price of Steel and remove more than one price."
+									aria-label="DPT Info"
+									>info</mat-icon
+								></span
+							>
+						</div>
+					</div>
+				</td>
+				<td colspan="3">
+					<button mat-raised-button (click)="saveConfig()" color="primary">
+						Save
+					</button>
+					<button mat-raised-button (click)="downloadPriceHistory()">
+						Download Price History
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

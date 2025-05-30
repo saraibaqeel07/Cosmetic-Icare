@@ -1,0 +1,212 @@
+.container {
+	background: rgb(240, 240, 240);
+	min-height: 100%;
+	margin-bottom: 8px;
+}
+
+.box {
+	flex: 0 1 auto;
+}
+
+mat-form-field,
+mat-slide-toggle,
+app-google-map {
+	margin: 5px;
+}
+
+mat-slide-toggle {
+	padding-left: 15px;
+}
+
+.row {
+	margin: 0px;
+}
+
+.note-input {
+	padding-left: 24px;
+}
+
+mat-divider.mat-divider.mat-divider-inset {
+	margin: 10px -1px;
+}
+
+.yellow {
+	background-color: rgb(255, 252, 49);
+}
+
+.actions {
+	button {
+		margin-right: 4px;
+	}
+
+	margin: 5px;
+	padding: 3px;
+}
+
+mat-slide-component {
+	margin: 3px;
+}
+
+.radio {
+	margin-left: 18px;
+}
+
+mat-radio-button {
+	margin: 2px;
+}
+
+.address-input {
+	min-width: 400px;
+	width: 100%;
+	max-width: 500px;
+}
+
+.city-input {
+	min-width: 200px;
+}
+
+.state-input {
+	width: 120px;
+}
+
+.zip-input {
+	width: 85px;
+}
+
+.year-input,
+.weight-input {
+	width: 60px;
+}
+
+.make-input,
+.model-input,
+.make-input {
+	width: 180px;
+}
+
+.vin-input {
+	width: 220px;
+}
+
+.weight-input {
+	width: 110px;
+}
+
+.title-toggle {
+	height: 64px;
+	padding-left: initial;
+}
+
+.max-height {
+	max-height: 400px;
+	overflow: auto;
+}
+
+.clear-padding {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+ul {
+	list-style-type: none;
+	padding-inline-start: 10px;
+
+}
+
+.grey {
+	background-color: rgb(178, 192, 202);
+}
+
+.addressCheck {
+	display: flex;
+	align-items: center;
+
+	.check {
+		vertical-align: middle;
+		margin-bottom: 3px;
+		color: green;
+	}
+
+	.red {
+		color: red;
+	}
+
+	.disabled {
+		color: rgb(168, 168, 168)
+	}
+
+	font-size: 16px;
+}
+
+.btn-group {
+	padding: 3px;
+}
+
+.view-date {
+	padding: 6px;
+}
+
+.ticket-number {
+	padding: 2px;
+	float: right;
+	font-size: 22px;
+	font-weight: 500;
+}
+
+.custom-questions-container {
+	display: flex;
+}
+
+app-custom-questions {
+	display: flex;
+
+}
+
+.small-icon {
+	font-size: 18px;
+	z-index: 4;
+}
+
+.add-vendor {
+	margin-top: 15px;
+}
+
+.uppercase-text {
+	text-transform: capitalize;
+}
+
+ul.error-content {
+	font-size: 13px;
+	margin-bottom: 5px;
+
+	li {
+		list-style: disc;
+	}
+}
+
+.hidden {
+	display: none;
+}
+
+.google-map {
+	border-width: 1px;
+}
+
+mat-error {
+	font-size: 13px;
+}
+
+.yard {
+	padding: 10px;
+	background: #fff !important;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+
+.item-value {
+	color: #10568a;
+}
+
+.custom-date::after {
+    content: none !important;
+}

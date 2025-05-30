@@ -1,0 +1,130 @@
+<div class="mt-4" style="border: 2px solid; padding: 10px">
+	<div class="row">
+		<div class="col-sm-9">
+			<h4 *ngIf="groupYards.length">
+				{{ groupYards[0].GroupName }} - Group {{ groupYards[0].S3GroupId }}
+			</h4>
+			<div *ngIf="groupYards.length">
+				<div class="row" *ngFor="let yard of groupYards">
+					<div class="col">
+						<label
+							class="h5 d-block mb-3 yard-name"
+							[ngClass]="checkSubscribeYard(yard) ? 'active' : 'inactive'"
+						>
+							<mat-checkbox
+								class="mr-4"
+								[checked]="true"
+								[disabled]="checkSubscribeYard(yard)"
+							>
+								{{ yard.YardName }}
+								<span class="float-right mr-4">Client ID: {{ yard.S3ClientId }}</span>
+							</mat-checkbox>
+
+							<span class="indicator">Active.</span>
+						</label>
+						<div class="row ml-2">
+							<div class="col-sm-3">
+								<div>
+									<p>
+										<span class="address">Street 1:</span> {{ yard?.address?.street1 }}
+									</p>
+								</div>
+								<div>
+									<p><span class="address">City:</span> {{ yard?.address?.city }}</p>
+								</div>
+								<div>
+									<p><span class="address">Phone:</span></p>
+								</div>
+							</div>
+							<div  class="col-sm-3">
+								<div>
+									<p>
+										<span class="address">Street 2:</span> {{ yard?.address?.street2 }}
+									</p>
+								</div>
+								<div>
+									<p><span class="address">State:</span> {{ yard?.address?.state }}</p>
+								</div>
+								<div>
+									<p><span class="address">Zip:</span> {{ yard?.address?.zip }}</p>
+								</div>
+								
+							</div>
+							<div *ngIf="this.user" class="col-sm-3">
+								<div>
+									<p>
+										<span class="address">Card Number:</span> 3455-3443-5564
+									</p>
+								</div>
+								<div>
+									<p><span class="address">CardHolder Name:</span> Testing </p>
+								</div>
+								<div>
+									<p><span class="address">Street Address:</span> Test Street</p>
+								</div>
+								
+							</div>
+							<div *ngIf="this.user" class="col-sm-3">
+								<div>
+									<p>
+										<span class="address">Apt,Unit,Suite :</span> Test
+									</p>
+								</div>
+								<div>
+									<p><span class="address">City:</span> New York City</p>
+								</div>
+								<div>
+									<p><span class="address">State:</span>New York </p>
+								</div>
+						
+								
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col">
+								<button color="primary" (click)="findAddress(yard)" mat-flat-button>
+									Set Address
+								</button>
+								<div class="addressCheck d-inline-block ml-4">
+									<div>&nbsp;</div>
+									<span *ngIf="yard.address.latitude">
+										<mat-icon class="check">check_circle_outline</mat-icon>
+										Address
+									</span>
+									<span *ngIf="!yard.address.latitude">
+										<mat-icon class="check red">highlight_off</mat-icon>
+										Address
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<h4>Subscription: {{ subscriptionData ? subscriptionData.subscription : ""  }}</h4>
+			<div class="row" *ngIf="subData">
+				<div class="col">
+					<label class="h5 d-block mb-3" *ngIf="subData?.subscription?.amount"
+						><span
+							>${{ subData?.subscription?.amount }}
+							{{
+								subData?.subscription?.paymentSchedule?.interval?.length > 1
+									? "per year"
+									: "per month"
+							}}</span
+						></label
+					>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<button color="primary" mat-flat-button>Update Subscription</button>
+		</div>
+	</div>
+</div>

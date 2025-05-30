@@ -1,0 +1,11 @@
+<div class="mt-4" style="border: 2px solid; padding: 10px">
+	<!-- <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item display-6" routerLinkActive="active" aria-current="page">Admin</li>
+            <li class="breadcrumb-item display-6" routerLinkActive="active" aria-current="page">{{ parentRoute?.title }}</li>
+            <li class="breadcrumb-item display-6" routerLinkActive="active" aria-current="page">{{ childRoute?.title }}</li>
+        </ol>
+    </nav> -->
+	<h4 class="mt-2">{{ parentRoute?.title }} / {{ childRoute?.title }}</h4>
+	<router-outlet></router-outlet>
+</div>

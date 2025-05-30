@@ -117,6 +117,9 @@ const ConsentForms = () => {
                     <IconButton onClick={() => { navigate(`/send-form/${row?.original?._id}`) }}>
                         <SendIcon sx={{ fontSize: '16px' }} />
                     </IconButton>
+                    <IconButton onClick={() => navigate(`/consent-form-detail/${row?.original?._id}`)}>
+                        <NorthEastIcon sx={{ fontSize: '16px' }} />
+                    </IconButton>
                     <IconButton onClick={() => navigate(`/update-consent-form/${row?.original?._id}`)}>
                         <DriveFileRenameOutlineIcon sx={{ fontSize: '16px' }} />
                     </IconButton>

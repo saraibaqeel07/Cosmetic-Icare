@@ -1,0 +1,43 @@
+<div>
+<div class="container" id="contentToPrint">
+	<mat-card>
+		<mat-card-header>
+			<mat-card-title
+				>#{{ t.callticket }} {{ t.callername }}
+				{{ t.callerLastName }}</mat-card-title
+			>
+		</mat-card-header>
+		<mat-card-content class="caller">
+			<p><span class="bold">Purchase Price:</span> ${{ t.negotiatedprice }}</p>
+			<p><span class="bold">Status:</span> {{ t.status }}</p>
+			<p *ngIf="t.address.street1">
+				<span class="bold">Address:</span> {{ t.address.street1 }}
+				{{ t.address.street2 }}<br />{{ t.address.city }}, {{ t.address.state }}
+				{{ t.address.zip }}
+			</p>
+			<p><span class="bold">Phone:</span> {{ t.phonenumber }}</p>
+		</mat-card-content>
+		<mat-card-content class="vehicle">
+			<!-- <p><span class="bold">Year:</span> {{t.year}}</p> -->
+			<p><span class="bold">Make:</span> {{ t.make }}</p>
+			<p><span class="bold">Model:</span> {{ t.model }}</p>
+			<!-- <p><span class="bold">Class:</span> {{t.vehiclesize}}</p> -->
+			<p><span class="bold">Towed:</span> {{ t.towed ? "Yes" : "No" }}</p>
+		</mat-card-content>
+		<mat-card-content class="schedule">
+			<p>
+				<span class="bold">{{ t.towed ? "Pickup" : "Dropoff" }}:</span>
+				{{ formatDate(t.pickupdate)}}
+				
+			</p>
+			<!-- <p><span class="bold">Driver:</span> {{t.drivername}}</p>
+		<p><span class="bold">Email:</span> {{t.driveremail}}</p>
+		<p><span class="bold">Phone:</span> {{t.driverphone}}</p> -->
+		</mat-card-content>
+	</mat-card>
+	
+</div>
+<div style="display: flex;justify-content: flex-end;margin-top: 2%;">
+<button style="background-color: #007bff; padding: 10px 20px 10px 20px; border: none;  color: white; font-weight: bold; " printSectionId="contentToPrint" ngxPrint>Print</button>
+</div>
+</div>

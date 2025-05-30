@@ -1,0 +1,19 @@
+// -- notification statuses --
+$notification_warn_bg_color: yellow;
+$notification_error_bg_color: rgba(244, 67, 54, 1);
+$notification_success_bg_color: #d6ffd6;
+$notification_warn_text_color: rgba(81, 78, 81, 1);
+$notification_error_text_color: white;
+$notification_success_text_color: rgba(81, 78, 81, 1);
+$notification_warn_action_color: rgba(244, 67, 54, 1);
+$notification_error_action_color: rgba(255, 215, 64, 1);
+$notification_success_action_color: rgba(244, 67, 54, 1);
+// -- ticket statuses --
+$ticket-status-open: #357bfd; //rgb(53, 123, 253);
+$ticket-status-finished: #064068; // rgb(179, 35, 245);i
+$ticket-status-pickup: #28b9d1; //rgb(35, 245, 63);
+$ticket-status-dropoff: #288ad1; //rgb(253, 150, 53);
+
+$navbar-color: #10568a;
+
+$theme-primary: $navbar-color;

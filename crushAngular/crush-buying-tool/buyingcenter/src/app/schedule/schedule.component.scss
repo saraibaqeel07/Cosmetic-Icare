@@ -1,0 +1,120 @@
+.controls {
+	height: 70px;
+	background-color: rgb(253, 253, 253);
+	border-bottom: 1px solid rgb(73, 73, 73);
+	padding: 5px;
+}
+.flex {
+	display: flex;
+}
+.yard-tab-container {
+	.yard-tab {
+		display: inline-block;
+		padding: 10px 15px;
+		border: 1px solid #e1e1e1;
+		background: #e6ebef;
+		color: #165888;
+		cursor: pointer;
+		font-size: 16px;
+		text-align: center;
+
+		&:first-child {
+			border-top-left-radius: 5px !important;
+		}
+
+		&:last-child {
+			border-top-right-radius: 5px !important;
+		}
+
+		&.active {
+			color: #fff !important;
+			background: #064068 !important;
+			font-weight: bold;
+		}
+	}
+}
+
+.driver-tab {
+	padding: 7px 21px;
+	margin-top: 2px;
+}
+
+.small-padding {
+	padding-left: 5px;
+	padding-right: 3px;
+}
+
+ul {
+	margin-top: 0px;
+	list-style-type: none;
+	padding-inline-start: 10px;
+}
+
+.grey {
+	background-color: rgb(178, 192, 202);
+}
+
+.driver-wrapper {
+	max-height: 360px;
+	overflow: auto;
+}
+
+.ticket-wrapper {
+	max-height: 800px;
+	overflow: auto;
+	margin-top: 1px;
+}
+
+.bottom-pad {
+	padding-bottom: 30px;
+}
+
+.calendar-current-date {
+	font-weight: bold;
+	color: #155789;
+}
+
+.controls {
+	align-items: center;
+	background: #f4f4f4;
+	border-bottom: none !important;
+}
+
+.driver-tab {
+	font-weight: bold;
+	font-size: 18px;
+	color: #155789;
+}
+
+.calendar-btn-group {
+	.btn {
+		padding: 10px 15px;
+
+		&.active,
+		&.thisDay {
+			background: #064068;
+			border: 1px solid #064068 !important;
+			color: #fff !important;
+		}
+
+		&:not(.active):not(.thisDay) {
+			background: #fff;
+			color: #165888 !important;
+			border: 1px solid #cccccc !important;
+		}
+
+		&:first-child {
+			border-top-left-radius: 20px;
+			border-bottom-left-radius: 20px;
+		}
+
+		&:last-child {
+			border-top-right-radius: 20px;
+			border-bottom-right-radius: 20px;
+		}
+	}
+}
+
+.extra-margin {
+	margin-top: 1.5rem;
+}

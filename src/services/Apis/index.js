@@ -6,6 +6,10 @@ const ApiServices = {
         const data = await post(routes.CreatePlace, obj);
         return data;
     },
+    CreateFormTemplate: async (obj) => {
+        const data = await post(routes.CreateFormTemplate, obj);
+        return data;
+    },
     CompleteForm: async (obj) => {
         const data = await post(routes.CompleteForm, obj);
         return data;
@@ -86,6 +90,10 @@ const ApiServices = {
         const data = await deleted(routes.DeleteTopic, obj);
         return data;
     },
+    DeleteFormTemplate: async (obj) => {
+        const data = await deleted(routes.DeleteFormTemplate, obj);
+        return data;
+    },
     DeletePatient: async (obj) => {
         const data = await deleted(routes.DeletePatient, obj);
         return data;
@@ -142,6 +150,10 @@ const ApiServices = {
         const data = await patch(routes.UpdateProfile, obj);
         return data;
     },
+    UpdateFormTemplate: async (obj) => {
+        const data = await patch(routes.UpdateFormTemplate, obj);
+        return data;
+    },
     UpdatePatient: async (obj) => {
         const data = await patch(routes.UpdatePatient, obj);
         return data;
@@ -196,6 +208,14 @@ const ApiServices = {
     },
     getBlogData: async (obj) => {
         const data = await get(routes.getBlogData, obj);
+        return data;
+    },
+    getFormTemplateDetail: async (obj) => {
+        const data = await get(routes.getFormTemplateDetail, obj);
+        return data;
+    },
+    getFormTemplates: async (obj) => {
+        const data = await get(routes.getFormTemplates, obj);
         return data;
     },
     getPosts: async (obj) => {

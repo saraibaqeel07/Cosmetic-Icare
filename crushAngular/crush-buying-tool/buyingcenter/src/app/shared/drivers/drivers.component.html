@@ -1,0 +1,58 @@
+<div class="content">
+	<div class="header">
+		<div
+			class="tabs"
+			(click)="showTab('driver')"
+			[ngClass]="{ active: this.tab == 'driver' }"
+		>
+			Drivers
+		</div>
+		<div
+			class="tabs"
+			(click)="showTab('vendor')"
+			[ngClass]="{ active: this.tab == 'vendor' }"
+		>
+			Vendors
+		</div>
+	</div>
+	<div class="tab-content">
+		<ng-container [ngSwitch]="this.tab">
+			<ng-template [ngSwitchCase]="'vendor'">
+				<div *ngFor="let vendor of vendors">
+					<div class="vendor">
+						{{ vendor.businessName }} <mat-icon>edit</mat-icon>
+					</div>
+					<div
+						class="vendor-driver"
+						*ngFor="let vDriver of vendorDrivers[vendor.id]"
+						(click)="changeDriver(vDriver)"
+						[ngClass]="{ selected: vDriver.id === this.driverid }"
+					>
+						<div class="tickets">[{{ this.driverCounts[vDriver.id] || "0" }}]</div>
+						{{ vDriver.username }}
+					</div>
+				</div>
+			</ng-template>
+			<ng-template [ngSwitchCase]="'driver'">
+				<div class="vendor">Internal</div>
+				<!-- <div
+					class="vendor-driver"
+					(click)="changeDriver(driver)"
+					[ngClass]="{ selected: driver.userid === this.driverid }"
+				>
+					<div class="tickets"></div>
+					All
+				</div> -->
+				<div
+					*ngFor="let driver of drivers"
+					class="vendor-driver"
+					(click)="changeDriver(driver)"
+					[ngClass]="{ selected: driver.userid === this.driverid }"
+				>
+					<div class="tickets">[{{ this.driverCounts[driver.userid] || "0" }}]</div>
+					{{ driver.email }}
+				</div>
+			</ng-template>
+		</ng-container>
+	</div>
+</div>

@@ -1,0 +1,114 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse" [ngClass]="{ show: navbarState }">
+			<ul class="navbar-nav mr-auto">
+				<li class="navbar-item">
+					<img
+						src="/assets/logo.png"
+						style="width: 150px; background: #fff; border-radius: 5px"
+					/>
+				</li>
+				<li class="navbar-item">
+					<mat-icon>home</mat-icon>
+				</li>
+				<li class="navbar-item">
+					<a
+						class="navbar-link"
+						routerLink="/schedule"
+						routerLinkActive="active"
+						(click)="toggleNavbar()"
+						>Schedule</a
+					>
+				</li>
+				<!-- <li class="navbar-item">
+					<a class="navbar-link" routerLink="/login" routerLinkActive="active"  (click)="toggleNavbar()">Login</a>
+				</li> -->
+				<!-- <li class="navbar-item">
+					<a class="navbar-link" routerLink="/ticket" routerLinkActive="active"  (click)="toggleNavbar()">Ticket</a>
+				</li> -->
+				<li class="navbar-item">
+					<a
+						class="navbar-link"
+						routerLink="/tickets"
+						routerLinkActive="active"
+						(click)="toggleNavbar()"
+						>All Tickets</a
+					>
+				</li>
+				<!-- <li class="navbar-item">
+					<a
+						*ngIf="roles.includes('GM') || roles.includes('admin')"
+						class="navbar-link"
+						routerLink="/admin"
+						routerLinkActive="active"
+						(click)="toggleNavbar()"
+						>Settings</a
+					>
+				</li> -->
+				<li class="navbar-item btn-new-ticket">
+					<button
+						class="btn btn-outline-success my-2 my-sm-0 new-ticket"
+						(click)="navigateToPage()"
+					>
+						+ New Ticket
+					</button>
+				</li>
+				<!-- <li class="navbar-item btn-new-ticket-towing">
+					<button
+						class="btn btn-outline-danger my-2 my-sm-0 new-ticket"
+						routerLink="/ticket"
+					>
+						Needs Towing
+					</button>
+				</li> -->
+			</ul>
+			<div
+				*ngIf="ifStaging"
+				class="alert alert-danger"
+				role="alert"
+				style=" margin-top: 10px"
+			>
+				You are in the Staging 1 environment.
+			</div>
+		&nbsp;&nbsp;
+			<div class="nav-items-right">
+				<div>{{ user }}</div>
+				&nbsp;	&nbsp;	&nbsp;
+				<a
+						*ngIf="roles.includes('GM') || roles.includes('admin')"
+						class="navbar-link"
+						routerLink="/admin"
+						style="color: white;display: flex;gap: 2x;"
+						routerLinkActive="active"
+						(click)="toggleNavbar()"
+						><mat-icon style="font-size: 17px;">settings</mat-icon>Settings</a
+					>
+				<a style="display: flex;gap: 3px;" (click)="logout()" class="navbar-item navbar-link logout"
+					><mat-icon class="icon-logout">exit_to_app</mat-icon><span>Logout</span></a
+				>
+			</div>
+			<!-- <mat-form-field appearance="fill" color="warn">
+		<mat-label>GroupId</mat-label>
+		<mat-select value="100">
+			<mat-option value="100">100 - Development Group</mat-option>
+		</mat-select>
+		</mat-form-field> -->
+		</div>
+	</div>
+</nav>
+<!-- Breadcrumb bar -->
+<div style="margin-top: 75px"></div>
+
+<!-- <nav style="margin-top: 75px" aria-label="breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item active" aria-current="page">Schedule</li>
+		<li class="breadcrumb-item"><a href="#">Library</a></li>
+		<li class="breadcrumb-item active" aria-current="page">Data</li>
+	</ol>
+</nav> -->

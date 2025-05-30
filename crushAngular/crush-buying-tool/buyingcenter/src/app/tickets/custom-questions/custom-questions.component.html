@@ -1,0 +1,13 @@
+<div *ngIf="questionsGroup">
+	<div *ngFor="let q of questions.controls; let i = index" [formGroup]="q" class="group pb-2 pt-2">
+		<div class="row">
+			<div class="col">
+				<div class="label">{{q.get('text').value}}</div>
+				<mat-radio-group class="float-right" color="primary" labelPosition="after" formControlName="answeredYes" (change)="questionAnswer()">
+					<mat-radio-button value="true" >Yes</mat-radio-button>
+					<mat-radio-button value="false" >No</mat-radio-button>
+				</mat-radio-group>
+			</div>
+		</div>
+	</div>
+</div>

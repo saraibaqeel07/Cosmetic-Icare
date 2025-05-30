@@ -1,0 +1,66 @@
+.content {
+	padding: 3px 5px;
+}
+
+.vendor {
+	font-weight: 500;
+	padding: 2px;
+	color: #10568a
+}
+
+.vendor-driver {
+	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.tabs {
+	display: inline-block;
+	padding: 10px 15px;
+	width: 50%;
+	border: 1px solid #e1e1e1;
+	cursor: pointer;
+	background: #e6ebef;
+	color: #165888;
+	font-size: 16px;
+	text-align: center;
+
+	&:first-child {
+		border-top-left-radius: 5px;
+	}
+
+	&:last-child {
+		border-top-right-radius: 5px;
+	}
+
+	&.active {
+		color: #fff !important;
+		background: #064068 !important;
+		font-weight: bold;
+	}
+}
+
+.tab-content {
+	padding: 10px 5px;
+	border-top: none !important;
+	border: 1px solid #e1e1e1;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.selected {
+	border-color: rgb(163, 234, 255);
+	border-width: 0px 0px 0px 3px;
+	border-style: solid;
+	background: rgb(232, 248, 255)
+}
+
+.tickets {
+	display: inline;
+	font-size: large;
+}
+
+mat-icon {
+	font-size: 14px;
+}

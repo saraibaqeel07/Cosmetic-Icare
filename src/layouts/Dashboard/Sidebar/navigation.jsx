@@ -18,7 +18,9 @@ const DeletedPatients = lazy(() => import("../Pages/DeletedPatients"))
 const AfterCareDocuments = lazy(() => import("../Pages/AfterCareDocuments"))
 const CreateForm = lazy(() => import("../Pages/CreateConsentForm"))
 const ConsentForms = lazy(() => import("../Pages/ConsentForms"))
+const CreateFormTemplate = lazy(() => import("../Pages/CreateFormTemplate"))
 const CompletedForms = lazy(() => import("../Pages/CompletedForms"))
+const FormTemplates = lazy(() => import("../Pages/FormTemplates"))
 const Navigation = [
   {
     name: "Dashboard",
@@ -75,11 +77,29 @@ const Navigation = [
     ],
   },
   {
-    name: "Aftercare Documents",
-    path: "/aftercare-documents",
-    component: AfterCareDocuments,
-    icon: <ArticleIcon sx={{ fontSize: "22px" }} />, // Document-related icon
+    name: "Templates",
+    path: "",
+    component: "",
+    icon: <DescriptionIcon sx={{ fontSize: "22px" }} />, // Generic form-related icon
+    child: [
+    
+      {
+        name: "Aftercare Documents",
+        path: "/aftercare-documents",
+        component: AfterCareDocuments,
+        icon: <ArticleIcon sx={{ fontSize: "22px" }} />, // Document-related icon
+      },
+      {
+          name: " Form Templates",
+          path: "/form-templates",
+          component: FormTemplates,
+          icon:<ArticleIcon sx={{fontSize:'22px'}} />
+        },
+      
+     
+    ],
   },
+  
   {
     name: "Staffs",
     path: "/staff",

@@ -165,14 +165,14 @@ const UpdateConsentForm = () => {
                 console.log(response?.data?.data?.path);
 
 
-                setSavedImage( response?.data?.data?.path);
+                setSavedImage(response?.data?.data?.path);
 
 
             } catch (error) {
                 console.log(error);
 
             }
-           
+
             setMarkingLoader(false)
         }
     };
@@ -316,7 +316,7 @@ const UpdateConsentForm = () => {
             let obj = {
                 _id: id,
                 patient_id: patientType == 'existing' ? selectedPatient?.id : null,
-                form_id: null,
+                form_id: selectedForm?._id,
                 aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
                 treatment_date: getValues('treatmentDate'),
                 consultation_date: getValues('consultationDate'),
@@ -699,17 +699,11 @@ const UpdateConsentForm = () => {
                 limit: 999
             };
 
-            const data = await ApiServices.getConsentForms(params);
+            const data = await ApiServices.getFormTemplates(params);
 
 
 
-            setForms(
-                data?.data?.forms?.map((doc) => ({
-                    ...doc,
-                    id: doc?._id, // Example transformation
-                    name:  doc?.first_name + ' ' + doc?.last_name, // Another example
-                }))
-            );
+            setForms( data?.data?.templates );
 
         } catch (error) {
             console.error("Error fetching location:", error);
@@ -822,7 +816,7 @@ const UpdateConsentForm = () => {
             setValue("selectedDate", parsedDate);
         }
 
-    }, [patients, documents,forms,formData])
+    }, [patients, documents, forms, formData])
 
 
     return (
@@ -840,7 +834,7 @@ const UpdateConsentForm = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                             <InputLabel sx={{
                                 textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -869,7 +863,7 @@ const UpdateConsentForm = () => {
                             />
 
                         </Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <Grid container spacing={2}>
                                     {/* Single Date Selection */}
@@ -924,7 +918,7 @@ const UpdateConsentForm = () => {
 
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <Grid container spacing={2}>
                                     {/* Single Date Selection */}
@@ -981,7 +975,7 @@ const UpdateConsentForm = () => {
                         </Grid>
                         <Grid container p={2} spacing={2} >
 
-                            <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                            <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                                 <InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -1000,7 +994,7 @@ const UpdateConsentForm = () => {
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
-                            <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                            <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                                 {patientType == 'existing' && <> <InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -1060,7 +1054,7 @@ const UpdateConsentForm = () => {
                                     />
                                 </>}
                             </Grid>
-                            <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                            <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                                 {patientType == 'existing' && <><InputLabel sx={{
                                     textTransform: "capitalize", textAlign: 'left', fontWeight: 700, display: 'block',
 
@@ -1089,7 +1083,7 @@ const UpdateConsentForm = () => {
                                     /> </>}
                             </Grid>
                         </Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Patient First Name :*"}
                             size={'small'}
                             placeholder={"Patient First Name"}
@@ -1100,7 +1094,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Patient Last Name :*"}
                             size={'small'}
                             placeholder={" Patient Last Name"}
@@ -1111,7 +1105,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Patient Email :*"}
                             size={'small'}
                             placeholder={"Patient Email"}
@@ -1123,7 +1117,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <Grid container spacing={2}>
                                     {/* Single Date Selection */}
@@ -1178,7 +1172,7 @@ const UpdateConsentForm = () => {
 
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Phone Number :*"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -1189,7 +1183,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Post Code :*"}
                             size={'small'}
                             placeholder={"Post Code"}
@@ -1200,7 +1194,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Address :*"}
                             size={'small'}
                             placeholder={"Address"}
@@ -1211,7 +1205,7 @@ const UpdateConsentForm = () => {
 
                             })}
                         /></Grid>
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Notes :"}
                             multiline
                             rows={3}
@@ -1234,7 +1228,7 @@ const UpdateConsentForm = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Name :"}
                             size={'small'}
                             placeholder={"Name"}
@@ -1246,7 +1240,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Email :"}
                             size={'small'}
                             placeholder={"Email"}
@@ -1258,7 +1252,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Phone Number :"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -1270,7 +1264,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Address :"}
                             size={'small'}
                             placeholder={"Address"}
@@ -1292,7 +1286,7 @@ const UpdateConsentForm = () => {
                     <Grid container mt={4} spacing={2}>
 
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Name :"}
                             size={'small'}
                             placeholder={"Name"}
@@ -1304,7 +1298,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Email :"}
                             size={'small'}
                             placeholder={"Email"}
@@ -1316,7 +1310,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Phone Number :"}
                             size={'small'}
                             placeholder={"Phone Number"}
@@ -1328,7 +1322,7 @@ const UpdateConsentForm = () => {
                             })}
                         /></Grid>
 
-                        <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}><InputField
+                        <Grid item lg={3} md={4} sm={6} xs={6} mt={2}><InputField
                             label={"Address :"}
                             size={'small'}
                             placeholder={"Address"}
@@ -1378,7 +1372,7 @@ const UpdateConsentForm = () => {
                             </Grid> : (
                                 <Grid item xs={6}>
                                     <Typography>Saved Image:</Typography>
-                                    <img src={savedImage ? import.meta.env.VITE_BASE_URL+savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                    <img src={savedImage ? import.meta.env.VITE_BASE_URL + savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
                                 </Grid>
                             )}
 
@@ -1572,7 +1566,7 @@ const UpdateConsentForm = () => {
                                 <Grid container spacing={2} p={2} alignItems="center" key={item.id} mt={2}>
 
                                     {/* Patient Date Selection */}
-                                    <Grid item lg={3}  md={4} sm={6} xs={6}>
+                                    <Grid item lg={3} md={4} sm={6} xs={6}>
                                         <Box>
                                             <InputLabel
                                                 sx={{
@@ -1622,7 +1616,7 @@ const UpdateConsentForm = () => {
                                     </Grid>
 
                                     {/* Amount Field */}
-                                    <Grid item lg={3}  md={4} sm={6} xs={6} mt={2}>
+                                    <Grid item lg={3} md={4} sm={6} xs={6} mt={2}>
                                         <InputField
                                             label="Amount"
                                             placeholder="Order Amount"

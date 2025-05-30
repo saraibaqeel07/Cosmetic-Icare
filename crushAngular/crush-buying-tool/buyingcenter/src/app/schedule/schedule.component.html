@@ -1,0 +1,180 @@
+<div class="container-fluid bottom-pad">
+	<div class="row extra-margin">
+		<mat-drawer-container class="example-container" autosize style="width: 100%">
+			<mat-drawer #drawer class="small-padding" mode="side">
+				<div class="driver-wrapper">
+					<app-drivers (selectedDriver)="filterDrivers($event)"></app-drivers>
+				</div>
+				<div
+					class="ticket-wrapper"
+					style="border: 1px solid #d1d1d1; border-radius: 5px"
+				>
+					<app-tickets size="small"></app-tickets>
+				</div>
+			</mat-drawer>
+			<div (click)="toggleDrawer()">
+				<button
+					style="
+						position: fixed;
+						top: 70%;
+						z-index: 111;
+						-webkit-writing-mode: vertical-rl;
+						writing-mode: vertical-rl;
+						-webkit-text-orientation: mixed;
+						text-orientation: mixed;
+						padding: 10px;
+						margin: 0;
+						font-size: 20px;
+					"
+					[style.left]="isDrawerOpen ? '320px' : '-20px'"
+					type="button"
+					mat-flat-button
+					color="primary"
+					(click)="drawer.toggle()"
+					class="ml-2 mt-2"
+				>
+					Select A Driver
+				</button>
+			</div>
+			
+			<div class="flex" style="width: 90%; margin: 0 auto; margin-top: 5%;">
+				<div class="col-md-6" [ngSwitch]="view">
+					<div *ngIf="this.selectedDriver" class="driver-tab">
+						{{ this.selectedDriver?.email }} {{ this.selectedDriver?.phone || "" }}
+					</div>
+				
+					<!-- <mwl-calendar-month-view
+				*ngSwitchCase="CalendarView.Month"
+				[viewDate]="viewDate"
+				[events]="DriverTickets"
+				(eventClicked)="ticketClicked($event)"
+			>
+			</mwl-calendar-month-view> -->
+					<mwl-calendar-week-view
+						[dayStartHour]="7"
+						[dayEndHour]="21"
+						[events]="DriverTickets"
+						[viewDate]="viewDate"
+						(eventClicked)="ticketClicked($event)"
+						[daysInWeek]="daysInWeek"
+					>
+					</mwl-calendar-week-view>
+					<!-- <mwl-calendar-day-view
+				*ngSwitchCase="CalendarView.Day"
+				[dayStartHour]="7"
+				[dayEndHour]="21"
+				[events]="DriverTickets"
+				[viewDate]="viewDate"
+				(eventClicked)="ticketClicked($event)"
+			>
+			</mwl-calendar-day-view> -->
+				</div>
+				<div class="col-md-6 yard-tab-container" [ngSwitch]="view">
+					<div
+						class="row text-center controls calendar-controls"
+						style="margin-bottom: 10px"
+					>
+						<div class="col-md-4">
+							<div class="calendar-btn-group btn-group">
+								<div
+									class="btn btn-primary"
+									(click)="setView(CalendarView.Month)"
+									[class.active]="view === CalendarView.Month"
+								>
+									Month
+								</div>
+								<div
+									class="btn btn-primary"
+									(click)="setView(CalendarView.Week)"
+									[class.active]="view === CalendarView.Week"
+								>
+									Week
+								</div>
+								<div
+									class="btn btn-primary"
+									(click)="setView(CalendarView.Day)"
+									[class.active]="view === CalendarView.Day"
+								>
+									Day
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<h3 class="calendar-current-date">
+								{{ viewDate | calendarDate : view + "ViewTitle" : "en" }}
+							</h3>
+						</div>
+						<div class="col-md-4">
+							<div class="calendar-btn-group btn-group">
+								<div
+									class="btn btn-primary"
+									mwlCalendarPreviousView
+									[(view)]="view"
+									[(viewDate)]="viewDate"
+								>
+									Previous
+								</div>
+								<div
+									class="btn btn-outline-secondary thisDay"
+									mwlCalendarToday
+									[(viewDate)]="viewDate"
+								>
+									Today
+								</div>
+								<div
+									class="btn btn-primary"
+									mwlCalendarNextView
+									[(view)]="view"
+									[(viewDate)]="viewDate"
+								>
+									Next
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div
+								*ngFor="let yard of yards"
+								(click)="setYard(yard.S3ClientId)"
+								class="yard-tab"
+								[ngClass]="{ active: selectedYard == yard.S3ClientId }"
+							>
+								{{ yard.YardName }}
+							</div>
+						</div>
+					</div>
+					<mwl-calendar-month-view
+						*ngSwitchCase="CalendarView.Month"
+						[viewDate]="viewDate"
+						[events]="StoreTickets"
+						[refresh]="refresh"
+						(eventClicked)="ticketClicked($event)"
+					>
+					</mwl-calendar-month-view>
+					<mwl-calendar-week-view
+						*ngSwitchCase="CalendarView.Week"
+						[dayStartHour]="7"
+						[dayEndHour]="21"
+						[events]="StoreTickets"
+						[viewDate]="viewDate"
+						[refresh]="refresh"
+						(eventClicked)="ticketClicked($event)"
+						[daysInWeek]="daysInWeek"
+					>
+					</mwl-calendar-week-view>
+					<mwl-calendar-day-view
+						*ngSwitchCase="CalendarView.Day"
+						[dayStartHour]="7"
+						[dayEndHour]="21"
+						[events]="StoreTickets"
+						[viewDate]="viewDate"
+						[refresh]="refresh"
+						(eventClicked)="ticketClicked($event)"
+					>
+					</mwl-calendar-day-view>
+				</div>
+			</div>
+		</mat-drawer-container>
+	</div>
+</div>

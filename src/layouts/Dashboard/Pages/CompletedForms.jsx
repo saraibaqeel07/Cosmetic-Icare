@@ -120,6 +120,9 @@ const CompletedForms = () => {
                     <IconButton onClick={() => getFormData(row?.original?._id)}>
                         <PictureAsPdfIcon sx={{ fontSize: '16px' }} />
                     </IconButton>
+                    <IconButton onClick={() => navigate(`/completed-form-detail/${row?.original?._id}`)}>
+                        <NorthEastIcon sx={{ fontSize: '16px' }} />
+                    </IconButton>
                     <IconButton onClick={() => navigate(`/update-consent-form/${row?.original?._id}`)}>
                         <DriveFileRenameOutlineIcon sx={{ fontSize: '16px' }} />
                     </IconButton>

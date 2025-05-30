@@ -1,0 +1,48 @@
+<div class="container-fluid box pt-4">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li
+					*ngFor="let link of navLinks"
+					routerLinkActive="active"
+					[class]="link.children.length ? 'dropdown' : ''"
+					class="nav-item"
+				>
+					<a
+						class="nav-link"
+						[routerLink]="link.link"
+						routerLinkActive="active"
+						*ngIf="link.children.length === 0"
+					>
+						{{ link.label }}
+					</a>
+					<a
+						class="nav-link dropdown-toggle"
+						*ngIf="link.children.length"
+						role="button"
+						data-toggle="dropdown"
+						aria-expanded="false"
+					>
+						{{ link.label }}
+					</a>
+					<div
+						*ngIf="link.children.length"
+						class="dropdown-menu"
+						routerLinkActive="active"
+					>
+						<div *ngFor="let child of link.children">
+							<a
+								class="dropdown-item"
+								*ngIf="child.isShow"
+								[routerLink]="link.link + child.link"
+								routerLinkActive="active"
+								><mat-icon>{{ child.icon }}</mat-icon> <span>{{ child.label }}</span></a
+							>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<router-outlet></router-outlet>
+</div>

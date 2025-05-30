@@ -313,7 +313,7 @@ const CreateConsentForm = () => {
         try {
             let obj = {
                 patient_id: patientType == 'existing' ? selectedPatient?.id : null,
-                form_id: selectedForm?.id,
+                form_id: selectedForm?._id,
                 aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
                 treatment_date: getValues('treatmentDate'),
                 consultation_date: getValues('consultationDate'),
@@ -696,17 +696,12 @@ const CreateConsentForm = () => {
                 limit: 999
             };
 
-            const data = await ApiServices.getConsentForms(params);
+            const data = await ApiServices.getFormTemplates(params);
 
 
+console.log(data);
 
-            setForms(
-                data?.data?.forms?.map((doc) => ({
-                    ...doc,
-                    id: doc?._id, // Example transformation
-                    name: doc?.first_name + ' ' + doc?.last_name, // Another example
-                }))
-            );
+            setForms( data?.data?.templates );
 
         } catch (error) {
             console.error("Error fetching location:", error);

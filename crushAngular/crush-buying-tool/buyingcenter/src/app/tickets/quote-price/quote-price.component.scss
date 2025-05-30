@@ -1,0 +1,103 @@
+div {
+	padding-top: 1px;
+	background: white;
+	margin-bottom: 5px;
+}
+
+mat-divider.mat-divider.mat-divider-inset {
+	margin: 3px;
+}
+
+.price {
+	width: 100px;
+}
+
+div.quote-container {
+	display: flex;
+	padding: 15px 20px;
+	margin-bottom: 0 !important;
+}
+
+td,
+th {
+	position: relative;
+	border-bottom: 1px solid rgb(212, 212, 212);
+	padding: 4px 8px;
+	border-right: 1px solid rgb(212, 212, 212);
+}
+
+th {
+	border-right: 1px solid rgb(88, 88, 88);
+}
+
+.filler {
+	flex-grow: 1;
+}
+
+.max {
+	background: rgba(255, 133, 133, 0.788);
+}
+
+.max ~ .max {
+	background: inherit;
+}
+
+.min {
+	background: rgba(149, 255, 149, 0.87);
+}
+
+.min ~ .min {
+	background: inherit;
+}
+
+.rounded {
+	border-radius: 100% !important;
+	color: #288ad3;
+	font-size: 12px;
+}
+
+mat-error {
+	font-size: 13px;
+}
+
+.hide {
+	display: none;
+}
+
+.need-towing {
+	padding: 10px;
+	background: #d2d2d2 !important;
+	font-weight: bold;
+
+	mat-slide-toggle {
+		color: #10568a;
+	}
+
+	.distance {
+		background: #d2d2d2 !important;
+	}
+}
+
+.item-value {
+	color: #10568a;
+}
+.mat-form-field-suffix {
+	top: -6px !important;
+}
+
+.alert {
+	position: relative;
+	padding: 0px 10px;
+	margin-bottom: 1rem;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+}
+.mat-slide-toggle {
+	display: inline-block;
+	height: 50px !important;
+	max-width: 100%;
+	line-height: 50px !important;
+	white-space: nowrap;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+}

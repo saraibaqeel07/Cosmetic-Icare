@@ -1,0 +1,10 @@
+@import "../table-setup.scss";
+
+.name-input {
+	min-width: 230px;
+}
+
+.disabled {
+	background-color: #d2d2d2;
+	pointer-events: none !important;
+}

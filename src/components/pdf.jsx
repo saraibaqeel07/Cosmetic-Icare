@@ -41,6 +41,7 @@ const toBase64 = (url) => {
 }
 
 const PatientPDF = ({ form, ref }) => {
+    console.log(form, 'formformform');
 
     const [imagesBase64, setImagesBase64] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -87,7 +88,7 @@ const PatientPDF = ({ form, ref }) => {
         if (form) {
             handleExportWithComponent(ref)
         }
-       
+
     }, [form])
 
     // Format date function
@@ -811,7 +812,7 @@ const PatientPDF = ({ form, ref }) => {
                                             }}
                                         >
                                             <Typography variant="body1" sx={{ fontWeight: "500", color: "#34495e", marginBottom: "10px" }}>
-                                                Consent Details:
+                                                {form?.template_info[0]?.patient_consent_text}:
                                             </Typography>
                                             <Typography variant="body2" sx={{ color: "#2c3e50" }}>
                                                 {form?.patient_consent?.details || "No Patient Consent Details Available"}
@@ -884,7 +885,9 @@ const PatientPDF = ({ form, ref }) => {
                                 >
                                     Patient Side Effects
                                 </Typography>
-
+                                <Typography variant="body1" sx={{ fontWeight: "500", color: "#34495e", marginBottom: "10px" }}>
+                                    {form?.template_info[0]?.side_effect_text}:
+                                </Typography>
                                 <Box
                                     sx={{
                                         padding: "15px",
@@ -898,7 +901,198 @@ const PatientPDF = ({ form, ref }) => {
                                     </Typography>
                                 </Box>
                             </Paper>
+                            {/* Side Effects */}
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    padding: "20px",
+                                    marginTop:'15px',
+                                    backgroundColor: "#f8f9fa",
+                                    borderRadius: "8px",
+                                    border: "1px solid #e0e0e0",
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "600",
+                                        marginTop: "15px",
+                                        marginBottom: "15px",
+                                        color: "#2c3e50",
+                                        borderBottom: "2px solid #3498db",
+                                        paddingBottom: "8px",
+                                        display: "inline-block",
+                                    }}
+                                >
+                                    Medication Section
+                                </Typography>
 
+                                <Box
+                                    sx={{
+                                        padding: "15px",
+                                        borderRadius: "6px",
+                                        backgroundColor: "#ffffff",
+                                        border: "1px solid #e0e0e0",
+                                    }}
+                                >
+                                    <Typography variant="body2" sx={{ color: "#2c3e50" }}>
+                                        {form?.template_info[0]?.medications_section || "No Side Effects Reported"}
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                            {/* Side Effects */}
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    padding: "20px",
+                                    marginTop: "15px",
+                                    backgroundColor: "#f8f9fa",
+                                    borderRadius: "8px",
+                                    border: "1px solid #e0e0e0",
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "600",
+                                        marginBottom: "15px",
+                                        color: "#2c3e50",
+                                        borderBottom: "2px solid #3498db",
+                                        paddingBottom: "8px",
+                                        display: "inline-block",
+                                    }}
+                                >
+                                    Allergies Section
+                                </Typography>
+
+                                <Box
+                                    sx={{
+                                        padding: "15px",
+                                        borderRadius: "6px",
+                                        backgroundColor: "#ffffff",
+                                        border: "1px solid #e0e0e0",
+                                    }}
+                                >
+                                    <Typography variant="body2" sx={{ color: "#2c3e50" }}>
+                                        {form?.template_info[0]?.allergies_section || "No Side Effects Reported"}
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    padding: "25px",
+                                    marginTop: "25px",
+                                    marginBottom: "25px",
+                                    backgroundColor: "#f8f9fa",
+                                    borderRadius: "8px",
+                                    border: "1px solid #e0e0e0",
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "600",
+                                        marginBottom: "20px",
+                                        color: "#2c3e50",
+                                        borderBottom: "2px solid #3498db",
+                                        paddingBottom: "10px",
+                                        display: "inline-block",
+                                    }}
+                                >
+                                    Questions & Answers
+                                </Typography>
+
+                                {form?.questionnaire?.map((item, index) => (
+                                    <Box
+                                        key={item._id}
+                                        sx={{
+                                            marginBottom: index < form?.questionnaire?.length - 1 ? "20px" : 0,
+                                            backgroundColor: "#ffffff",
+                                            borderRadius: "8px",
+                                            padding: "20px",
+                                            border: "1px solid #e0e0e0",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.03)",
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="h6"
+                                            sx={{
+                                                fontWeight: "500",
+                                                color: "#34495e",
+                                                marginBottom: "20px",
+                                                fontSize:'10px !important'
+                                            }}
+                                        >
+                                            Question {index + 1}: {item.question}
+                                        </Typography>
+
+
+
+                                        <Box sx={{ display: "flex", alignItems: "flex-start", marginTop: "10px" }}>
+                                            <Typography
+                                                variant="subtitle1"
+                                                sx={{
+                                                    fontWeight: "600",
+                                                    color: "#2c3e50",
+                                                    marginRight: "10px",
+                                                     fontSize:'10px !important'
+                                                }}
+                                            >
+                                                Answer:
+                                            </Typography>
+                                            <Typography
+                                                variant="body1"
+                                                sx={{
+                                                    color: "#2c3e50",
+                                                   
+                                                    
+                                                     fontSize:'10px !important',
+                                                    flexGrow: 1,
+                                                }}
+                                            >
+                                                {item.answer}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                ))}
+                            </Paper>
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    padding: "20px",
+                                    backgroundColor: "#f8f9fa",
+                                    borderRadius: "8px",
+                                    border: "1px solid #e0e0e0",
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "600",
+                                        marginBottom: "15px",
+                                        color: "#2c3e50",
+                                        borderBottom: "2px solid #3498db",
+                                        paddingBottom: "8px",
+                                        display: "inline-block",
+                                    }}
+                                >
+                                    Disclaimer
+                                </Typography>
+                            
+                                <Box
+                                    sx={{
+                                        padding: "15px",
+                                        borderRadius: "6px",
+                                        backgroundColor: "#ffffff",
+                                        border: "1px solid #e0e0e0",
+                                    }}
+                                >
+                                    <Typography variant="body2" sx={{ color: "#2c3e50" }}>
+                                        {form?.template_info[0]?.disclaimer_text || ""}
+                                    </Typography>
+                                </Box>
+                            </Paper>
                             {/* Footer */}
                             <Box
                                 sx={{

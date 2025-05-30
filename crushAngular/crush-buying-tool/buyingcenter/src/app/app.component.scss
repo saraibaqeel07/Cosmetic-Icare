@@ -1,0 +1,57 @@
+.navbar-inverse {
+	background-color: #10568a;
+	border-color: #03263a;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+	color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+	color: #4f8b11;
+}
+
+.nav-margin {
+	padding-top: 0px;
+}
+
+.row {
+	margin: initial;
+}
+
+.loader {
+	display: inline-block;
+	margin: 4px;
+}
+
+.app-load {
+	margin: auto;
+	width: 300px;
+	padding-top: 80px;
+	text-align: center;
+}
+
+li.navbar-item {
+	padding: 15px !important;
+}
+
+a.navbar-link {
+	text-decoration: none;
+}
+
+a.navbar-link.active {
+	padding: 15px;
+	background: #0d4774;
+	color: #fff !important;
+}
+
+a.navbar-link:hover {
+	background: #0d4774 !important;
+	padding: 15px !important;
+}
+
+nav.navbar.navbar-expand-lg.fixed-top.navbar-dark {
+	padding: 0px !important;
+}

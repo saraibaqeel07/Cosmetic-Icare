@@ -1,0 +1,31 @@
+@import "../table-setup.scss";
+
+td:first-child {
+	max-width: 50px;
+}
+
+tr.over-limit {
+	td {
+		background-color: #f78888;
+
+		.distance {
+			border: 1px solid lighten(rgb(250, 45, 45), 0.6) !important;
+		}
+
+		.milage-text {
+			display: inline !important;
+		}
+	}
+}
+
+tr {
+	td {
+		.milage-text {
+			display: none;
+		}
+	}
+}
+
+table {
+	min-width: 610px !important;
+}

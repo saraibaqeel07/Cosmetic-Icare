@@ -1,0 +1,277 @@
+<!-- large view -->
+<ng-container *ngIf="size == 'large'">
+	<div class="container-fluid box pt-4">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="float-left" style="width: 70%">
+					<span
+						style="
+							font-size: 20px;
+							font-weight: bold;
+							margin-top: 5px;
+							margin-right: 5px;
+						"
+						>Filters:
+					</span>
+					<button
+						mat-stroked-button
+						(click)="statusChange('all', false)"
+						[ngClass]="{ 'selected-button': this.status == 'all' }"
+						class="all"
+					>
+						All
+					</button>
+					<button
+						mat-stroked-button
+						(click)="statusChange('open', true)"
+						[ngClass]="{ 'selected-button': this.status == 'open' }"
+						class="open"
+					>
+						Open
+					</button>
+					<button
+						mat-stroked-button
+						(click)="statusChange('pickup', true)"
+						[ngClass]="{ 'selected-button': this.status == 'pickup' }"
+						class="pickup"
+					>
+						Pickup
+					</button>
+					<button
+						mat-stroked-button
+						(click)="statusChange('dropoff', true)"
+						[ngClass]="{ 'selected-button': this.status == 'dropoff' }"
+						class="dropoff"
+					>
+						Dropoff
+					</button>
+					<button
+						mat-stroked-button
+						(click)="statusChange('finished', false)"
+						[ngClass]="{ 'selected-button': this.status == 'finished' }"
+						class="finished"
+					>
+						Finished
+					</button>
+					<button
+					mat-stroked-button
+					(click)="statusChange('deleted', false,false)"
+					[ngClass]="{ 'selected-button': this.status == 'deleted' }"
+					class="deleted"
+				>
+					Deleted
+				</button>
+				</div>
+				<div class="float-right" style="width: 30%">
+					<mat-form-field class="w-100 p-0">
+						<mat-label>Search tickets here..</mat-label>
+						<input
+							matInput
+							placeholder="Search tickets here.."
+							[(ngModel)]="searchString"
+							(keyup.enter)="searchChange($event)"
+							(change)="searchChange($event)"
+						/>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<ng-container
+			*ngFor="let ticket of tickets"
+			[ngTemplateOutlet]="
+				ticket.callticket == selectedTicketId ? detailed : detailed
+			"
+			[ngTemplateOutletContext]="{ ticket: ticket }"
+		></ng-container>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col custom-column" *ngFor="let status of ticketStatus">
+				<div  class="text-center text-white mb-4"  [ngClass]="status + '-bg'">
+					<h3 class="text-uppercase">{{ status }} <span *ngIf="status === 'open'"><mat-icon>drafts</mat-icon></span> <span *ngIf="status === 'pickup'"><mat-icon>local_shipping</mat-icon></span> <span *ngIf="status === 'dropoff'"><mat-icon>arrow_drop_down_circle</mat-icon></span> <span *ngIf="status === 'finished'"><mat-icon>check</mat-icon></span></h3>
+				</div>
+				<div  class="row"  [ngStyle]="{ 'width': (status === 'deleted') ? '33%' : '100%' }">
+					<div class="col p-0">
+						<div
+							class="card-container"
+							*ngFor="let ticket of getTicketByType(status)"
+						>
+							<mat-card
+								(click)="ticketDetails($event, ticket)"
+								[ngClass]="{ finished: ticket.finished, timeUp: ticket.timeUp }"
+								class="design1 card {{ ticket.status }}"
+							>
+								<mat-card-header>
+									<mat-card-title class="header"
+										>{{ ticket.callticket }}
+										<span>{{ ticket.callername }}</span>
+
+											<!-- <span>{{ ticket.callername }} {{ ticket.callerLastName }}</span -->
+										<mat-divider [inset]="true"></mat-divider
+									></mat-card-title>
+
+								
+								</mat-card-header>
+							
+									<div style="display: flex;justify-content: space-between;">
+										<span *ngIf="!ticket.finished && (ticket.status === 'open' || ticket.status === 'pickup' || ticket.status === 'dropoff') " style="border: 1px solid red; background-color: red; width: 120px; height: 40px; border-radius: 5px; color: white; padding: 5px; margin-bottom: 2%;">Not Purchased</span>
+									<div  style="display: flex;" *ngIf="!ticket.finished && status!='deleted'">
+										
+										<button class="edit-btn" (click)="openEdit(ticket.callticket)">
+											<mat-icon style="font-size: 20px">edit</mat-icon>
+										</button>
+										<button class="edit-btn" (click)="markItFinish(ticket)">
+											<mat-icon style="font-size: 20px">check</mat-icon>
+										</button>
+									
+										<button class="edit-btn" (click)="closeTicket(ticket.callticket)">
+											<mat-icon style="font-size: 20px; color: red"
+												>delete_forever</mat-icon
+											>
+										</button>
+										<button class="edit-btn" (click)="StatusChange(ticket,'open')">
+											<mat-icon>drafts</mat-icon>
+										</button>
+										<button class="edit-btn" (click)="StatusChange(ticket,'pickup')">
+											<mat-icon> local_shipping</mat-icon>
+										</button>
+										<button class="edit-btn" (click)="StatusChange(ticket,'dropoff')">
+											<mat-icon>arrow_drop_down_circle</mat-icon>
+										</button>
+										<button class="edit-btn" (click)="StatusChange(ticket,'purchased')">
+											<mat-icon>add_shopping_cart</mat-icon>
+										</button>
+										
+									</div>
+								</div>
+								
+								
+								<mat-card-content>
+									
+
+									<p class="size-16 car-model" style="margin-top: 5%;">
+										{{ ticket.year }}, {{ ticket.make }} {{ ticket.model }}
+									</p>
+									
+									<p class="price">
+										<span class="bold price">Caller</span> {{ ticket.callername }} {{ ticket.callerlastname }}
+									</p>
+									<p class="price">
+										<span class="bold price">Caller #</span> {{ ticket.phonenumber }}
+									</p>
+									<p class="price">
+										<span class="bold price">Price</span>
+										{{ "$" + ticket.negotiatedprice || "N/A" }}
+									</p>
+									<p>
+										<span class="bold">{{ ticket.towed ? "Pickup:" : "Dropoff:" }}</span>
+										<!-- <span *ngIf="ticket.pickupdate"> -->
+										<!-- {{ ticket.pickupdate | date : "fullDate" }},
+										{{ ticket.pickupdate | date : "shortTime" }} -->
+										<!-- </span> -->
+										{{ formatDate(ticket.pickupdate) }}
+										
+									</p>
+									<p *ngIf="ticket.driver">
+										<span class="bold">Driver:</span> {{ ticket.driveremail }}
+									</p>
+									<p *ngIf="ticket.driver">
+										<span class="bold">Driver #</span> {{ ticket.driverphone }}
+									</p>
+								</mat-card-content>
+							</mat-card>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <ng-template #detailed let-ticket="ticket">
+	<div class="card-container col-md-2">
+		<mat-card (click)="ticketDetails($event, ticket)" [ngClass]="{'finished': ticket.finished}" class="design1 card {{ticket.status}}">
+			<mat-card-header>
+				<mat-card-title class="header">{{ticket.callticket}} <span>{{ticket.callername}}</span><mat-divider [inset]="true"></mat-divider></mat-card-title>
+				<button mat-raised-button *ngIf="!ticket.finished" (click)="openEdit($event, ticket.callticket)">Edit</button>
+			</mat-card-header>
+			<mat-card-content>
+				<p class=" size-16 car-model">{{ticket.year}}, {{ticket.make}} {{ticket.model}}</p>
+				<p class="price">
+					<span class="bold price">Caller #</span> {{ticket.phonenumber}}
+				</p>
+				<p class="price">
+				<span class="bold price">Price</span> $ {{ticket.negotiatedprice || 'N/A'}}
+			</p>
+			<p>
+				<span class="bold">{{ticket.towed ? 'Pickup:' : 'Dropoff:'}}</span> {{ticket.pickupdate}}
+			</p>
+				<p *ngIf="ticket.driver">
+				<span class="bold">Driver:</span> {{ticket.driveremail}}
+			</p>
+				<p *ngIf="ticket.driver">
+				<span class="bold">Driver #</span> {{ticket.driverphone}}
+			</p>
+			</mat-card-content>
+		</mat-card>
+	</div>
+</ng-template> -->
+	<!-- Modal View -->
+	<ng-template #basic let-ticket="ticket"
+		><div class="card-container col-md-2">
+			<div class="edit">Edit</div>
+			<mat-card
+				[ngClass]="{ finished: ticket.finished }"
+				class="design1 card {{ ticket.status }}"
+			>
+				<mat-card-header>
+					<mat-card-title
+						>{{ ticket.callticket }}
+						<span>{{ ticket.callername }} {{ ticket.callerLastName }}</span
+						><mat-divider [inset]="true"></mat-divider
+					></mat-card-title>
+					<mat-card-title class="car-model"
+						>{{ ticket.year }}, {{ ticket.make }} {{ ticket.model }}</mat-card-title
+					>
+					<button
+						mat-raised-button
+						*ngIf="!ticket.finished"
+						(click)="openEdit($event, ticket.callticket)"
+					>
+						Edit
+					</button>
+				</mat-card-header>
+				<mat-card-content>
+					<p class="price">
+						<span class="bold price">Negotiated:</span> ${{ ticket.quote }}
+					</p>
+					<p *ngIf="ticket.driver">
+						<span class="bold">Driver:</span> {{ ticket.driver }}
+					</p>
+					<p>
+						<span class="bold">{{ ticket.towed ? "pickup:" : "dropoff:" }}</span>
+						{{ ticket.pickupdate }}
+					</p>
+				</mat-card-content>
+			</mat-card>
+		</div></ng-template
+	>
+</ng-container>
+<!-- small view -->
+<ng-container *ngIf="size == 'small'">
+	<div
+		(click)="ticketDetails($event, ticket)"
+		[ngClass]="{ 's-finished': ticket.finished }"
+		class="small-ticket s-{{ ticket.status }}"
+		*ngFor="let ticket of tickets"
+	>
+		<span class="bold">{{ ticket.callticket }}</span> {{ ticket.make }}
+		{{ ticket.model }}
+		<button
+			mat-raised-button
+			*ngIf="!ticket.finished"
+			(click)="openEdit($event, ticket.callticket)"
+			class="text-right"
+		>
+			Edit
+		</button>
+	</div>
+</ng-container>

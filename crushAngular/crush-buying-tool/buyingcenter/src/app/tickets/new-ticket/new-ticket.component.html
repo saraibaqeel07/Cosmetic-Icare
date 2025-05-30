@@ -1,0 +1,737 @@
+<div class="container top d-flex flex-column">
+	<app-progress-spinner overlay="true" *ngIf="isLoading"></app-progress-spinner>
+	<form
+		[formGroup]="ticketForm"
+		#form="ngForm"
+		(ngSubmit)="purchaseTicket($event)"
+	>
+		<div class="actions">
+			<a
+				mat-raised-button
+				type="button"
+				style="
+					background-color: red;
+					color: white;
+					border-radius: 5px;
+					margin-right: 3px;
+				"
+				routerLink="/tickets"
+			>
+				Close
+			</a>
+			<button
+				mat-raised-button
+				type="button"
+				style="margin-right: 3px"
+				(click)="print()"
+			>
+				Print
+			</button>
+			<button mat-raised-button type="button" [disabled]="buttonDisabled" (click)="saveTicket()">
+				Save Ticket
+			</button>
+			<button mat-raised-button *ngIf="!isPurchased" type="submit" color="primary">
+				Purchase
+			</button>
+			<button
+				mat-raised-button
+				*ngIf="isPurchased && !isFinished"
+				type="button"
+				class="yellow"
+				(click)="cancelPurchase()"
+				color=""
+			>
+				Cancel Purchase
+			</button>
+			<button
+				mat-raised-button
+				*ngIf="!isFinished && ticketForm.controls.ticketNumber.value"
+				type="button"
+				(click)="closeTicket()"
+				color="warn"
+			>
+				Trash
+			</button>
+			<button
+				mat-raised-button
+				*ngIf="isFinished && ticketForm.controls.ticketNumber.value"
+				type="button"
+				(click)="openTicket()"
+				color="warn"
+			>
+				Open Ticket
+			</button>
+			<!-- <mat-slide-toggle
+				labelPosition="before"
+				color="primary"
+				[(ngModel)]="alternateAlgorithm"
+				(change)="alternateAlgorithmEvent(alternateAlgorithm)"
+				>Enable Alternate Algorithm</mat-slide-toggle
+			> -->
+			<div class="ticket-number">
+				{{
+					ticketForm.controls.ticketNumber.value
+						? "Ticket: #" + ticketForm.controls.ticketNumber.value
+						: "New Ticket"
+				}}
+			</div>
+		</div>
+
+		<app-quote-price
+			[towing]="ticketForm.get('tow')"
+			[price]="ticketForm.get('price')"
+			[distance]="ticketForm.get('distance')"
+			[YardName]="closestYard?.YardName"
+			[YardLocation]="closestYard?.YardLocation"
+			[selectedYard]="closestYard?.S3ClientId"
+			(onYardUpdate)="getDistance($event)"
+		></app-quote-price>
+
+		<!-- <div class="yard" *ngIf="closestYard?.YardName">
+			<div class="mt-1">
+				Closest Yard: <span class="item-value">{{ closestYard?.YardName }}</span
+				><br />
+			</div>
+			<div class="mt-1">
+				Location: <span class="item-value">{{ closestYard?.YardLocation }}</span>
+			</div>
+		</div> -->
+		<!-- <div *ngIf="ticketForm.controls['phone'].invalid && (ticketForm.controls['phone'].dirty || ticketForm.controls['phone'].touched)" class="alert">
+            <div *ngIf="ticketForm.controls['phone'].errors.required">
+            Please enter username
+          </div>
+        </div> -->
+		<div *ngFor="let field of formFields; let i = index" class="error-content">
+			<div
+				*ngIf="
+					ticketForm.controls[field].invalid &&
+					(ticketForm.controls[field].dirty || ticketForm.controls[field].touched)
+				"
+			>
+				<span *ngIf="ticketForm.controls[field].errors.required">
+					<div class="alert alert-danger" role="alert">
+						<b>Error!</b> Invalid
+						<b class="uppercase-text">{{ joinString(field) }}</b> field value.
+					</div>
+				</span>
+				<span
+					*ngIf="
+						!ticketForm.get(field).hasError('required') &&
+						ticketForm.get(field).hasError('pattern')
+					"
+				>
+					<div class="alert alert-danger" role="alert">
+						<b>Error!</b> Please enter a valid value for
+						<b class="uppercase-text">{{ joinStPring(field) }}</b> field.
+					</div>
+				</span>
+				<span
+					*ngIf="
+						!ticketForm.get(field).hasError('required') &&
+						!ticketForm.get(field).hasError('minLength')
+					"
+				>
+					<!-- <div class="alert alert-danger" role="alert">
+						<b>Error!</b> Please enter a valid value for
+						<b class="uppercase-text">{{ joinString(field) }}</b> field.
+					</div> -->
+				</span>
+			</div>
+		</div>
+		<mat-horizontal-stepper>
+			<!--
+				*************** Vehicle Tab ******************
+			 -->
+			<mat-step>
+				<ng-template matStepLabel>Vehicle</ng-template>
+				<mat-divider [inset]="true"></mat-divider>
+				<div class="row">
+					<mat-form-field class="vin-input">
+						<mat-label>Vin Number</mat-label>
+						<input
+							type="text"
+							maxlength="17"
+							oninput="this.value = this.value.toUpperCase()"
+							(keyup)="vinDecodeCharCheck($event)"
+							matInput
+							formControlName="VIN"
+							matInput
+							autocomplete="off"
+						/>
+					</mat-form-field>
+					<!-- <div>
+						<button
+							class="add-vendor margin-right"
+							mat-raised-button
+							type="button"
+							(click)="decodeVIN()"
+						>
+							Decode
+						</button>
+					</div> -->
+					<!-- <mat-form-field>
+						<mat-label>Find Zip Code</mat-label>
+						<input
+							type="text"
+							matInput
+							autocomplete="off"
+							(focusout)="getAddressByZip($event)"
+						/>
+					</mat-form-field> -->
+					<!-- <mat-form-field class="vin-input">
+						<mat-label>Yard</mat-label>
+						<mat-select
+							disableOptionCentering
+							formControlName="yard"
+							(selectionChange)="getDistance($event)"
+						>
+							<mat-option *ngFor="let yard of yards" [value]="yard.S3ClientId">
+								{{ yard.YardName }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field> -->
+				</div>
+				<!-- <h3>Vehicle Info</h3> -->
+				<div class="row">
+					<mat-form-field class="year-input">
+						<mat-label>Year</mat-label>
+						<input
+							type="text"
+							maxlength="4"
+							matInput
+							formControlName="year"
+							matInput
+							autocomplete="off"
+							(change)="yearChange($event.target.value)"
+						/>
+					</mat-form-field>
+					<mat-form-field class="make-input">
+						<mat-label>Make</mat-label>
+						<input
+							type="text"
+							formControlName="make"
+							matInput
+							autocomplete="off"
+							[matAutocomplete]="makeAuto"
+							(change)="changeMake()"
+							(keyup)="filterDropdowns('make', $event)"
+						/>
+						<mat-autocomplete
+							#makeAuto="matAutocomplete"
+							(optionSelected)="changeMake()"
+						>
+							<mat-option *ngFor="let make of vehicleMakeFiltered" [value]="make.name">
+								{{ make.name }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+					<mat-form-field class="model-input">
+						<mat-label>Model</mat-label>
+						<input
+							type="text"
+							formControlName="model"
+							id="myModel"
+							matInput
+							autocomplete="off"
+							[matAutocomplete]="modelAuto"
+							(keyup)="filterDropdowns('model', $event)"
+						/>
+						<mat-autocomplete
+							#modelAuto="matAutocomplete"
+							(optionSelected)="changeModel()"
+						>
+							<mat-option
+								*ngFor="let model of vehicleModelFiltered"
+								[value]="model.name"
+							>
+								{{ model.name }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+					<mat-form-field class="series-input">
+						<mat-label>Series</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="series"
+							matInput
+							autocomplete="off"
+							[matAutocomplete]="seriesAuto"
+							(keyup)="filterDropdowns('series', $event)"
+						/>
+						<mat-autocomplete
+							#seriesAuto="matAutocomplete"
+							(optionSelected)="setVehicleSize()"
+						>
+							<mat-option *ngFor="let serie of series" [value]="serie.description">
+								{{ serie.description }}</mat-option
+							>
+						</mat-autocomplete>
+					</mat-form-field>
+				</div>
+				<div class="row">
+					<mat-form-field class="weight-input">
+						<mat-label>Odometer</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="odometer"
+							matInput
+							autocomplete="off"
+						/>
+					</mat-form-field>
+					<mat-form-field class="weight-input">
+						<mat-label>Color</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="color"
+							matInput
+							autocomplete="off"
+						/>
+					</mat-form-field>
+				</div>
+				<div class="row">
+					<mat-form-field class="vin-input">
+						<mat-label>Vehicle Class</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="vehicleSize"
+							matInput
+							autocomplete="off"
+						/>
+						<!-- 
+							[matAutocomplete]="classAuto"
+
+							<mat-autocomplete #classAuto="matAutocomplete">
+							<mat-option
+								*ngFor="let vehicleClass of vehicleSizes"
+								[value]="vehicleClass.vehicleClass"
+							>
+								{{ vehicleClass.vehicleClass }}
+							</mat-option>
+						</mat-autocomplete> -->
+					</mat-form-field>
+					<mat-form-field class="weight-input">
+						<mat-label>Curb Weight</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="curbWeight"
+							autocomplete="off"
+						/>
+					</mat-form-field>
+				</div>
+				<div class="row">
+					<mat-slide-toggle
+						class="title-toggle"
+						formControlName="hasTitle"
+						labelPosition="before"
+						color="primary"
+						>Has Title?
+					</mat-slide-toggle>
+					<mat-form-field disabled class="weight-input">
+						<mat-label>Title Number</mat-label>
+						<input
+							type="text"
+							[readonly]="false"
+							matInput
+							formControlName="titleNumber"
+							matInput
+							autocomplete="off"
+						/>
+						<mat-error>Title number required to purchase</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label>Title State</mat-label>
+						<mat-select formControlName="titleState">
+							<mat-option *ngFor="let state of states" [value]="state.abbreviation">
+								{{ state.name }}
+							</mat-option>
+						</mat-select>
+						<mat-error>Title state required to purchase</mat-error>
+					</mat-form-field>
+				</div>
+				<!-- <mat-divider [inset]="true"></mat-divider> -->
+				<div class="row custom-questions-container" *ngIf="questionsLoaded">
+					<app-custom-questions
+						[questionsGroup]="customQuestionsForm"
+						(quotePrice)="onChangeQuestion($event)"
+					></app-custom-questions>
+				</div>
+				<div style="justify-content: end; display: flex">
+					<button mat-raised-button type="button" matStepperNext>Next</button>
+				</div>
+			</mat-step>
+			<!--
+			*************** Seller Tab ******************
+			-->
+			<mat-step>
+				<mat-divider [inset]="true"></mat-divider>
+				<ng-template matStepLabel>Seller</ng-template>
+				<!-- <div class="row">
+					<mat-form-field style="width: 250px">
+						<mat-label>Choose Existing Seller Profile</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="vendor"
+							matInput
+							autocomplete="off"
+							[matAutocomplete]="vendorAuto"
+						/>
+						<mat-autocomplete
+							#vendorAuto="matAutocomplete"
+							[panelWidth]="'fix'"
+							[displayWith]="displayName.bind(this)"
+						>
+							<mat-option *ngFor="let vendor of vendors" [value]="vendor.id">
+								{{ vendor.businessName }}
+								<mat-icon
+									class="small-icon"
+									matSuffix
+									(click)="addVendor($event, vendor)"
+									>edit</mat-icon
+								></mat-option
+							>
+						</mat-autocomplete>
+					</mat-form-field>
+					<button
+						type="button"
+						(click)="addVendor($event, null)"
+						class="add-vendor mr-4"
+						style="width: 180px; height: 35px"
+						mat-raised-button
+						aria-label="Button that displays a tooltip when focused or hovered over"
+						matTooltip="This allows you to choose a pre-made profile of past sellers"
+					>
+						Add New Seller Profile
+					</button>
+					<div>
+						<button
+							class="add-vendor mr-4"
+							mat-raised-button
+							type="button"
+							(click)="addVendor($event, null)"
+						>
+							Add
+						</button>
+					</div>
+				</div> -->
+				<div class="row">
+					<mat-form-field style="width: 220px" class="name-input">
+						<mat-label>First Name</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="name"
+							matInput
+							autocomplete="off"
+						/>
+						<mat-error>required</mat-error>
+					</mat-form-field>
+					<mat-form-field style="width: 220px" class="name-input">
+						<mat-label>Last Name</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="callerLastName"
+							matInput
+							autocomplete="off"
+						/>
+						<mat-error>required</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="row">
+					<mat-form-field style="width: 350px">
+						<mat-label>Email</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="email"
+							matInput
+							email="true"
+							autocomplete="off"
+						/>
+						<mat-error *ngIf="ticketForm.get('email').hasError('required')">
+							Email address is <strong>required</strong>
+						</mat-error>
+						<mat-error
+							*ngIf="
+								!ticketForm.get('email').hasError('required') &&
+								ticketForm.get('email').hasError('pattern')
+							"
+						>
+							Please enter valid email
+						</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label>Phone Number</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="phone"
+							mask="(000)000-0000"
+							[showMaskTyped]="true"
+							[dropSpecialCharacters]="false"
+							matInput
+							autocomplete="off"
+							(keypress)="keyPress($event)"
+						/>
+						<mat-error *ngIf="ticketForm.get('phone').hasError('required')">
+							Phone number is <strong>required</strong>
+						</mat-error>
+						<mat-error
+							*ngIf="
+								!ticketForm.get('phone').hasError('required') &&
+								ticketForm.get('phone').hasError('pattern')
+							"
+						>
+							Please enter valid number
+						</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="row">
+					<app-google-map
+						(setAddress)="onAutocompleteSelected($event)"
+						class="address-input google-map"
+						formLabel="Find address.."
+						addressType="address"
+					></app-google-map>
+				</div>
+				<div
+					class="row"
+					*ngIf="ticketForm.get('street1').value || ticketForm.get('street2').value"
+					style="margin-left: 5px; margin-top: -20px"
+				>
+					<p>
+						<b>Complete Address:</b>
+						{{ ticketForm.get("street1").value }},
+						{{ ticketForm.get("street2").value }}
+					</p>
+				</div>
+				<input
+							type="text"
+							matInput
+							formControlName="street1"
+							id="stadds2"
+							autocomplete="off"
+							hidden="true"
+						/>
+				<!-- <div class="row">
+					<mat-form-field class="address-input">
+						<mat-label>Street Address</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="street1"
+							id="street-address-1"
+							autocomplete="off"
+						/>
+						<mat-error>Address is Missing</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="row">
+					<mat-form-field class="address-input">
+						<mat-label>Secondary Address</mat-label>
+						<input
+							type="text"
+							matInput
+							formControlName="street2"
+							autocomplete="off"
+						/>
+					</mat-form-field>
+				</div> -->
+				<div class="row">
+					<mat-form-field class="city-input">
+						<mat-label>City</mat-label>
+						<input type="text" matInput formControlName="city" autocomplete="off" />
+					</mat-form-field>
+					<mat-form-field class="state-input">
+						<mat-label>State</mat-label>
+						<mat-select formControlName="state">
+							<mat-option *ngFor="let state of states" [value]="state.abbreviation">
+								{{ state.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="zip-input">
+						<mat-label>Zip Code</mat-label>
+						<input type="text" matInput formControlName="zip" autocomplete="off" />
+					</mat-form-field>
+					<div class="addressCheck">
+						<span *ngIf="addressFound === true">
+							<mat-icon class="check">check_circle_outline</mat-icon>
+							Address
+						</span>
+						<span *ngIf="addressFound === false">
+							<mat-icon class="check red">highlight_off</mat-icon>
+							Address
+						</span>
+						<span class="disabled" *ngIf="addressFound === null">
+							<mat-icon class="check disabled">check_circle_outline</mat-icon>
+							Address
+						</span>
+					</div>
+				</div>
+				<div style="justify-content: end; display: flex">
+					<button mat-raised-button class="mr-2" matStepperPrevious>Back</button>
+					<button mat-raised-button matStepperNext type="button">Next</button>
+				</div>
+			</mat-step>
+			<!--
+						*************** Schedule Tab ******************
+					 -->
+			<mat-step>
+				<ng-template matStepLabel>Schedule</ng-template>
+				<div class="row p-2 justify-content-end">
+					<div class="col-md-3">
+						{{ driver?.email }}<br />
+						{{ driver?.phone }}
+					</div>
+					<div class="col-md-9">
+						<span
+							class="item-value font-weight-bold mr-2 p-2"
+							*ngIf="closestYard?.YardName"
+							style="border-bottom: 1px solid rgb(118, 118, 118)"
+							>Yard: {{ closestYard?.YardName }}</span
+						>
+						<mat-form-field *ngIf="ticketForm.get('tow').value" class="vin-input">
+							<mat-label>Driver</mat-label>
+							<input
+								type="text"
+								matInput
+								formControlName="driver"
+								readonly="true"
+								matInput
+								autocomplete="off"
+							/>
+						</mat-form-field>
+						<mat-form-field class="vin-input">
+							<mat-label>Date</mat-label>
+							<input
+							class="custom-date"
+							
+								type="datetime-local"
+								matInput
+								formControlName="dateTime"
+								(change)="changeDateTime()"
+								autocomplete="off"
+							/>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+					<div
+						*ngIf="ticketForm.get('tow').value"
+						class="col-md-3 clear-padding max-height"
+					>
+						<div class="driver-wrapper">
+							<app-drivers (selectedDriver)="setDriver($event)"></app-drivers>
+						</div>
+					</div>
+					<div
+						[ngClass]="ticketForm.get('tow').value ? 'col-md-9' : 'col-md-12'"
+						class="col-md-9 max-height"
+					>
+						<div class="row text-center controls">
+							<div class="col-md-4">
+								<div class="btn-group">
+									<div
+										class="btn btn-primary"
+										(click)="setView(CalendarView.Month)"
+										[class.active]="view === CalendarView.Month"
+									>
+										Month
+									</div>
+									<div
+										class="btn btn-primary"
+										(click)="setView(CalendarView.Week)"
+										[class.active]="view === CalendarView.Week"
+									>
+										Week
+									</div>
+									<div
+										class="btn btn-primary"
+										(click)="setView(CalendarView.Day)"
+										[class.active]="view === CalendarView.Day"
+									>
+										Day
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 view-date">
+								<div>{{ viewDate | calendarDate : view + "ViewTitle" : "en" }}</div>
+							</div>
+							<div class="col-md-4">
+								<div class="btn-group">
+									<div
+										class="btn btn-primary"
+										mwlCalendarPreviousView
+										[(view)]="view"
+										[(viewDate)]="viewDate"
+									>
+										Previous
+									</div>
+									<div
+										class="btn btn-outline-secondary"
+										mwlCalendarToday
+										[(viewDate)]="viewDate"
+									>
+										Today
+									</div>
+									<div
+										class="btn btn-primary"
+										mwlCalendarNextView
+										[(view)]="view"
+										[(viewDate)]="viewDate"
+									>
+										Next
+									</div>
+								</div>
+							</div>
+						</div>
+						<ng-container [ngSwitch]="view">
+							<mwl-calendar-week-view
+								class="calender"
+								*ngSwitchCase="CalendarView.Week"
+								[dayStartHour]="7"
+								[dayEndHour]="19"
+								[events]="DriverTickets"
+								(hourSegmentClicked)="segmentClicked($event.date)"
+								[viewDate]="viewDate"
+								[daysInWeek]="daysInWeek"
+							>
+							</mwl-calendar-week-view>
+							<mwl-calendar-day-view
+								*ngSwitchCase="CalendarView.Day"
+								[dayStartHour]="7"
+								[dayEndHour]="21"
+								[viewDate]="viewDate"
+							>
+							</mwl-calendar-day-view>
+						</ng-container>
+					</div>
+				</div>
+				<div style="justify-content: end; display: flex; margin-top: 30px">
+					<button mat-raised-button class="mr-2" matStepperPrevious>Back</button>
+					<button
+						mat-raised-button
+						style="float: right; background-color: green; color: white"
+						type="button"
+						id="saveButton"
+						[disabled]="buttonDisabled"
+						(click)="saveTicket()"
+					>
+						Save Ticket
+					</button>
+				</div>
+			</mat-step>
+		</mat-horizontal-stepper>
+		<mat-form-field class="note-input col-md-8" appearance="legacy">
+			<mat-label>Notes</mat-label>
+			<textarea matInput formControlName="notes"></textarea>
+		</mat-form-field>
+	</form>
+</div>

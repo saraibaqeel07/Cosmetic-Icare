@@ -1,0 +1,124 @@
+<div class="container">
+	<h4 mat-dialog-title>edit Vendor</h4>
+	<form [formGroup]="vendorForm">
+		<div>
+			<div class="row">
+				<mat-form-field class="col-sm-12 fill">
+					<mat-label>Business</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="businessName"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<mat-form-field class="col-sm-12 fill">
+					<mat-label>Contact Name</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="contactName"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+				<mat-form-field class="col-sm-7 fill">
+					<mat-label>Phone</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="phone"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+				<mat-slide-toggle
+					class="col-sm-5"
+					labelPosition="before"
+					color="primary"
+					formControlName="tow"
+					>Tow:</mat-slide-toggle
+				>
+			</div>
+			<div class="row">
+				<mat-form-field class="col-sm-12 fill">
+					<mat-label>Street1</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="street1"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<mat-form-field class="col-sm-12 fill">
+					<mat-label>Street2</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="street2"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<mat-form-field class="col-sm-12 fill">
+					<mat-label>City</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="city"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<mat-form-field class="col-sm-12 fill">
+					<mat-label>State</mat-label>
+					<mat-select formControlName="state">
+						<mat-option *ngFor="let state of states" [value]="state.abbreviation">
+							{{state.name}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="row">
+				<mat-form-field class="col-sm-6 fill">
+					<mat-label>Zip Code</mat-label>
+					<input
+						type="text"
+						matInput
+						formControlName="zip"
+						matInput
+						autocomplete="off"
+					/>
+				</mat-form-field>
+				<div class="col-sm-6 addressCheck">
+					<span *ngIf="addressFound === true">
+						<mat-icon class="check">check_circle_outline</mat-icon>
+						Address
+					</span>
+					<span *ngIf="addressFound === false">
+						<mat-icon class="check red">highlight_off</mat-icon>
+						Address
+					</span>
+					<span class="disabled" *ngIf="addressFound === null">
+						<mat-icon class="check disabled">check_circle_outline</mat-icon>
+						Address
+					</span>
+				</div>
+			</div>
+			<div mat-dialog-actions class="row">
+				<button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+				<button mat-raised-button type="submit" (click)="save()" color="primary">Save</button>
+			</div>
+		</div>
+	</form>
+</div>

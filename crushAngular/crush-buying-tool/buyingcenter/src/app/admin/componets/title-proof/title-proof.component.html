@@ -1,0 +1,26 @@
+<div class="items">
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th>Adjustment</th>
+				<th>Percent</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let config of PD;">
+				<tr *ngIf="!config.delete">
+					<td class="weight">
+						{{config.priceAdj.isPercent ? '% ' : '$ '}}<input class="name-input negative custom" [(ngModel)]="config.priceAdj.adj" value={{config.priceAdj.adj}} type="text" />
+					</td>
+					<td><mat-slide-toggle [(ngModel)]="config.priceAdj.isPercent" color="primary"></mat-slide-toggle></td>
+				</tr>
+			</ng-container>
+			<tr>
+				<td></td>
+				<td>
+					<button mat-raised-button (click)="saveConfig()" color="primary">Save</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

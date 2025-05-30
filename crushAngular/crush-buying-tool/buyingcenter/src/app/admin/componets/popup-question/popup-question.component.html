@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <h5>{{data.question}}</h5>
+  <div class="spacing" *ngIf="data?.otherData?.list">
+    <div *ngIf="data?.otherData?.list?.listData.length">
+      <ng-select class="form-select" [items]="data.otherData.list.listData"
+                 bindLabel="email"
+                 [(ngModel)]="data.otherData.list.listChosen">
+      </ng-select>
+    </div>
+    <div class="spacing" *ngIf="!data?.otherData?.list?.listData.length">
+      You do not have any users without this role
+    </div>
+  </div>
+  <div class="row my-3">
+    <div class="col-sm-12">
+      <button class="mr-2" color="primary" mat-raised-button (click)="onNoClick(true)" *ngIf="data.confirm">{{data.confirm}}</button>
+      <button mat-raised-button color="accent" (click)="onNoClick(false)" *ngIf="data.deny">{{data.deny}}</button>
+    </div>
+  </div>
+</div>

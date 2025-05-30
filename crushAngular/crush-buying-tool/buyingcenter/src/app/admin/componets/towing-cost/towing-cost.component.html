@@ -1,0 +1,89 @@
+<div class="items">
+	<div class="" style="display: flex; width: 500px; margin-bottom: 10px">
+		<label style="width: 160px; font-weight: 600">Preferred Yard:</label>
+		<select
+			name="role"
+			class="form-control"
+			[(ngModel)]="preferredYard"
+			(ngModelChange)="onChangePreffered(preferredYard)"
+		>
+			<option [value]="0">Closest</option>
+			<option *ngFor="let yard of yardConfig" [value]="yard.Pk">
+				{{ yard.YardName }}
+			</option></select
+		><mat-icon
+			style="margin-top: 10px; margin-left: 5px"
+			matTooltip="
+		When creating a new Ticket, upon entering the zip code, Users are prompted with the closest yard automatically. Choosing a Preferred Yard will override this and display the Yard chosen from this drop down.
+		"
+			aria-label="Info"
+			>info</mat-icon
+		>
+	</div>
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th class="white" style="width: 80px">Option</th>
+				<th>Distance</th>
+				<th>Adjustment</th>
+				<!-- <th>Percent</th> -->
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let config of towingConfig">
+				<tr
+					*ngIf="!config.delete"
+					[class]="config.distance > config.maximumDistance ? 'over-limit' : ''"
+				>
+					<td>
+						<button mat-button (click)="confirmDelete(config)">
+							<mat-icon>delete</mat-icon>
+						</button>
+					</td>
+					<td>
+						<input
+							class="name-input custom distance"
+							[(ngModel)]="config.distance"
+							value="{{ config.distance }}"
+							type="text"
+						/>
+						Miles
+						<span class="milage-text">Not allowed Milage</span>
+					</td>
+					<td class="weight">
+						-$
+						<input
+							class="name-input negative custom"
+							[(ngModel)]="config.priceAdj.adj"
+							value="{{ config.priceAdj.adj }}"
+							type="text"
+						/>
+					</td>
+					<!-- <td><mat-slide-toggle (change)="config.priceAdj.isPercent = !config.priceAdj.isPercent" [checked]="config.priceAdj.isPercent" color="primary"></mat-slide-toggle></td> -->
+				</tr>
+			</ng-container>
+			<tr>
+				<td>
+					<button mat-raised-button (click)="addItem()">
+						<mat-icon>add</mat-icon>
+					</button>
+				</td>
+				<!-- <td></td> -->
+				<td>
+					<input
+						class="name-input custom"
+						type="text"
+						[(ngModel)]="maximumDistance"
+						value="maximumDistance"
+					/>
+					Maximum Allowed Miles
+				</td>
+				<td>
+					<button mat-raised-button (click)="saveConfig()" color="primary">
+						Save
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,7 @@
+<div>
+<app-navbar></app-navbar>
+<div class="containter-fluid nav-margin">
+	<h2 class="app-load" *ngIf="!userloaded"><mat-progress-spinner class="loader" mode="indeterminate" diameter="40"></mat-progress-spinner> ...Loading</h2>
+	<router-outlet *ngIf="userloaded"></router-outlet>
+</div>
+</div>

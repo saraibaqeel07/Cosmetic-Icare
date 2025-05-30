@@ -75,7 +75,12 @@ const routes = {
     getFormDetail:'/patients/forms/details',
     UpdateForm:'/patients/forms/update',
     SendForm:'/patients/forms/send',
-    CompleteForm:'/patients/forms/complete'
+    CompleteForm:'/patients/forms/complete',
+    CreateFormTemplate:'/patients/forms/templates/add',
+    getFormTemplates:"/patients/forms/templates",
+    DeleteFormTemplate:'',
+    UpdateFormTemplate:'/patients/forms/templates/update',
+    getFormTemplateDetail:'/patients/forms/templates/details'
     
 };
 

@@ -1,6 +1,6 @@
 import { Box, Button, Collapse, IconButton, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,13 +9,22 @@ import Navigation from "./navigation";
 import ConfirmationDialog from "../../../components/confirmDialog";
 import { AuthContext } from "../../../Context/AuthContext";
 import { Images } from "../../../assets/images";
+import { PrimaryButton } from "../../../components/buttons";
+import ApiServices from "../../../services/Apis";
+import moment from "moment";
+import { CSVLink } from "react-csv";
+import { showErrorToast } from "../../../components/Toaster";
 
 const Sidebar = ({ open, setOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const csvLink = useRef();
   const { user, setUser } = useContext(AuthContext);
   const [openMenus, setOpenMenus] = useState({});
   const [confirmationDialog, setConfirmationDialog] = useState(false)
+  const [data, setData] = useState([])
+  const [items, setItems] = useState([])
+  const [csvData, setCsvData] = useState([]);
 
   const handleToggle = (name) => {
     setOpenMenus((prev) => ({
@@ -33,7 +42,71 @@ const Sidebar = ({ open, setOpen }) => {
 
     }
   }, [])
+  
+     const getData = async () => {
+          try {
+              let params = {
+                  page: 1,
+                  limit: 999
+              };
+  
+              const data = await ApiServices.getPatients(params);
+  
+              setItems(data?.data?.patients)
+              setData(data?.data?.patients)
+             
+  
+  
+          } catch (error) {
+              console.error("Error fetching location:", error);
+          }
+       
+      };
 
+      // *For Download CSV File
+      const downloadCsv = () => {
+        try {
+          const title = ['sep=,'];
+          const head = ['Sr', 'Title', 'Name', 'Email', 'Phone', 'Address', 'Status'];
+          const data2 = [];
+          
+          data2.push(title);
+          data2.push(head);
+      
+          for (let index = 0; index < items?.length; index++) {
+            const user = items[index];
+      
+            let newRow = [
+              index + 1,
+              user?.title || '',
+              user?.first_name + user?.last_name || '',
+              user?.email || '',
+              user?.phone || '',
+              user?.address || '',
+              user?.in_active ? 'Inactive' : 'Active' 
+            ];
+            
+            data2.push(newRow);
+          }
+      
+          console.log(data2);
+          setCsvData(data2);
+        } catch (error) {
+          showErrorToast(error);
+        }
+      };
+      
+
+	useEffect(() => {
+		if (csvData.length > 0) {
+			csvLink?.current.link.click();
+		}
+
+	}, [csvData]);
+  useEffect(() => {
+    getData()
+  }, [])
+  
   return (
     <Box
       sx={{
@@ -51,6 +124,14 @@ const Sidebar = ({ open, setOpen }) => {
         overflowX: 'hidden'
       }}
     >
+      {data?.length > 0  && (
+					<CSVLink
+						ref={csvLink}
+						data={csvData}
+						filename={`patients-data ${moment().format('DD-MMM-YYYY h:mm A')}.csv`}
+						target="_blank"
+					/>
+				)}
       <ConfirmationDialog
         open={confirmationDialog}
         onClose={() => setConfirmationDialog(false)}
@@ -86,6 +167,9 @@ const Sidebar = ({ open, setOpen }) => {
 
           </Box>
         </Box>}
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 2 }}>
+          <PrimaryButton  onClick={() => downloadCsv()}   title={"Export Patient Data"} />
+        </Box>
         <List>
           {filteredNavigation.map((item) => {
             // Check if the parent is active (either its own path or any child's path)
@@ -100,8 +184,8 @@ const Sidebar = ({ open, setOpen }) => {
                     gap: open ? 1 : 0,
                     display: "flex",
                     alignItems: "center",
-                    width:!open ? '40px' : '100%',
-                    height:!open ? '40px' : '100%',
+                    width: !open ? '40px' : '100%',
+                    height: !open ? '40px' : '100%',
                     justifyContent: open ? "flex-start" : "center",
                     paddingX: open ? 2 : 0,
                     paddingY: !open ? 3 : 1,
@@ -111,12 +195,12 @@ const Sidebar = ({ open, setOpen }) => {
                     '&:hover': {
                       ...(!open && {
                         borderRadius: '50%',
-                        width:!open ? '40px' : '100%',
-                        height:!open ? '40px' : '100%',
+                        width: !open ? '40px' : '100%',
+                        height: !open ? '40px' : '100%',
                         backgroundColor: '#0b0962',
                       })
                     },
-                    mt:!open ? 3.5 : 2
+                    mt: !open ? 3.5 : 2
 
                   }}
                   onClick={() => {

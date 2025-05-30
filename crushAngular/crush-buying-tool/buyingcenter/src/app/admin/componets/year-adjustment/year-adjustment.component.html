@@ -1,0 +1,35 @@
+<div class="items">
+	<p>When under X years, apply the adjustment.</p>
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th class="white" style="width: 10px;"></th>
+				<th>Years Offset</th>
+				<th>Adjustment</th>
+				<th>Percent</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let config of yearConfig;">
+				<tr *ngIf="!config.delete">
+					<td><button mat-button (click)="confirmDelete(config)"><mat-icon>delete</mat-icon></button></td>
+					<td>
+						<input class="name-input custom" [(ngModel)]="config.year" value={{config.year}} type="text" /> Years
+					</td>
+					<td class="weight">
+						{{config.priceAdj.isPercent ? '% ' : '$ '}}<input class="name-input negative custom" [(ngModel)]="config.priceAdj.adj" value={{config.priceAdj.adj}} type="text" />
+					</td>
+					<td><mat-slide-toggle [(ngModel)]="config.priceAdj.isPercent" color="primary"></mat-slide-toggle></td>
+				</tr>
+			</ng-container>
+			<tr>
+				<td><button mat-raised-button (click)="addItem()"><mat-icon>add</mat-icon></button></td>
+				<td></td>
+				<td></td>
+				<td>
+					<button mat-raised-button (click)="saveConfig()" color="primary">Save</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

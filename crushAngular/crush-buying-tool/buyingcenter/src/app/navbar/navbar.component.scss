@@ -1,0 +1,98 @@
+.navbar-dark {
+	background-color: #10568a;
+	border-color: #03263a;
+	color: white;
+}
+
+.navbar-nav {
+	align-items: center;
+
+	& > li > a {
+		color: #fff;
+		cursor: pointer;
+
+		&.active {
+			color: rgb(0, 172, 0);
+		}
+	}
+}
+
+.nav-items-right {
+	display: flex;
+	align-items: center;
+
+	@media only screen and (max-width: 767px) {
+		flex-direction: column;
+	}
+}
+
+.logout {
+	color: rgb(184, 184, 184);
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.icon-logout {
+	font-size: 15px;
+	width: 15px;
+	height: 15px;
+}
+
+.navbar-item {
+	padding: 3px;
+	align-items: center;
+}
+
+.active {
+	color: green;
+}
+
+button {
+	color: #fff;
+	background-color: #28a745;
+	border-color: #28a745;
+}
+
+li {
+	&.navbar-item {
+		padding: 10px !important;
+	}
+
+	a.navbar-link {
+		&.active {
+			padding: 15px;
+			background: #0d4774;
+			color: #fff !important;
+		}
+	}
+
+	&.btn-new-ticket {
+		padding: 12px 10px !important;
+
+		button {
+			background: #288ad3;
+			border: 1px solid #288ad3;
+			border-radius: 20px;
+		}
+	}
+	&.btn-new-ticket-towing {
+		padding: 12px 10px !important;
+
+		button {
+			background: #d0300c;
+			border: 1px solid #d0300c;
+			border-radius: 20px;
+		}
+	}
+}
+
+nav.navbar.navbar-expand-lg.fixed-top.navbar-dark {
+	padding: 0px !important;
+}
+
+.logout {
+	font-weight: 500;
+	padding: 10px;
+	color: #5782a4;
+	font-size: 16px;
+}

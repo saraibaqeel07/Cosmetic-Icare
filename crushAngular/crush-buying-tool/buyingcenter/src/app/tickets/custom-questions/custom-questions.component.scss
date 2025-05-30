@@ -1,0 +1,20 @@
+.group {
+
+	padding-right: 6px;
+	padding-left: 6px;
+	// border-right: 2px solid rgb(196, 196, 196);
+}
+
+.label {
+	display: inline;
+	padding-right: 7px;
+	font-size: 17px;
+}
+
+.mat-radio-button {
+	padding-right: 2px;
+}
+
+.mat-radio-button~.mat-radio-button {
+	margin-left: 5px;
+}

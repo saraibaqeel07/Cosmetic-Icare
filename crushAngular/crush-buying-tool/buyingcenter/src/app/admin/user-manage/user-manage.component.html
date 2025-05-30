@@ -1,0 +1,116 @@
+<div>
+	<div class="row mt-4 mb-3" style="border: 2px solid; padding: 10px">
+		<!-- <div class="col-sm-6">
+			<div class="row" *ngFor="let roleName of theRoles; let i = index" [ngClass]="{'hidden': (roleName === '' || roleName === 'team lead')}">
+					<h3 class="role-name">{{roleName}}</h3>
+					<p >{{theRolesExplained[i]}}</p>
+
+					<div cdkDropList [cdkDropListData]="rolesToUserAccGroup[i]" class="draggable-area full-flex" (cdkDropListDropped)="drop($event)">
+							<div *ngFor="let role of rolesToUserAccGroup[i]; let y = index;">
+									<div (mousedown)="currentlyDragging=true" (mouseup)="currentlyDragging=false" class="row user-role-wrapper" [ngClass]="{'verified-wrapper': role.verified, 'not-verified-wrapper': !role.verified}">
+											<div class="username"><span *ngIf="role.name">{{role.name}}</span><span *ngIf="!role.name">{{role.email}}</span></div>
+											<div class="verified"><span *ngIf="role.verified">Verified</span><span *ngIf="!role.verified">Not Verified</span></div>
+											<div class="edit left" title="Remove" (click)="removeRole(role, i)"><mat-icon>edit</mat-icon></div>
+									</div>
+							</div>
+							<div>
+									<div class="add-user-info clickable noselect" (click)="dialogToAddRole(i)"><div class="info">Add Role +</div></div>
+							</div>
+					</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<h3>Users:</h3>
+			<div cdkDropList [cdkDropListData]="usersAccGroup" class="draggable-area full-flex">
+					<div><span (click)="initForm()" class="clickable" title="Refresh"><mat-icon>refresh</mat-icon></span></div>
+					<div (mousedown)="currentlyDragging=true" (mouseup)="currentlyDragging=false" style="cursor: move;" cdkDrag class="row user-role-wrapper" *ngFor="let role of usersAccGroup" [ngClass]="{'verified-wrapper': role.verified, 'not-verified-wrapper': !role.verified}">
+							<div class="username"><span *ngIf="role.name">{{role.name}}</span><span *ngIf="!role.name">{{role.email}}</span></div>
+							<div class="verified"><span *ngIf="role.verified">Verified</span><span *ngIf="!role.verified"><button class="btn btn-default" (click)="resendInvitation(role)">Resend Invite</button></span></div>
+							<div class="edit left" title="Remove" (click)="deleteUser(role)"><mat-icon>edit</mat-icon></div>
+					</div>
+					<div>
+							<div class=" add-user-info clickable noselect" (click)="createUser()"><div class="info">Add User +</div></div>
+					</div>
+			</div>
+		</div> -->
+
+		<div class="col-sm-8">
+			<h4 class="mt-2">User Management</h4>
+			<table class="bordered">
+				<thead>
+					<tr>
+						<th class="text-uppercase">User</th>
+						<th class="text-uppercase">Phone</th>
+						<th class="text-uppercase">Role</th>
+						<th class="text-uppercase">Client</th>
+						<th class="text-uppercase">Verified</th>
+						<th class="text-uppercase" style="width: 5%">&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let role of usersAccGroup">
+						<td class="font-bold">
+							<span *ngIf="role.name">{{ role.name }}</span
+							><span *ngIf="!role.name">{{ role.email }}</span>
+						</td>
+						<td>
+							<span class="text-uppercase">{{ role.phone }}</span>
+						</td>
+						<td>
+							<span class="text-uppercase">{{
+								role.roleid == 2 ? "S3 Group" : rolesList[role.roleid]
+							}}</span>
+						</td>
+						<td class="">
+							<span class="text-uppercase">{{
+								role.roleid !== 0 && role.roleid !== 1 ? role.s3clientid : "GM"
+							}}</span>
+						</td>
+						<td class="">
+							<span>{{ role.verified ? "Yes" : "No" }}</span>
+						</td>
+						<td style="white-space: nowrap">
+							<button
+								mat-raised-button
+								class="mr-2"
+								color="primary"
+								(click)="manageUserDialog(role)"
+							>
+								Edit
+							</button>
+							<button mat-raised-button color="primary" (click)="deleteUser(role)">
+								Delete
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<button
+				mat-raised-button
+				class="mt-4 text-center"
+				color="primary"
+				(click)="manageUserDialog()"
+			>
+				Add User
+			</button>
+		</div>
+		<div class="col-sm-4">
+			<h4 class="mt-2 text-center">Active Clients</h4>
+			<div class="mt-2" *ngIf="yardList">
+				<table class="bordered">
+					<tbody>
+						<tr *ngFor="let yard of yardList">
+							<td>
+								<h5>{{ yard.YardName }}</h5>
+							</td>
+							<td>
+								<h5>{{ yard.S3ClientId }}</h5>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

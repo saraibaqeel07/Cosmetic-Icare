@@ -1,0 +1,103 @@
+.items {
+	min-height: 400px;
+}
+
+.custom {
+	width: 75px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+
+	&.bordered {
+		border: 2px solid #10568a;
+	}
+
+	thead {
+		th {
+			padding: 10px 5px;
+			color: #fff;
+			font-weight: normal;
+			background: #10568a;
+			text-transform: uppercase;
+		}
+	}
+
+	tbody {
+		tr {
+			border: 1px solid #e2e2e2;
+
+			td {
+				&.font-bold {
+					span {
+						font-weight: 500;
+					}
+				}
+
+				padding: 5px;
+			}
+
+			&:nth-child(odd) {
+				background: #e2e2e2 !important;
+			}
+		}
+	}
+}
+
+// td,
+// th {
+// 	border-bottom: 1px solid rgb(212, 212, 212);
+// 	padding: 6px;
+// }
+
+// tr:nth-child(odd) {
+// 	background-color: rgb(245, 245, 245);
+// }
+
+// th {
+// 	background-color: rgb(203, 217, 255);
+// }
+
+// table {
+// 	margin: 8px auto;
+// 	padding: 1px;
+// 	width: 100%;
+// 	border: 1px solid #d1d1dd;
+// 	font-size: 1rem;
+
+// 	tr {
+// 		td:first-child {
+// 			width: 10px;
+// 		}
+// 	}
+// }
+
+.defaults {
+	margin: 4px;
+}
+
+// tr {
+// 	height: 55px;
+// }
+
+// td.weight {
+// 	min-width: 100px;
+// }
+
+button {
+	float: right;
+	margin: 2px;
+}
+
+.white {
+	background-color: white;
+}
+
+.negative {
+	background-color: #f9d2d2;
+}
+
+.positive {
+	background-color: #ccffcc;
+}

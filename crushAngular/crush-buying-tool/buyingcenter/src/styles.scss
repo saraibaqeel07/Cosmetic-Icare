@@ -1,0 +1,114 @@
+@import './variables';
+
+/* You can add global styles to this file, and also import other style files */
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import '~@angular/material/theming';
+@include mat-core();
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+span.cal-event-title {
+	color: rgb(15, 15, 15) !important;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #336992;
+}
+
+::-webkit-scrollbar {
+	width: 4px;
+	background-color: #F5F5F5;
+}
+
+.mat-stepper-horizontal-line {
+	display: none !important;
+}
+
+.mat-card-header-text {
+	width: 100%;
+}
+
+.mat-tab-label {
+	min-width: 100px;
+}
+
+.snackbar-notification-style-success {
+	background-color: $notification_success_bg_color !important;
+	color: black !important;
+
+	.mat-simple-snackbar-action .mat-button-wrapper {
+		//Action Text
+		color: $notification_success_action_color;
+	}
+
+}
+
+.snackbar-notification-style-warn {
+	background-color: $notification_warn_bg_color !important;
+	color: $notification_warn_text_color !important;
+
+	.mat-simple-snackbar-action .mat-button-wrapper {
+		//Action Text
+		color: $notification_warn_action_color;
+	}
+
+}
+
+.snackbar-notification-style-error {
+	background-color: $notification_error_bg_color !important;
+	color: $notification_error_text_color !important;
+
+	.mat-simple-snackbar-action .mat-button-wrapper {
+		//Action Text
+		color: $notification_error_action_color;
+	}
+
+	span.cal-event-title {
+		font-size: 10px !important;
+	}
+}
+
+.mat-radio-label {
+	margin-bottom: 2px;
+}
+
+span.mat-radio-label-content {
+	padding-left: 3px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-prefix {
+	top: -0.25em !important
+}
+input#mat-input-21 {
+    position: relative;
+    top: -4px;
+}
+input#mat-input-20 {
+    position: relative;
+    top: -4px;
+}
+button {
+	border-radius: 7px !important;
+
+	&.mat-primary {
+		background: $theme-primary !important;
+		border: 1px solid $theme-primary !important;
+		color: #fff !important
+	}
+}
+
+$my-app-primary: mat-palette($mat-blue);
+$my-app-accent: mat-palette($mat-pink, 500, 900, A100);
+$my-app-warn: mat-palette($mat-deep-orange);
+$my-app-default: mat-palette($mat-grey);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+@include angular-material-theme($my-app-theme);

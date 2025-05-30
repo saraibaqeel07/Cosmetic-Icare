@@ -1,0 +1,178 @@
+<div class="items">
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th class="white">
+					<span class="mr-1">
+						<mat-icon
+							matTooltip="Dollars Per Ton. Enable this if you want to calculate the price by DPT instead of CPT (Cents Per Pound). DPT is terminally used in the West, CPT is terminally used in the East."
+							aria-label="DPT Info"
+							>info</mat-icon
+						>
+						DPT
+					</span>
+					<mat-slide-toggle #dpt color="warn"></mat-slide-toggle>
+				</th>
+				<th>Name</th>
+				<th>Dollars Per Ton</th>
+				<th>Cents Per Pound</th>
+				<th>Update At</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let steel of steelConfig">
+				<tr *ngIf="!steel.delete">
+					<td style="justify-content: start; display: flex">
+						<button mat-button (click)="confirmDelete(steel)">
+							<mat-icon>delete</mat-icon>
+						</button>
+					</td>
+					<td>
+						<input class="name-input" [(ngModel)]="steel.name" type="text" />
+					</td>
+					<td class="weight">
+						<div *ngIf="dpt.checked">
+							$
+							<input
+								class="custom"
+								[(ngModel)]="steel.steelPriceTon"
+								value="{{ steel.steelPriceTon }}"
+							/>
+						</div>
+						<div class="defaults" *ngIf="dpt.checked == false">
+							${{ steel.steelPricePound * 20 }}
+						</div>
+					</td>
+					<td class="weight">
+						<div *ngIf="dpt.checked == false">
+							¢
+							<input
+								class="custom"
+								[(ngModel)]="steel.steelPricePound"
+								(ngModelChange)="steel.steelPriceTon = steel.steelPricePound * 20"
+								value="{{ steel.steelPricePound }}"
+							/>
+						</div>
+						<div class="defaults" *ngIf="dpt.checked">
+							¢ {{ +steel.steelPriceTon / 20 }}
+						</div>
+					</td>
+					<td>
+						<span>{{ steel.updatedAt }}</span>
+					</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</table>
+	<div style="display: flex; justify-content: space-between; margin-top: 5px">
+		<button mat-raised-button class="mr-2" (click)="addSteel()">
+			<mat-icon>add</mat-icon>
+		</button>
+		<mat-slide-toggle
+			labelPosition="before"
+			class="mr-2"
+			color="primary"
+			[(ngModel)]="alternateAlgorithm"
+			(change)="alternateAlgorithmEvent(alternateAlgorithm)"
+		>
+			<mat-icon
+				style="margin-top: 10px"
+				matTooltip="
+				Alternate: Price Per Ton X Vehicle Class Weight + Additions or Deductions (Questions Section).
+				Non-Alternate: Price Per Ton + Additions or Deductions (Questions Section) X Vehicle Class Weight
+				"
+				aria-label="Alternate Algorithm Info"
+				>info</mat-icon
+			>
+			Enable Alternate Algorithm</mat-slide-toggle
+		>
+		<div style="display: flex" class="mr-2">
+			<div class="input-group-prepend">
+				<span class="mr-4" *ngIf="!isSinglePrice"
+					>Enable Negotiated Price Limit:
+					<mat-slide-toggle
+						[ngModel]="negotiatedPriceEnabled"
+						color="primary"
+						(ngModelChange)="singlePriceEvent(!negotiatedPriceEnabled)"
+					></mat-slide-toggle>
+					<b class="font-bold text-success ml-2" *ngIf="negotiatedPriceEnabled"
+						>Enabled</b
+					>
+					<b class="font-bold text-danger ml-2" *ngIf="!negotiatedPriceEnabled"
+						>Disabled</b
+					>
+				</span>
+				<span class="mr-4" *ngIf="isSinglePrice"
+					>Enable Negotiated Price Limit :
+					<b class="font-bold text-success ml-2" *ngIf="negotiatedPriceEnabled"
+						>Enabled</b
+					>
+					<b class="font-bold text-danger ml-2" *ngIf="!negotiatedPriceEnabled"
+						>Disabled</b
+					>
+				</span>
+				<span class="input-group-text" id="basic-addon1">
+					<mat-icon
+						matTooltip="If you do not enter a value then there is no limit to the Negotiated Price."
+						aria-label="Negotiated Price Limit"
+						>info</mat-icon
+					>
+					Negotiated Price Limit</span
+				>
+			</div>
+			<input
+				[(ngModel)]="negotiatedPriceLimit"
+				[ngClass]="{
+					disabled: !negotiatedPriceEnabled 
+				}"
+				type="text"
+				class="name-input"
+				aria-label="Negotiated Price Limit"
+				aria-describedby="basic-addon1"
+				style="min-width: 30px; width: 60px"
+				[ngClass]="{
+					disabled: !negotiatedPriceEnabled 
+				}"
+			/>
+			<!-- [ngClass]="{
+				disabled: !negotiatedPriceEnabled && confirmSteels == 1
+			}"
+			[readonly]="!negotiatedPriceEnabled" -->
+			<div class="input-group-append">
+				<span class="input-group-text" id="basic-addon1">%</span>
+			</div>
+		</div>
+		<div *ngIf="confirmSteels == 1">
+			<span class="mr-4"
+				>Single Price:
+				<mat-slide-toggle
+					[ngModel]="isSinglePrice"
+					color="primary"
+					(ngModelChange)="singlePriceEvent(!isSinglePrice, true)"
+				></mat-slide-toggle>
+				<b class="font-bold text-success ml-2" *ngIf="isSinglePrice">Enabled</b>
+				<b class="font-bold text-danger ml-2" *ngIf="!isSinglePrice">Disabled</b>
+			</span>
+			<span
+				>Bidding:
+				<select
+					class="p-1"
+					[ngModel]="biddingSetup"
+					[ngClass]="{ disabled: !isSinglePrice }"
+					(change)="biddingSetupEvent($event.target.value)"
+				>
+					<option value="highest">Highest</option>
+					<option value="lowest">Lowest</option>
+				</select>
+			</span>
+		</div>
+		<div>
+			<button mat-raised-button (click)="saveConfig()" color="primary">
+				Save
+			</button>
+			<button mat-raised-button (click)="downloadPriceHistory()">
+				Download Price History
+			</button>
+		</div>
+	</div>
+</div>

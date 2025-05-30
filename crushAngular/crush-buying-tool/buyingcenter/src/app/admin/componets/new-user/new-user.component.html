@@ -1,0 +1,82 @@
+<div mat-dialog-content style="position: relative">
+	<h1 mat-dialog-title>
+		<span *ngIf="!data?.user">New User</span>
+		<span *ngIf="data?.user">Update User</span>
+	</h1>
+	<mat-icon style="top: -5px; right: 5px; position: absolute; cursor: pointer"
+		[mat-dialog-close]="true">close</mat-icon>
+	<form>
+		<div class="row mt-2">
+			<div class="col-sm-6">
+				<label>*Name:</label>
+				<input name="name" class="form-control" type="text" required [(ngModel)]="person.name" />
+			</div>
+			<div class="col-sm-6">
+				<label>*Email:</label>
+				<input name="email" [ngClass]="{ 'invalid-email': invalidEmail }" class="form-control" type="text"
+					[(ngModel)]="person.email" [disabled]="data?.user?.email" />
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-sm-6">
+				<label>Phone:</label>
+				<input name="phone" class="form-control" type="text" [(ngModel)]="person.phone" />
+			</div>
+			<div class="col-sm-6">
+				<label>Role:</label>
+				<select name="role" class="form-control" [(ngModel)]="person.roleid" (ngModelChange)="onChange($event)">
+					<option *ngFor="let role of roleList" [value]="role.val">
+						{{ role.key.toUpperCase() }}
+					</option>
+				</select>
+			</div>
+		</div>
+		<div class="row mt-2" *ngIf="selectedRole !== 0">
+			<div class="col-sm-6">
+				<label>Client ID:</label>
+				<input name="clientId" class="form-control" type="text" [(ngModel)]="person.s3clientid" />
+			</div>
+			<div class="col-sm-6">
+				<label>Select Subscription:</label>
+				<select name="subscription" class="form-control" [(ngModel)]="person.subscription"
+					(ngModelChange)="onChange($event)">
+					<option value="Yearly - Save 15%" [selected]="person.subscription === 'Yearly - Save 15%' || !person.subscription">Yearly - Save 15%</option>
+					<option value="$399.00 per Month" [selected]="person.subscription === '$399.00 per Month'">$399.00 per Month</option>
+					<option value="60 Day Trial" [selected]="person.subscription === '60 Day Trial'">60 Day Trial</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row mt-2">
+			<div class="col-sm-6">
+				<button mat-raised-button name="close" mat-dialog-close>
+					<span>Close</span>
+				</button>
+				<button mat-raised-button color="primary" class="ml-4" name="submit" (click)="addUser()"
+					[disabled]="isProcessing">
+					<span *ngIf="!data?.user">Create User</span>
+					<span *ngIf="data?.user">Update User</span>
+				</button>
+			</div>
+		</div>
+	</form>
+	<div class="row">
+		<div class="col-sm-12">
+			<p *ngIf="invalidEmail" style="color: red">Enter a valid Email address</p>
+			<p *ngIf="hasError" style="color: red">{{ errorMessage }}</p>
+		</div>
+	</div>
+	<div class="row mt-2">
+		<div class="col-sm-12">
+			<p *ngIf="invalidEmail">
+				<span class="color: red;">*</span> Email address is required. An email will
+				be sent to the user with instructions on how to finish setting up their
+				account. The user will login using the provided email address.
+			</p>
+			<p>
+				Until the user verifies their account using the link in the email they
+				received they will be unable to use the Buying Center App.
+			</p>
+		</div>
+	</div>
+</div>

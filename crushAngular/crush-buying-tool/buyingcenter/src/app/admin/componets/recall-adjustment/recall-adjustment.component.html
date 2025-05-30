@@ -1,0 +1,32 @@
+<div class="items">
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th style="width: 150px;">Years Offset</th>
+				<th>Adjustment</th>
+				<th>Percent</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let config of recallConfig;">
+				<tr *ngIf="!config.delete && config?.priceAdj">
+					<td>
+						{{config.recallCost}}
+					</td>
+					<td class="weight">
+						{{config?.priceAdj?.isPercent ? '% ' : '$ '}}<input class="name-input negative custom" [(ngModel)]="config.priceAdj.adj" value={{config?.priceAdj?.adj}} type="text" />
+					</td>
+					<td><mat-slide-toggle [(ngModel)]="config.priceAdj.isPercent" color="primary"></mat-slide-toggle></td>
+				</tr>
+			</ng-container>
+			<tr>
+				<td></td>
+				<td></td>
+				<td>
+					<button mat-raised-button (click)="saveConfig()" color="primary">Save</button>
+				</td>
+			</tr>
+		</tbody>
+
+	</table>
+</div>

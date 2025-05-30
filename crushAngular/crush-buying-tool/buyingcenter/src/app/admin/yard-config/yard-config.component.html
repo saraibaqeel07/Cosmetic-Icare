@@ -1,0 +1,80 @@
+<div style="border: 2px solid; padding: 10px">
+	<h3 class="mt-4">
+		{{ yardConfig[0]?.GroupName }}
+	</h3>
+	<div class="card mb-2" *ngFor="let yard of yardConfig">
+		<div class="card-body">
+			<div class="card-title">
+				<div class="form-check">
+					<input
+						[(ngModel)]="yard.isDefault"
+						id="yard-{{ yard.Pk }}"
+						type="radio"
+						value="{{ yard.Pk }}"
+					/>
+					<label class="form-check-label font-weight-bold" for="yard-{{ yard.Pk }}"
+						>Set as Default</label
+					>
+				</div>
+			</div>
+			<div class="row px-3 pb-3">
+				<div class="item width-100">
+					<div class="input-flex">
+						Yard Name<input [(ngModel)]="yard.YardName" />
+					</div>
+				</div>
+				<div class="item">
+					<div class="input-flex">
+						Street 1<input class="street" [(ngModel)]="yard.address.street1" />
+					</div>
+				</div>
+				<div class="item">
+					<div class="input-flex">
+						Street 2<input class="street" [(ngModel)]="yard.address.street2" />
+					</div>
+				</div>
+				<div class="item">
+					<div class="input-flex">
+						City<input class="city" [(ngModel)]="yard.address.city" />
+					</div>
+				</div>
+				<div class="item">
+					<div class="input-flex">
+						state(Max 5 Characters)<input
+							class="state"
+							[(ngModel)]="yard.address.state"
+						/>
+					</div>
+				</div>
+				<div class="item">
+					<div class="input-flex">
+						Zip<input class="zip" [(ngModel)]="yard.address.zip" />
+					</div>
+				</div>
+				<div class="item">
+					<div>&nbsp;</div>
+					<button (click)="findAddress(yard)" color="primary" mat-flat-button>
+						Set Address
+					</button>
+				</div>
+				<div class="addressCheck">
+					<div>&nbsp;</div>
+					<span *ngIf="yard.address.latitude">
+						<mat-icon class="check green">check_circle_outline</mat-icon>
+						Address
+					</span>
+					<span *ngIf="!yard.address.latitude">
+						<mat-icon class="check red">highlight_off</mat-icon>
+						Address
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="save">
+		<button (click)="addYard()" mat-raised-button>
+			<mat-icon>add</mat-icon> Add New
+		</button>
+		<button (click)="saveYard()" color="primary" mat-flat-button>Save</button>
+	</div>
+</div>

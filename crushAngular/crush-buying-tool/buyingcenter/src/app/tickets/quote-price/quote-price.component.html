@@ -1,0 +1,231 @@
+<div class="quote-container">
+	<div>
+		<table *ngIf="quoteHeader.length">
+			<tr>
+				<th>&nbsp;</th>
+				<th *ngFor="let q of quoteHeader">{{ q.name }}</th>
+			</tr>
+			<!-- <tr *ngIf="quoteSize.length">
+				<th>Class Weight</th>
+				<td
+					[ngClass]="{ max: q.quote == quoteMax, min: q.quote == quoteMin }"
+					*ngFor="let q of quoteSize; let i = index"
+				>
+					<span
+						*ngIf="singPriceEnabled && q.quote"
+						class="text-capitalize text-bold"
+						>{{ steelConfig[0]?.biddingSetup }}</span
+					>
+					$ {{ q.quote || "0" }}
+				</td>
+			</tr> -->
+			<tr *ngIf="quoteCurb.length">
+				<th>Price</th>
+				<td
+					[ngClass]="{ max: q.quote == quoteMax, min: q.quote == quoteMin }"
+					*ngFor="let q of quoteCurb"
+				>
+					<span *ngIf="singPriceEnabled && q.quote && steelConfig[0]?.biddingSetup" class="text-capitalize text-bold"
+						>{{ steelConfig[0]?.biddingSetup }}:</span
+					>
+					$ {{ q.quote || "0" }}
+					<!-- <button
+						type="button"
+						class="rounded float-right ml-2"
+						aria-label="Button that displays a tooltip when focused or hovered over"
+						matTooltip="Curb Weight is calculated by multiplying the tonnage weight by 2000.  So if the weight of a Large Car is 1.76 Tons, then the Curb weight is 1.76 x 2000 = 3,520."
+					>
+						<fa-icon [icon]="faQuestionCircle"></fa-icon>
+					</button> -->
+				</td>
+			</tr>
+			<tr *ngIf="quoteSize.length > 1">
+				<th>Select</th>
+				<td *ngFor="let q of quoteSize; let i = index">
+					<mat-radio-group [(ngModel)]="selectedQuote" (change)="selectQuote(i)">
+						<mat-radio-button
+							[value]="i"
+							[checked]="i == selectedQuote"
+						></mat-radio-button>
+					</mat-radio-group>
+				</td>
+			</tr>
+		</table>
+		<mat-error
+			*ngIf="errorMessage==true"
+			>You must create a class weight for this class in the admin.
+			</mat-error
+		>
+		<div class="row">
+			<div class="col">
+				<div class="need-towing" style="display: block">
+					<mat-slide-toggle
+						class="alert alert-warning"
+						labelPosition="before"
+						color="primary"
+						[formControl]="towing"
+						(change)="toggleTowing($event)"
+					>
+						Need Towing
+					</mat-slide-toggle>
+					<!-- <button
+						*ngIf="towing.value"
+						mat-raised-button
+						type="button"
+						style="
+							background-color: red;
+							color: white;
+							border-radius: 5px;
+							margin-right: 3px;
+						"
+						(click)="changeTowingToggle(false)"
+					>
+						Towing Not Needed
+					</button>
+					<button
+						*ngIf="!towing.value"
+						mat-raised-button
+						type="button"
+						style="
+							background-color: red;
+							color: white;
+							border-radius: 5px;
+							margin-right: 3px;
+						"
+						(click)="changeTowingToggle(true)"
+					>
+						Need Towing
+					</button> -->
+					<div class="mt-1 distance">
+						Distance:
+						<span class="item-value"
+							>{{ distance.value ? distance.value + " miles" : '' }}
+						</span>
+					</div>
+					<div class="distance" *ngIf="YardName">
+						<div class="distance" style="display: flex" *ngIf="preferredYard == 0">
+							<span>Closest Yard:</span>
+							<mat-form-field class="vin-input" style="width: 98%">
+								<mat-select
+									(selectionChange)="onSelectionChange($event) "
+									[value]="selectedYard"
+									disableOptionCentering
+								>
+									<mat-option *ngFor="let yard of yards" [newId]="yard.Pk" [value]="yard.S3ClientId">
+										{{ yard.YardName }}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<!-- <span class="item-value">{{ YardName }}</span
+							> -->
+							<br />
+						</div>
+						<div class="distance" style="display: flex" *ngIf="preferredYard != 0">
+							<span>Preferred Yard:</span>
+							<mat-form-field class="vin-input" style="width: 98%">
+								<mat-select
+									(selectionChange)="getDistance($event)"
+									[value]="selectedYard"
+									disableOptionCentering
+								>
+									<mat-option *ngFor="let yard of yards" [value]="yard.S3ClientId">
+										{{ yard.YardName }}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<!-- <span class="item-value">{{ YardName }}</span
+							> -->
+							<br />
+						</div>
+						<div class="distance">
+							Location: <span class="item-value">{{ YardLocation }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="filler"></div>
+
+	<div>
+		<!-- *ngIf="negotiatedPriceEnabled" -->
+		<mat-form-field appearance="outline">
+			<mat-label>Negotiated Price</mat-label>
+
+			<input
+			class="custom-input"
+			style="position: relative !important;top: -4px !important;"
+				*ngIf="ticketId != null && ticketId != 0"
+				type="number"
+				matInput
+				[formControl]="price"
+				placeholder="Enter a price1"
+				matInput
+				autocomplete="off"
+				min="0"
+			/>
+			<input
+				*ngIf="
+					(ticketId == null || ticketId == 0 || ticketId == undefined) &&
+					negotiatedPriceLimit != null &&
+					negotiatedPriceLimitMin != null
+				"
+				type="number"
+				matInput
+				[formControl]="price"
+				placeholder="Enter a price"
+				autocomplete="off"
+				[customMax]="negotiatedPriceLimit"
+				[customMin]="negotiatedPriceLimitMin"
+				min="0"
+			/>
+			<input
+				*ngIf="
+					(ticketId == null || ticketId == 0 || ticketId == undefined) &&
+					negotiatedPriceLimit == null &&
+					negotiatedPriceLimitMin == null
+				"
+				type="number"
+				matInput
+				[formControl]="price"
+				placeholder="Enter a price"
+				autocomplete="off"
+				min="0"
+			/>
+
+			<span matPrefix style="top: 0px;margin-bottom: 20px !important;">$&nbsp;</span>
+			<!-- <button
+				type="button"
+				matSuffix
+				*ngIf="alternateAlgorithm"
+				class="rounded float-right ml-2"
+				aria-label="Price Per Ton X Vehicle Class Weight + Additions or Deductions (Questions Section)"
+				matTooltip="Price Per Ton X Vehicle Class Weight + Additions or Deductions (Questions Section)"
+				style="font-size: 15px"
+			>
+				<fa-icon [icon]="faQuestionCircle" style="top: -3px"></fa-icon></button
+			><button
+				type="button"
+				matSuffix
+				*ngIf="!alternateAlgorithm"
+				class="rounded float-right ml-2"
+				aria-label="Price Per Ton + Additions or Deductions (Questions Section) X Vehicle Class Weight"
+				matTooltip="Price Per Ton + Additions or Deductions (Questions Section) X Vehicle Class Weight"
+				style="font-size: 15px"
+			>
+				<fa-icon [icon]="faQuestionCircle" style="top: -3px"></fa-icon>
+			</button> -->
+		</mat-form-field>
+		<mat-error *ngIf="price.hasError('customMax') && negotiatedPriceLimit != null"
+			>Maximum negotiated price can be
+			<strong>{{ negotiatedPriceLimit | number : "1.0-2" }}</strong
+			>.</mat-error
+		>
+		<mat-error
+			*ngIf="price.hasError('customMin') && negotiatedPriceLimitMin != null"
+			>Minimum negotiated price can be
+			<strong>{{ negotiatedPriceLimitMin | number : "1.0-2" }}</strong
+			>.</mat-error
+		>
+	</div>
+</div>

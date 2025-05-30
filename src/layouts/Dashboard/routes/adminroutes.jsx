@@ -25,6 +25,12 @@ const UpdateConsentForm = lazy(() => import("../Pages/UpdateConsentForm"))
 const SendForm = lazy(() => import("../Pages/SendForm"))
 const CompletedForms = lazy(() => import("../Pages/CompletedForms"))
 const CreateStaff = lazy(() => import("../Pages/CreateStaff"))
+const CreateFormTemplate = lazy(() => import("../Pages/CreateFormTemplate"))
+const FormTemplates = lazy(() => import("../Pages/FormTemplates"))
+const UpdateFormTemplate = lazy(() => import("../Pages/UpdateFormTemplate"))
+const FormTemplateDetail = lazy(() => import("../Pages/FormTemplateDetail"))
+const ConsentFormDetail = lazy(() => import("../Pages/ConsentFormDetail"))
+const CompletedFormDetail = lazy(() => import("../Pages/CompletedFormDetail"))
 const adminRoutes = [
   {
     name: "Dashboard",
@@ -65,9 +71,21 @@ const adminRoutes = [
     icon:<ReceiptIcon sx={{fontSize:'22px'}} />
   },
   {
+    name: "Create  Form Template",
+    path: "/create-form-template",
+    component: CreateFormTemplate,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
     name: "Consent Forms",
     path: "/consent-forms",
     component: ConsentForms,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: " Form Templates",
+    path: "/form-templates",
+    component: FormTemplates,
     icon:<ReceiptIcon sx={{fontSize:'22px'}} />
   },
   {
@@ -80,6 +98,30 @@ const adminRoutes = [
     name: "Update Consent Form",
     path: "/update-consent-form/:id",
     component: UpdateConsentForm,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: "Form Template  Detail",
+    path: "/form-template-detail/:id",
+    component: FormTemplateDetail,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: "consent Form Detail",
+    path: "/consent-form-detail/:id",
+    component: ConsentFormDetail,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: "Completed  Form Detail",
+    path: "/completed-form-detail/:id",
+    component: CompletedFormDetail,
+    icon:<ReceiptIcon sx={{fontSize:'22px'}} />
+  },
+  {
+    name: "Update  Form Template",
+    path: "/update-form-template/:id",
+    component: UpdateFormTemplate,
     icon:<ReceiptIcon sx={{fontSize:'22px'}} />
   },
   {

@@ -46,64 +46,65 @@ const UserForm = () => {
         name: "records",
     });
 
-       const sigMarkingRef = useRef(null);
-        const [savedImage, setSavedImage] = useState(null);
-    
-        const backgroundImage = Images.girl; // Replace with actual image URL
-    
-        useEffect(() => {
-            const canvas = sigMarkingRef.current.getCanvas();
-            const ctx = canvas.getContext("2d");
-            const img = new Image();
-            img.src = backgroundImage;
-            img.onload = () => {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            };
-        }, []);
-    
-        const handleClearMarking = () => {
-            const canvas = sigMarkingRef.current.getCanvas();
-            const ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const img = new Image();
-            img.src = backgroundImage;
-            img.onload = () => {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            };
+    const sigMarkingRef = useRef(null);
+    const [savedImage, setSavedImage] = useState(null);
+
+    const backgroundImage = Images.girl; // Replace with actual image URL
+
+
+    useEffect(() => {
+        const canvas = sigMarkingRef.current.getCanvas();
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         };
-    
-        const handleSaveMarking = async () => {
-            setMarkingLoader(true)
-            if (sigMarkingRef.current) {
-                const canvas = await sigMarkingRef.current.getCanvas();
-                const finalImage = await canvas.toDataURL("image/png");
-                try {
-    
-    
-                    let obj = {
-                        document: finalImage,
-                        filename: moment().unix() + "_Mapping.png"
-                    }
-    
-                    const response = await axios.post(
-                        `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
-                        obj
-                    );
-    
-                    console.log(response?.data?.data?.path);
-    
-    
-                    setSavedImage( response?.data?.data?.path);
-    
-    
-                } catch (error) {
-                    console.log(error);
-    
+    }, []);
+
+    const handleClearMarking = () => {
+        const canvas = sigMarkingRef.current.getCanvas();
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+    };
+
+    const handleSaveMarking = async () => {
+        setMarkingLoader(true)
+        if (sigMarkingRef.current) {
+            const canvas = await sigMarkingRef.current.getCanvas();
+            const finalImage = await canvas.toDataURL("image/png");
+            try {
+
+
+                let obj = {
+                    document: finalImage,
+                    filename: moment().unix() + "_Mapping.png"
                 }
-             
-                setMarkingLoader(false)
+
+                const response = await axios.post(
+                    `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
+                    obj
+                );
+
+                console.log(response?.data?.data?.path);
+
+
+                setSavedImage(response?.data?.data?.path);
+
+
+            } catch (error) {
+                console.log(error);
+
             }
-        };
+
+            setMarkingLoader(false)
+        }
+    };
 
     const signCanvasRefs = useRef([]);
 
@@ -131,7 +132,7 @@ const UserForm = () => {
                 }
 
                 const response = await axios.post(
-                     `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
+                    `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
@@ -182,7 +183,7 @@ const UserForm = () => {
     const handleSave = async () => {
         if (sigCanvas.current) {
             const dataURL = await sigCanvas.current.toDataURL();
-          
+
             try {
                 const file = dataURL;
                 if (file) {
@@ -195,7 +196,7 @@ const UserForm = () => {
                 }
 
                 const response = await axios.post(
-                     `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
+                    `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
@@ -214,7 +215,7 @@ const UserForm = () => {
     const handleSave2 = async () => {
         if (sigCanvasNew.current) {
             const dataURL = await sigCanvasNew.current.toDataURL();
-         
+
             try {
                 const file = dataURL;
                 if (file) {
@@ -227,7 +228,7 @@ const UserForm = () => {
                 }
 
                 const response = await axios.post(
-                     `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
+                    `${import.meta.env.VITE_BASE_URL}/api/system/uploadDoc`,
                     obj
                 );
 
@@ -348,101 +349,110 @@ const UserForm = () => {
         }
     };
     const UpdateConsentForm = async (formData) => {
-        console.log(savedImage);
-        console.log(consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && savedImage?.includes("cosmetic") );
-        if (savedImage?.includes("cosmetic") && consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && formData?.furtherFields?.every(item => item?.sign?.includes("cosmetic"))) {
-          
-      
-        try {
-            setLoader(true);
-            let obj = {
-                _id: id,
-                patient_id: patientType == 'existing' ? selectedPatient?.id : null,
-                form_id: null,
-                aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
-                treatment_date: getValues('treatmentDate'),
-                consultation_date: getValues('consultationDate'),
-                first_name: getValues('fname'),
-                last_name: getValues('lname'),
-                dob: getValues('selectedDate'),
-                address: getValues('address'),
-                email: getValues('email'),
-                post_code: getValues('post'),
-                phone: getValues('phone'),
-                notes: getValues('notes'),
-                picture: imageURL,
-                kin_details: {
-                    name: getValues('name'),
-                    address: getValues('kinaddress'),
-                    email: getValues('kinemail'),
-                    phone: getValues('kinphone'),
-                },
-                general_practitioner: {
-                    name: getValues('genname'),
-                    address: getValues('genaddress'),
-                    email: getValues('genemail'),
-                    phone: getValues('genphone'),
-                },
-                treatment_plan: {
-                    patient_concerns: getValues('patientConcerns'),
-                    patient_goals: getValues('patientGoal'),
-                    advised_plan: getValues('advisedPlan'),
-                    expected_result: getValues('expectedResult'),
-                    date: getValues('patientDate'),
-                    patient_sign: signature
-                },
-                batch_images: uploadedImages,
-                before_images: beforeImages,
-                after_images: afterImages,
-                further_treatment: formData?.furtherFields,
-                treatment_record: formData?.records,
-                extra_notes: getValues('extranotes'),
-                permission_marketing: permissions?.marketing,
-                offers: permissions?.offers,
-                side_effect: {
-                    details: getValues('effectdetails')
-                },
-
-                patient_consent: {
-                    details: getValues('details'),
-                    sign: consentSign
-                },
+        console.log(formData,'formDataformData');
+        const answersArray = selectedForm?.questionnaire?.map((q) => ({
+            question: q.question,
+            answer: formData[`answer_${q._id}`],
+          }));
+          console.log(answersArray,'answersArrayanswersArray');
+          console.log(consentSign);
+          console.log(signature);
+          console.log(savedImage);
+        console.log(consentSign?.includes("cosmetic") && signature?.includes("cosmetic") && savedImage?.includes("cosmetic"));
+        if (savedImage?.includes("png") && consentSign?.includes("png") && signature?.includes("png") && formData?.furtherFields?.every(item => item?.sign?.includes("png"))) {
 
 
-            };
-            console.log(obj);
+            try {
+                setLoader(true);
+                let obj = {
+                    _id: id,
+                    patient_id: patientType == 'existing' ? selectedPatient?.id : null,
+                    form_id: selectedForm?._id,
+                    aftercare_document: patientType == 'existing' ? selectedDocument?._id : null,
+                    treatment_date: getValues('treatmentDate'),
+                    consultation_date: getValues('consultationDate'),
+                    first_name: getValues('fname'),
+                    last_name: getValues('lname'),
+                    dob: getValues('selectedDate'),
+                    address: getValues('address'),
+                    email: getValues('email'),
+                    post_code: getValues('post'),
+                    phone: getValues('phone'),
+                    notes: getValues('notes'),
+                    picture: imageURL,
+                    kin_details: {
+                        name: getValues('name'),
+                        address: getValues('kinaddress'),
+                        email: getValues('kinemail'),
+                        phone: getValues('kinphone'),
+                    },
+                    general_practitioner: {
+                        name: getValues('genname'),
+                        address: getValues('genaddress'),
+                        email: getValues('genemail'),
+                        phone: getValues('genphone'),
+                    },
+                    treatment_plan: {
+                        patient_concerns: getValues('patientConcerns'),
+                        patient_goals: getValues('patientGoal'),
+                        advised_plan: getValues('advisedPlan'),
+                        expected_result: getValues('expectedResult'),
+                        date: getValues('patientDate'),
+                        patient_sign: signature
+                    },
+                    batch_images: uploadedImages,
+                    before_images: beforeImages,
+                    after_images: afterImages,
+                    further_treatment: formData?.furtherFields,
+                    treatment_record: formData?.records,
+                    extra_notes: getValues('extranotes'),
+                    permission_marketing: permissions?.marketing,
+                    offers: permissions?.offers,
+                    side_effect: {
+                        details: getValues('effectdetails')
+                    },
 
-            const promise = ApiServices.CompleteForm(obj);
-
-            // Handle the API response properly
-            const response = await promise;
-            console.log(response);
-
-            showPromiseToast(
-                promise,
-                "Saving...",
-                "Added Successfully",
-                "Something Went Wrong"
-            );
+                    patient_consent: {
+                        details: getValues('details'),
+                        sign: consentSign
+                    },
+                    questionnaire:answersArray
 
 
-            if (response?.responseCode === 200) {
+                };
+                console.log(obj);
+
+                const promise = ApiServices.CompleteForm(obj);
+
+                // Handle the API response properly
+                const response = await promise;
                 console.log(response);
-                setImageURL(null)
-                
+
+                showPromiseToast(
+                    promise,
+                    "Saving...",
+                    "Added Successfully",
+                    "Something Went Wrong"
+                );
 
 
+                if (response?.responseCode === 200) {
+                    console.log(response);
+                    setImageURL(null)
+
+
+
+                }
+
+            } catch (error) {
+                console.log(error);
+                showErrorToast(error)
+            } finally {
+
+                setLoader(false);
             }
-
-        } catch (error) {
-            console.log(error);
-            showErrorToast(error)
-        } finally {
-
-            setLoader(false);
         }
-        }
-        else{
+        else {
             showErrorToast('Please Sign All Fields')
         }
     };
@@ -788,6 +798,8 @@ const UserForm = () => {
             setValue('patientGoal', form?.treatment_plan?.patient_goals)
             setValue('advisedPlan', form?.treatment_plan?.advised_plan)
             setValue('expectedResult', form?.treatment_plan?.expected_result)
+            setValue('medication', form?.medications_section)
+            setValue('allergies', form?.allergies_section)
             setConsentSign(form?.patient_consent?.sign)
             let recordData = form?.treatment_record?.map((doc) => ({
                 ...doc,
@@ -810,16 +822,41 @@ const UserForm = () => {
             console.error("Error fetching location:", error);
         }
     };
+    const [selectedForm, setSelectedForm] = useState(null)
+    const [forms, setForms] = useState([])
     console.log(permissions);
+    const getForms = async () => {
+        try {
+            let params = {
+                page: 1,
+                limit: 999
+            };
+
+            const data = await ApiServices.getFormTemplates(params);
+
+
+            console.log(data);
+
+            setForms(data?.data?.templates);
+
+        } catch (error) {
+            console.error("Error fetching location:", error);
+        }
+        finally {
+            getData()
+        }
+    };
 
     useEffect(() => {
-        getData()
+        getForms()
+
+
     }, [])
     useEffect(() => {
         let value = patients?.find(item => item?._id == formData?.patient_id)
         setSelectedPatient(patients?.find(item => item?._id == formData?.patient_id))
         setSelectedDocument(documents?.find(item => item?._id == formData?.aftercare_document))
-
+        setSelectedForm(forms?.find(item => item?._id == formData?.form_id))
         setValue('fname', value?.first_name || "");
         setValue('lname', value?.last_name || "");
         setValue('email', value?.email || "");
@@ -851,11 +888,14 @@ const UserForm = () => {
             setValue("selectedDate", parsedDate);
         }
 
-    }, [patients, documents,formData])
+    }, [patients, documents, formData, forms])
+    useEffect(() => {
 
+    }, [forms])
 
+    console.log(selectedForm);
     return (
-        <div style={{backgroundColor:"#eff6ff"}}>
+        <div style={{ backgroundColor: "#eff6ff" }}>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Box component={'img'} src={Images.logo} width={'200px'} sx={{ textAlign: 'center' }}></Box>
             </Box>
@@ -887,15 +927,15 @@ const UserForm = () => {
                                 size={'small'}
                                 newLabel={'Select Form'}
                                 fullWidth={true}
-                                options={[]}
-                                selected={title}
+                                options={forms}
+                                selected={selectedForm}
                                 onSelect={(value) => {
-                                    setTitle(value)
+                                    setSelectedForm(value)
 
 
                                 }}
-                                error={errors?.title?.message}
-                                register={register("title", {
+                                error={errors?.form?.message}
+                                register={register("form", {
                                     required: false,
                                 })}
                             />
@@ -1419,49 +1459,49 @@ const UserForm = () => {
                             </Grid>
                         </Grid>
                         <Grid container p={1}>
-                                                    <Divider sx={{ mt: 4, width: '100%' }} />
-                                                </Grid>
-                                                <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
-                                                    Facial Mapping
-                                                </Typography>
-                                                <Grid container spacing={2} p={2}>
-                                                    <Grid item xs={6}>
-                                                        <Typography>Facial Marking:</Typography>
-                                                        <div style={{ position: "relative", width: 300, height: 150 }}>
-                                                            <SignatureCanvas
-                                                                ref={sigMarkingRef}
-                                                                penColor="red"
-                                                                canvasProps={{
-                                                                    width: 300,
-                                                                    height: 150,
-                                                                    className: "sigCanvas",
-                                                                    style: { border: "1px dashed black", background: `url(${Images.girl}) center/cover no-repeat` },
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <Grid container spacing={1} mt={1}>
-                                                            <Grid item>
-                                                                <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{ textTransform: 'capitalize' }}>
-                                                                    Clear Marking
-                                                                </Button>
-                                                            </Grid>
-                                                            <Grid item>
-                                                                <Button variant="contained" color="primary" onClick={handleSaveMarking} sx={{ textTransform: 'capitalize' }}>
-                                                                    Save Marking
-                                                                </Button>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </Grid>
-                                                    {markingLoader ? <Grid item display={'flex'} justifyContent={'flex-start'} alignItems={'center'} xs={6}>
-                                                        <CircularProgress size={50} />
-                                                    </Grid> : (
-                                                        <Grid item xs={6}>
-                                                            <Typography>Saved Image:</Typography>
-                                                            <img src={savedImage ? import.meta.env.VITE_BASE_URL+savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
-                                                        </Grid>
-                                                    )}
-                        
-                                                </Grid>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                            Facial Mapping
+                        </Typography>
+                        <Grid container spacing={2} p={2}>
+                            <Grid item xs={6}>
+                                <Typography>Facial Marking:</Typography>
+                                <div style={{ position: "relative", width: 300, height: 150 }}>
+                                    <SignatureCanvas
+                                        ref={sigMarkingRef}
+                                        penColor="red"
+                                        canvasProps={{
+                                            width: 300,
+                                            height: 150,
+                                            className: "sigCanvas",
+                                            style: { border: "1px dashed black", background: `url(${Images.girl}) center/cover no-repeat` },
+                                        }}
+                                    />
+                                </div>
+                                <Grid container spacing={1} mt={1}>
+                                    <Grid item>
+                                        <Button variant="contained" color="secondary" onClick={handleClearMarking} sx={{ textTransform: 'capitalize' }}>
+                                            Clear Marking
+                                        </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button variant="contained" color="primary" onClick={handleSaveMarking} sx={{ textTransform: 'capitalize' }}>
+                                            Save Marking
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            {markingLoader ? <Grid item display={'flex'} justifyContent={'flex-start'} alignItems={'center'} xs={6}>
+                                <CircularProgress size={50} />
+                            </Grid> : (
+                                <Grid item xs={6}>
+                                    <Typography>Saved Image:</Typography>
+                                    <img src={savedImage ? import.meta.env.VITE_BASE_URL + savedImage : Images.girl} alt="Marked Face" style={{ width: 300, height: 150, border: "1px solid black" }} />
+                                </Grid>
+                            )}
+
+                        </Grid>
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
@@ -1529,6 +1569,54 @@ const UserForm = () => {
                         <Typography variant="p" fontWeight={500} mb={2} p={2}>
                             I confirm my medical history to be true and correct. I agree I have read and understood all the contents of this document. I have read and understood all the content of this document and agree with the treatment plan. I give my consent to treatment and understand the possible complications and side effects. I confirm I have received an aftercare sheet
                         </Typography>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Typography variant="h5" fontWeight={'bold'} mb={2} p={2}>
+                           Questions
+                        </Typography>
+                        <Grid container spacing={2} p={2}>
+                            {selectedForm?.questionnaire?.map((q) => (
+                                <Grid item xs={12} sm={6} key={q._id}>
+                                    <div style={{ marginBottom: '20px' }}>
+                                        <p>{q.question}</p>
+
+                                        <Controller
+                                            name={`answer_${q._id}`} // unique name for each question
+                                            control={control}
+                                            defaultValue=""
+                                            rules={{ required: 'Please select an answer' }}
+                                            render={({ field }) => (
+                                                <div>
+                                                    <label>
+                                                        <input
+                                                            {...field}
+                                                            type="radio"
+                                                            value="Yes"
+                                                            checked={field.value === 'Yes'}
+                                                        />
+                                                        Yes
+                                                    </label>
+
+                                                    <label style={{ marginLeft: '10px' }}>
+                                                        <input
+                                                            {...field}
+                                                            type="radio"
+                                                            value="No"
+                                                            checked={field.value === 'No'}
+                                                        />
+                                                        No
+                                                    </label>
+                                                </div>
+                                            )}
+                                        />
+                                    </div>
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
                         <Grid container spacing={5} p={2} alignItems="center">
                             {/* Date Field */}
                             <Grid item xs={6} mt={2}>
@@ -1600,17 +1688,19 @@ const UserForm = () => {
                                         className: "sigCanvas",
                                         style: { border: "1px dashed black" },
                                     }}
-                                /> : <Box component={'img'} src={import.meta.env.VITE_BASE_URL+signature} sx={{width: 300,
-                                    height: 150, border: "1px dashed black"}}>
-                                    </Box>}
-                                {(!signature || !formData?.is_completed)   && <Grid container spacing={1} mt={1}>
+                                /> : <Box component={'img'} src={import.meta.env.VITE_BASE_URL + signature} sx={{
+                                    width: 300,
+                                    height: 150, border: "1px dashed black"
+                                }}>
+                                </Box>}
+                                {(!signature || !formData?.is_completed) && <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClear}  sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="secondary" onClick={handleClear} sx={{ textTransform: 'capitalize' }}>
                                             Clear Signature
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSave} sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="primary" onClick={handleSave} sx={{ textTransform: 'capitalize' }}>
                                             Save Signature
                                         </Button>
                                     </Grid>
@@ -1620,10 +1710,11 @@ const UserForm = () => {
 
                             </Grid>
                         </Grid>
+                        
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
-                        <Typography variant="h5" fontWeight="bold" mb={2} p={2}>
+                        <Typography variant="h5" fontWeight="bold" p={2}>
                             Side Effects
                         </Typography>
 
@@ -1631,13 +1722,13 @@ const UserForm = () => {
 
                         <Grid container spacing={5} p={2} alignItems="center">
 
-                            <Grid item xs={6} mt={2}>
+                            <Grid item xs={6} >
                                 <InputField
 
-                                    label="Details"
+                                    label={selectedForm?.side_effect_text}
                                     size="small"
 
-                                    placeholder="Details"
+                                    placeholder={''}
                                     error={errors?.effectdetails?.message}
                                     register={register("effectdetails", { required: false })}
                                     multiline
@@ -1660,10 +1751,10 @@ const UserForm = () => {
                             <Grid item xs={6} mt={2}>
                                 <InputField
 
-                                    label="Details"
+                                    label={selectedForm?.patient_consent_text}
                                     size="small"
 
-                                    placeholder="Details"
+                                    placeholder={''}
                                     error={errors?.details?.message}
                                     register={register("details", { required: false })}
                                     multiline
@@ -1671,9 +1762,9 @@ const UserForm = () => {
                                 />
                             </Grid>
                             {/* Signature Canvas */}
-                            <Grid item xs={6} mt={2}>
+                            <Grid item xs={6} >
                                 <Typography>Patient Signature:</Typography>
-                               {(!consentSign || !formData?.is_completed)  ?  <SignatureCanvas
+                                {(!consentSign || !formData?.is_completed) ? <SignatureCanvas
                                     ref={sigCanvasNew}
                                     penColor="black"
                                     canvasProps={{
@@ -1682,17 +1773,19 @@ const UserForm = () => {
                                         className: "sigCanvas",
                                         style: { border: "1px dashed black" },
                                     }}
-                                /> : <Box component={'img'} src={import.meta.env.VITE_BASE_URL+consentSign} sx={{width: 300,
-                                    height: 150, border: "1px dashed black"}}>
-                                    </Box>}
-                                {(!consentSign || !formData?.is_completed)  && <Grid container spacing={1} mt={1}>
+                                /> : <Box component={'img'} src={import.meta.env.VITE_BASE_URL + consentSign} sx={{
+                                    width: 300,
+                                    height: 150, border: "1px dashed black"
+                                }}>
+                                </Box>}
+                                {(!consentSign || !formData?.is_completed) && <Grid container spacing={1} mt={1}>
                                     <Grid item>
-                                        <Button variant="contained" color="secondary" onClick={handleClear2} sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="secondary" onClick={handleClear2} sx={{ textTransform: 'capitalize' }}>
                                             Clear Signature
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={handleSave2} sx={{textTransform:'capitalize'}}>
+                                        <Button variant="contained" color="primary" onClick={handleSave2} sx={{ textTransform: 'capitalize' }}>
                                             Save Signature
                                         </Button>
                                     </Grid>
@@ -1701,6 +1794,63 @@ const UserForm = () => {
 
 
                             </Grid>
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                      
+                        <Typography variant="h5" fontWeight="bold" p={2}>
+                            Medication Section
+                        </Typography>
+
+
+
+                        <Grid container spacing={5} p={2} alignItems="center">
+
+                            <Grid item xs={6} >
+                                <InputField
+
+                                    label={''}
+                                    size="small"
+
+                                    placeholder={''}
+                                    error={errors?.medication?.message}
+                                    register={register("medication", { required: false })}
+                                    multiline
+                                    rows={4}
+                                />
+                            </Grid>
+
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
+                      
+                        <Typography variant="h5" fontWeight="bold" p={2}>
+                            Allergies Section
+                        </Typography>
+
+
+
+                        <Grid container spacing={5} p={2} alignItems="center">
+
+                            <Grid item xs={6} >
+                                <InputField
+
+                                    label={''}
+                                    size="small"
+
+                                    placeholder={''}
+                                    error={errors?.allergies?.message}
+                                    register={register("allergies", { required: false })}
+                                    multiline
+                                    rows={4}
+                                />
+                            </Grid>
+
                         </Grid>
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
@@ -1909,7 +2059,7 @@ const UserForm = () => {
                                     uploadedImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             <img
-                                                src={file}
+                                                src={import.meta.env.VITE_BASE_URL+file}
                                                 alt="Uploaded Preview"
                                                 style={{ width: "100px", height: "100px", borderRadius: "8px", objectFit: "cover" }}
                                             />
@@ -2045,7 +2195,7 @@ const UserForm = () => {
                                     beforeImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             <img
-                                                src={file}
+                                                src={import.meta.env.VITE_BASE_URL+file}
                                                 alt="Uploaded Preview"
                                                 style={{ width: "100px", height: "100px", borderRadius: "8px", objectFit: "cover" }}
                                             />
@@ -2181,7 +2331,7 @@ const UserForm = () => {
                                     afterImages.map((file, index) => (
                                         <Box key={index} sx={{ position: "relative", textAlign: "center" }}>
                                             <img
-                                                src={file}
+                                                src={import.meta.env.VITE_BASE_URL+file}
                                                 alt="Uploaded Preview"
                                                 style={{ width: "100px", height: "100px", borderRadius: "8px", objectFit: "cover" }}
                                             />
@@ -2218,6 +2368,7 @@ const UserForm = () => {
                                     ))}
                             </Box>
                         </Grid>
+
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
@@ -2276,23 +2427,25 @@ const UserForm = () => {
                                             <InputLabel sx={{ fontWeight: 700, fontSize: "14px", marginBottom: 1 }}>
                                                 Signature :*
                                             </InputLabel>
-                                            {(!item?.sign || !formData?.is_completed)  ? <SignatureCanvas
+                                            {(!item?.sign || !formData?.is_completed) ? <SignatureCanvas
                                                 ref={(el) => (signCanvasRefs.current[index] = el)}
                                                 penColor="black"
                                                 canvasProps={{ width: 300, height: 150, style: { border: "1px dashed black" } }}
-                                            /> : <Box component={'img'} src={item?.sign} sx={{width: 300,
-                                                height: 150, border: "1px dashed black"}}>
-                                                </Box>}
+                                            /> : <Box component={'img'} src={item?.sign} sx={{
+                                                width: 300,
+                                                height: 150, border: "1px dashed black"
+                                            }}>
+                                            </Box>}
 
                                         </Box>
-                                        {(!item?.sign || !formData?.is_completed)   && <Grid container spacing={1} mt={1}>
+                                        {(!item?.sign || !formData?.is_completed) && <Grid container spacing={1} mt={1}>
                                             <Grid item>
-                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)} sx={{textTransform:'capitalize'}}>
+                                                <Button variant="contained" color="secondary" onClick={() => clearSignature(index)} sx={{ textTransform: 'capitalize' }}>
                                                     Clear Signature
                                                 </Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)} sx={{textTransform:'capitalize'}}>
+                                                <Button variant="contained" color="primary" onClick={() => updateSignature(index)} sx={{ textTransform: 'capitalize' }}>
                                                     Save Signature
                                                 </Button>
                                             </Grid>
@@ -2320,6 +2473,10 @@ const UserForm = () => {
                         <Grid container p={1}>
                             <Divider sx={{ mt: 4, width: '100%' }} />
                         </Grid>
+
+                        <Grid container p={1}>
+                            <Divider sx={{ mt: 4, width: '100%' }} />
+                        </Grid>
                         <Grid item xs={6} mt={2}><InputField
                             disabled={true}
                             label={"Notes :"}
@@ -2334,6 +2491,22 @@ const UserForm = () => {
 
                             })}
                         /></Grid>
+                        <Grid item xs={12} mt={2}>
+                            <Typography variant="h5" fontWeight="bold" p={2}>
+                                Disclaimer
+                            </Typography>
+
+                        </Grid>
+
+                        <Grid container spacing={5} p={2} alignItems="center">
+
+                            <Grid item xs={12} >
+                                <Typography variant="h6" fontWeight="bold" p={2} sx={{ fontSize: '14px' }}>
+                                    {selectedForm?.disclaimer_text}
+                                </Typography>
+                            </Grid>
+
+                        </Grid>
                     </Grid>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', mt: 2 }}>
                         <PrimaryButton loader={loader} disabled={loader || formData?.is_completed} type={'submit'} title={formData?.is_completed ? 'Submitted' : "Submit Form"} />

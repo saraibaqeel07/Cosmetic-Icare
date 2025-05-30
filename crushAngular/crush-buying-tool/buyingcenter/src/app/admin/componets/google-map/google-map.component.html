@@ -1,0 +1,7 @@
+<mat-form-field [ngClass]="class">
+    <mat-label>{{ formLabel }}</mat-label>
+    <input class="input" matInput type="text" [(ngModel)]="autocompleteInput" #addressText>
+    <mat-error>{{ formLabel }} is Missing</mat-error>
+</mat-form-field>
+
+

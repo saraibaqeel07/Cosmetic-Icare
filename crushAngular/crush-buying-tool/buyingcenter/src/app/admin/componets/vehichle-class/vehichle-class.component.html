@@ -1,0 +1,64 @@
+<div class="items">
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th style="width: 10px;">&nbsp;</th>
+				<th>Car Size</th>
+				<th>Vehicle Weight</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let item of vehicleClass;">
+				<tr *ngIf="!item.delete">
+					<td>
+						<button mat-button (click)="confirmDelete(item)"><mat-icon>delete</mat-icon></button>
+					</td>
+					<td *ngIf="!item.new">{{item.CarSize}} </td>
+					<td *ngIf="item.new">
+						<select class="make-model-input" [(ngModel)]="item.CarSize">
+							<option>--</option>
+							<option *ngFor="let m of vehicleSizes" [ngValue]="m.vehicleClass" [selected]="m.vehicleClass == item.CarSize" value={{m.vehicleClass}}>{{m.vehicleClass}}</option>
+						</select>
+					</td>
+					<td>
+						<input class="custom" [(ngModel)]="item.weightTons" value={{item.weightTons}} /> Tons
+					</td>
+				</tr>
+			</ng-container>
+			<tr>
+				<td>
+					<button mat-raised-button (click)="addCarSize()"><mat-icon>add</mat-icon></button>
+				</td>
+				<td>&nbsp;</td>
+				<td>
+					<button mat-raised-button color="primary" (click)="saveConfig()">Save</button>
+					<button mat-raised-button (click)="reset()">Reset</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- <ng-container *ngFor="let steel of steelConfig;">
+		<tr *ngIf="!steel.delete">
+			<td><button mat-button (click)="confirmDelete(steel)"><mat-icon>delete</mat-icon></button></td>
+			<td>
+				<input class="name-input" [(ngModel)]="steel.name" type="text" />
+			</td>
+			<td class="weight">
+				<div *ngIf="dpt.checked">$ <input class="custom" [(ngModel)]="steel.steelPriceTon" value={{steel.steelPriceTon}} /></div>
+				<div class="defaults" *ngIf="dpt.checked == false">${{steel.steelPricePound * 20}}</div>
+			</td>
+			<td class="weight">
+				<div *ngIf="dpt.checked == false">¢ <input class="custom" [(ngModel)]="steel.steelPricePound" (ngModelChange)="steel.steelPriceTon = steel.steelPricePound*20" value={{(steel.steelPricePound)}} /></div>
+				<div class="defaults" *ngIf="dpt.checked">¢ {{+steel.steelPriceTon / 20}}</div>
+			</td>
+		</tr>
+	</ng-container>
+		<tr>
+			<td><button mat-raised-button (click)="addSteel()"><mat-icon>add</mat-icon></button></td>
+			<td></td>
+			<td></td>
+			<td>
+				<button mat-raised-button (click)="saveConfig()" color="primary">Save</button>
+			</td>
+		</tr> -->

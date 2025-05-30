@@ -1,0 +1,10 @@
+<div class="container">
+	<h3 mat-dialog-title>{{data.title}}</h3>
+	<div mat-dialog-content>
+{{data.message}}
+	</div>
+	<div mat-dialog-actions>
+		<button mat-flat-button (click)="denyClick()">{{data.denyButton}}</button>
+		<button mat-flat-button color="primary" (click)="confirmClick()">{{data.cofirmButton}}</button>
+	</div>
+	</div>
